@@ -38,3 +38,8 @@ class QwirkleEngine:
         """Calculates points, including bonuses for Qwirkles (lines of 6)."""
         # Logic to sum points for both intersecting lines
         pass
+
+    
+    
+# Best move
+
