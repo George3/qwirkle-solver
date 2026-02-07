@@ -1,4 +1,5 @@
-# From Gemini
+# From Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
+# (Gemini 3 Flash, iPad, running in the Free tier)
 # See also Gmail.
 
 class QwirkleEngine:
@@ -35,18 +36,13 @@ class QwirkleEngine:
         
         return (valid_color_run or valid_shape_run) and len(line) < 6
 
-    def calculate_score(self, x, y, tile):
-        """Calculates points, including bonuses for Qwirkles (lines of 6)."""
-        # Logic to sum points for both intersecting lines
-        pass
-
-    
     
 # Expanded  calculate_score
 # [1] - 
 def calculate_score(self, x, y, tile):
     """
-    Calculates the total points for placing a tile at (x, y).
+    Calculates the total points for placing a tile at (x, y),
+    including bonuses for Qwirkles (lines of 6).
     A tile can score in two directions: Horizontal and Vertical.
     """
     total_score = 0
