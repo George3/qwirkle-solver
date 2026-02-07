@@ -1,4 +1,5 @@
 # From Gemini
+# See also Gmail.
 
 class QwirkleEngine:
     def __init__(self):
@@ -77,7 +78,7 @@ def calculate_score(self, x, y, tile):
     return max(total_score, 1)
 
 
-# Integrating with a Hand Solver
+# [2] Integrating with a Hand Solver
 # To find the best move, you'll want to wrap this in a loop 
 # that simulates your hand:
 best_score = 0
