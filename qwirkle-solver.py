@@ -2,6 +2,13 @@
 # (Gemini 3 Flash, iPad, running in the Free tier)
 # See also Gmail.
 
+"""
+Qwirkle is a tile-based game where players score points by creating lines of
+tiles that share a common attribute (color or shape) but differ in the other. 
+Each tile has a color (e.g., red, blue, green, yellow, purple, orange)
+and a shape (e.g., circle, square, diamond, star, clover, cross).
+"""
+
 class QwirkleEngine:
     def __init__(self):
         # Board stores coordinates as (x, y): {'color': 'red', 'shape': 'star'}
