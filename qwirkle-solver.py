@@ -41,5 +41,53 @@ class QwirkleEngine:
 
     
     
-# Best move
+# Expanded  calculate_score
+# [1] - 
+def calculate_score(self, x, y, tile):
+    """
+    Calculates the total points for placing a tile at (x, y).
+    A tile can score in two directions: Horizontal and Vertical.
+    """
+    total_score = 0
+    directions = [
+        ('horizontal', [(1, 0), (-1, 0)]), # Change in x
+        ('vertical', [(0, 1), (0, -1)])    # Change in y
+    ]
+
+    for axis, vecs in directions:
+        line_length = 1  # The tile itself
+        
+        for dx, dy in vecs:
+            curr_x, curr_y = x + dx, y + dy
+            while (curr_x, curr_y) in self.board:
+                line_length += 1
+                curr_x += dx
+                curr_y += dy
+        
+        # In Qwirkle, a line only scores if it's at least 2 tiles long
+        # (unless it's the very first move of the game)
+        if line_length > 1:
+            total_score += line_length
+            
+            # Add Qwirkle Bonus
+            if line_length == 6:
+                total_score += 6
+                
+    # Edge case: If the tile doesn't form a line (lonely tile), it's worth 1
+    return max(total_score, 1)
+
+
+# Integrating with a Hand Solver
+# To find the best move, you'll want to wrap this in a loop 
+# that simulates your hand:
+best_score = 0
+best_move = None
+
+for tile in hand:
+    for spot in available_spots:
+        if self.is_legal_move(spot.x, spot.y, tile):
+            score = self.calculate_score(spot.x, spot.y, tile)
+            if score > best_score:
+                best_score = score
+                best_move = (spot, tile)
 
