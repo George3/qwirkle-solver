@@ -22,6 +22,7 @@ class QwirkleEngine:
         # Board stores coordinates as (x, y): {'color': 'red', 'shape': 'star'}
         self.board: dict[tuple[int, int], Tile] = {}
 
+
     def is_legal_move(self, x, y, tile):
         """Checks if placing 'tile' at (x, y) follows Qwirkle rules."""
         if (x, y) in self.board:
@@ -91,7 +92,11 @@ class QwirkleEngine:
     def has_tile(self, x: int, y: int) -> bool:
         return (x, y) in self.board
     
-
+    def load_board_state(self, tiles: dict[tuple[int, int], Tile]) -> None:
+        """Load board state for an in-progress game."""
+        self.board = tiles.copy()
+    
+""""
 # [2] Integrating with a Hand Solver
 # To find the best move, you'll want to wrap this in a loop 
 # that simulates your hand:
@@ -105,4 +110,4 @@ for tile in hand:
             if score > best_score:
                 best_score = score
                 best_move = (spot, tile)
-
+"""
