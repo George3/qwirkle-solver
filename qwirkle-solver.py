@@ -1,15 +1,41 @@
 from dataclasses import dataclass
 from typing import Optional, TypedDict
 
-# From Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
-# (Gemini 3 Flash, iPad, running in the Free tier)
-# See also Gmail.
+## History: 
+# Day 0. (Fri. Jan.6, 2026) Originaly started w/Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
+#   (Gemini 3 Flash, iPad, running in the Free tier)
+#   See also Gmail.
+# Day 1. Switched to vscode. Set Copilot Agent to 'Auto' - used mix that was mostly from both Claude Sonnet 4.5 - 0.9x and 
+#  GPT-5.2-Codex 0.9x
+#  See also: C:\git_multiple_repos\ai\general_notes\python-self-learn.txt
+#  MILESTONE: It works! - Loads in-progress game state (from my manually entered game_state), check if a move is legal, and calculate the score for that move.
+# Day 2. ...
+# Day 3. ... 
+# Day 4
 
 """
 Qwirkle is a tile-based game where players score points by creating lines of
 tiles that share a common attribute (color or shape) but differ in the other.
 Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
 and a shape (e.g., circle, square, diamond, star, clover, cross-X).
+"""
+
+""" Ideas to make Qwirkle solver beat 'Expert' level:
+1. Once program can run 2-player games 100% headless and output 
+    appropriate stats/outcomes, then run simulations to see which of
+    this is more successful:
+    a) Always play the highest scoring move available.
+    b) (human-gen'd) Hold on to single tile that would be the 5th in a line - for a later Q.
+        And if two tiles in my hand are 5-pointers, pick the one that 
+        has the highest probability to complete the Q.
+        (AI: line score 1 point, and only play them when they open up a high-scoring move for the next turn.
+    c) (ai-gen'd) Play the highest scoring move available, but if there are multiple
+        with the same score, prefer the one that creates more future opportunities.
+        (e.g., creates a line of 3 instead of 2, or opens up more empty spaces around it).
+    d) Play the highest scoring move available, but if there are multiple with
+      the same score, prefer the one that blocks the opponent's potential 
+      high-scoring moves.  
+    
 """
 
 @dataclass(frozen=True)
@@ -24,7 +50,8 @@ class QwirkleEngine:
 
 
     def is_legal_move(self, x, y, tile):
-        """Checks if placing 'tile' at (x, y) follows Qwirkle rules."""
+        """ FIXME: Where is check for 
+            Checks if placing 'tile' at (x, y) follows Qwirkle rules."""
         if (x, y) in self.board:
             return False # Can't place on an occupied space.
             
@@ -39,14 +66,16 @@ class QwirkleEngine:
         return True
 
     def validate_line(self, line, tile):
-        """Ensures all tiles in a row/column share one trait and differ in the other."""
+        """Ensures all tiles in a row/column share one trait and differ 
+           in the other."""
         if not line:
             return True
         
-        colors = {t['color'] for t in line} | {tile['color']}
-        shapes = {t['shape'] for t in line} | {tile['shape']}
+        colors = {t.color for t in line} | {tile.color}
+        shapes = {t.shape for t in line} | {tile.shape}
         
-        # Rule: Either all colors same + shapes different, OR all shapes same + colors different
+        # Rule: Either all colors same + shapes different, 
+        # OR all shapes same + colors different
         valid_color_run = (len(colors) == 1 and len(shapes) == len(line) + 1)
         valid_shape_run = (len(shapes) == 1 and len(colors) == len(line) + 1)
         
@@ -96,18 +125,64 @@ class QwirkleEngine:
         """Load board state for an in-progress game."""
         self.board = tiles.copy()
     
-""""
-# [2] Integrating with a Hand Solver
-# To find the best move, you'll want to wrap this in a loop 
-# that simulates your hand:
-best_score = 0
-best_move = None
+    def get_neighbors(self, x: int, y: int) -> list[Tile]:
+        """Get all adjacent tiles (up, down, left, right)."""
+        neighbors = []
+        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            tile = self.get_tile(x + dx, y + dy)
+            if tile:
+                neighbors.append(tile)
+        return neighbors
+    
+    def get_line(self, x: int, y: int, axis: str) -> list[Tile]:
+        """Get all tiles in a line (horizontal or vertical) adjacent to (x, y)."""
+        line = []
+        if axis == 'horizontal':
+            directions = [(1, 0), (-1, 0)]
+        else:  # vertical
+            directions = [(0, 1), (0, -1)]
+        
+        for dx, dy in directions:
+            curr_x, curr_y = x + dx, y + dy
+            while (curr_x, curr_y) in self.board:
+                line.append(self.board[(curr_x, curr_y)])
+                curr_x += dx
+                curr_y += dy
+        
+        return line
+    
 
-for tile in hand:
-    for spot in available_spots:
-        if self.is_legal_move(spot.x, spot.y, tile):
-            score = self.calculate_score(spot.x, spot.y, tile)
-            if score > best_score:
-                best_score = score
-                best_move = (spot, tile)
-"""
+# Example usage
+if __name__ == "__main__":
+    engine = QwirkleEngine()
+
+    # Define some tiles already on the board
+    game_state = {
+        (0, 0): Tile(color='red', shape='circle'),
+        (1, 0): Tile(color='red', shape='square'),
+        (2, 0): Tile(color='red', shape='diamond'),
+        (0, 1): Tile(color='blue', shape='circle'),
+    }
+
+    # Load the in-progress game
+    engine.load_board_state(game_state)
+
+    # Now you can check moves against this board state
+    test_tile = Tile(color='red', shape='star')
+    if engine.is_legal_move(3, 0, test_tile):
+        score = engine.calculate_score(3, 0, test_tile)
+        print(f"Valid move! Score: {score}")
+    
+    # [2] Integrating with a Hand Solver
+    # To find the best move, you'll want to wrap this in a loop 
+    # that simulates your hand:
+    # best_score = 0
+    # best_move = None
+    # 
+    # for tile in hand:
+    #     for spot in available_spots:
+    #         if engine.is_legal_move(spot.x, spot.y, tile):
+    #             score = engine.calculate_score(spot.x, spot.y, tile)
+    #             if score > best_score:
+    #                 best_score = score
+    #                 best_move = (spot, tile)
