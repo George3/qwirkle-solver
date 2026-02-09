@@ -49,7 +49,8 @@ class QwirkleEngine:
         self.board: dict[tuple[int, int], Tile] = {}
 
 
-    def is_legal_move(self, x, y, tile):
+    def is_legal_move(self, move, tile):
+        x, y = move
         """ FIXME: Where is check for 
             Checks if placing 'tile' at (x, y) follows Qwirkle rules."""
         if (x, y) in self.board:
@@ -158,6 +159,7 @@ if __name__ == "__main__":
 
     # Define some tiles already on the board
     game_state = {
+        (-1, 0): Tile(color='red', shape='cross-X'),
         (0, 0): Tile(color='red', shape='circle'),
         (1, 0): Tile(color='red', shape='square'),
         (2, 0): Tile(color='red', shape='diamond'),
@@ -169,9 +171,14 @@ if __name__ == "__main__":
 
     # Now you can check moves against this board state
     test_tile = Tile(color='red', shape='star')
-    if engine.is_legal_move(3, 0, test_tile):
+
+    test_move = (3, 0)
+
+    if engine.is_legal_move(test_move, test_tile):
         score = engine.calculate_score(3, 0, test_tile)
         print(f"Valid move! Score: {score}")
+    else:
+        print("Not valid move: " + str(test_tile) + " at (3, 0)")
     
     # [2] Integrating with a Hand Solver
     # To find the best move, you'll want to wrap this in a loop 
