@@ -8,10 +8,34 @@ from typing import Optional, TypedDict
 # Day 1. Switched to vscode. Set Copilot Agent to 'Auto' - used mix that was mostly from both Claude Sonnet 4.5 - 0.9x and 
 #  GPT-5.2-Codex 0.9x
 #  See also: C:\git_multiple_repos\ai\general_notes\python-self-learn.txt
-#  MILESTONE: It works! - Loads in-progress game state (from my manually entered game_state), check if a move is legal, and calculate the score for that move.
-# Day 2. ...
+#  MILESTONE: It works! - Loads in-progress game state (from my manually entered game_state), 
+#   check if a move is legal, and calculate the score for that move.
+#  Fixed inability to commit & push by rm'ing subdirs (no subdirs allowed w/gists!)
+# Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!)
+
+# .plan: 
+#   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
+#   Add "hand" to the engine.
+#   Start "simple" GUI (but 1st try "ambitious" 1st small jump to use screenshot) -> game_state 
+#   How to suggest next move?
+#   Understand current code's mv selection THEN implement simple "intelligence"[2] to improve it.
 # Day 3. ... 
 # Day 4
+# 
+    # [2] Integrating with a Hand Solver
+    # To find the best move, you'll want to wrap this in a loop 
+    # that simulates your hand:
+    # best_score = 0
+    # best_move = None
+    # 
+    # for tile in hand:
+    #     for spot in available_spots:
+    #         if engine.is_legal_move(spot.x, spot.y, tile):
+    #             score = engine.calculate_score(spot.x, spot.y, tile)
+    #             if score > best_score:
+    #                 best_score = score
+    #                 best_move = (spot, tile)
+
 
 """
 Qwirkle is a tile-based game where players score points by creating lines of
@@ -20,7 +44,14 @@ Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
 and a shape (e.g., circle, square, diamond, star, clover, cross-X).
 """
 
-""" Ideas to make Qwirkle solver beat 'Expert' level:
+"""
+## Rand. Notes
+    - Pylance in use: Since vscode suggested I change its settings so some type checking happens
+        and gave URL: https://microsoft.github.io/pyright/#/configuration?id=type-check-diagnostics-settings
+        vs. AI here gave URL: https://code.visualstudio.com/docs/python/linting#_pylance-type-checking, I turned on "basic" type checking.
+      AI: "...built-in Python extension includes Pylance, you can leverage its features for better code analysis and suggestions."
+
+## Ideas to make Qwirkle solver beat 'Expert' level:
 1. Once program can run 2-player games 100% headless and output 
     appropriate stats/outcomes, then run simulations to see which of
     this is more successful:
@@ -48,7 +79,7 @@ class QwirkleEngine:
         # Board stores coordinates as (x, y): {'color': 'red', 'shape': 'star'}
         self.board: dict[tuple[int, int], Tile] = {}
 
-
+    # gmr3 changed x,y param to move tuple. Good choice? -- 23c8e6f.
     def is_legal_move(self, move, tile):
         x, y = move
         """ FIXME: Where is check for 
@@ -158,38 +189,32 @@ if __name__ == "__main__":
     engine = QwirkleEngine()
 
     # Define some tiles already on the board
+    # board for vs. tinyb (not robot)
     game_state = {
-        (-1, 0): Tile(color='red', shape='cross-X'),
-        (0, 0): Tile(color='red', shape='circle'),
-        (1, 0): Tile(color='red', shape='square'),
-        (2, 0): Tile(color='red', shape='diamond'),
-        (0, 1): Tile(color='blue', shape='circle'),
+        # Worked in 23c8e6f:  (-1, 0): Tile(color='red', shape='cross-X'),
+        (0, 0): Tile(color='blue', shape='clover'),
+        (1, 0): Tile(color='green', shape='clover'),
+        (2, 0): Tile(color='yellow', shape='clover'),
+        (2, 1): Tile(color='yellow', shape='star'),
+        (3, 1): Tile(color='orange', shape='star'),
+        (4, 1): Tile(color='red', shape='star'),
+        (4, 2): Tile(color='red', shape='cross-X'),
+        (5, 2): Tile(color='purple', shape='cross-X'),
+        (4, 3): Tile(color='red', shape='circle'),
+        (5, 3): Tile(color='purple', shape='circle')
     }
 
     # Load the in-progress game
     engine.load_board_state(game_state)
 
     # Now you can check moves against this board state
-    test_tile = Tile(color='red', shape='star')
+    test_tile = Tile(color='purple', shape='square')
 
-    test_move = (3, 0)
-
+    # test_move = (3, 0)
+    test_move = (5, 4)
+# TODO put in func. so can try mult. moves easily:
     if engine.is_legal_move(test_move, test_tile):
         score = engine.calculate_score(3, 0, test_tile)
         print(f"Valid move! Score: {score}")
     else:
-        print("Not valid move: " + str(test_tile) + " at (3, 0)")
-    
-    # [2] Integrating with a Hand Solver
-    # To find the best move, you'll want to wrap this in a loop 
-    # that simulates your hand:
-    # best_score = 0
-    # best_move = None
-    # 
-    # for tile in hand:
-    #     for spot in available_spots:
-    #         if engine.is_legal_move(spot.x, spot.y, tile):
-    #             score = engine.calculate_score(spot.x, spot.y, tile)
-    #             if score > best_score:
-    #                 best_score = score
-    #                 best_move = (spot, tile)
+        print("Not valid move: " + str(test_tile) + " at (3, 0)") # FIXME hardcoded move in print statement. 
