@@ -1,6 +1,6 @@
 from collections import Counter
 from dataclasses import dataclass
-from typing import Optional, TypedDict
+from typing import Iterable, Optional, TypedDict
 
 ## History: 
 # Day 0. (Fri. Jan.6, 2026) Originaly started w/Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
@@ -195,7 +195,29 @@ def try_move(engine, move, tile) -> Optional[int]:
     return None
 
 
-def get_candidate_moves(engine: QwirkleEngine) -> set[tuple[int, int]]:
+def get_line_on_board(
+    board: dict[tuple[int, int], Tile],
+    x: int,
+    y: int,
+    axis: str,
+) -> list[Tile]:
+    line: list[Tile] = []
+    if axis == "horizontal":
+        directions = [(1, 0), (-1, 0)]
+    else:  # vertical
+        directions = [(0, 1), (0, -1)]
+
+    for dx, dy in directions:
+        curr_x, curr_y = x + dx, y + dy
+        while (curr_x, curr_y) in board:
+            line.append(board[(curr_x, curr_y)])
+            curr_x += dx
+            curr_y += dy
+
+    return line
+
+
+def get_adjacent_empty_cells(engine: QwirkleEngine) -> set[tuple[int, int]]:
     candidates: set[tuple[int, int]] = set()
     for x, y in engine.board:
         for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
@@ -205,23 +227,198 @@ def get_candidate_moves(engine: QwirkleEngine) -> set[tuple[int, int]]:
     return candidates
 
 
-def find_best_moves(engine: QwirkleEngine, tiles: Counter[Tile]) -> list[tuple[int, Tile, tuple[int, int]]]:
-    candidates = get_candidate_moves(engine)
-    best_score = 0
-    best_moves: list[tuple[int, Tile, tuple[int, int]]] = []
+def get_empty_line_through(
+    engine: QwirkleEngine,
+    start: tuple[int, int],
+    axis: str,
+) -> list[tuple[int, int]]:
+    x, y = start
+    if axis == "horizontal":
+        directions = [(1, 0), (-1, 0)]
+        key_index = 0
+    else:
+        directions = [(0, 1), (0, -1)]
+        key_index = 1
 
-    for tile in tiles:
-        for move in candidates:
-            score = try_move(engine, move, tile)
-            if score is None:
+    positions = {start}
+    for dx, dy in directions:
+        curr_x, curr_y = x + dx, y + dy
+        while (curr_x, curr_y) not in engine.board:
+            positions.add((curr_x, curr_y))
+            curr_x += dx
+            curr_y += dy
+
+    return sorted(positions, key=lambda pos: pos[key_index])
+
+
+def generate_connected_segments(
+    engine: QwirkleEngine,
+    min_len: int = 1,
+    max_len: int = 6,
+) -> list[tuple[tuple[int, int], ...]]:
+    anchors = get_adjacent_empty_cells(engine)
+    segments: set[tuple[tuple[int, int], ...]] = set()
+
+    for anchor in anchors:
+        for axis in ["horizontal", "vertical"]:
+            line = get_empty_line_through(engine, anchor, axis)
+            if len(line) < min_len:
                 continue
-            if score > best_score:
-                best_score = score
-                best_moves = [(score, tile, move)]
-            elif score == best_score:
-                best_moves.append((score, tile, move))
+            for i in range(len(line)):
+                for j in range(i + min_len - 1, min(len(line), i + max_len)):
+                    segment = line[i : j + 1]
+                    if anchor in segment:
+                        segments.add(tuple(segment))
 
-    return best_moves
+    return list(segments)
+
+
+def validate_full_line(tiles: list[Tile]) -> bool:
+    if len(tiles) <= 1:
+        return True
+
+    colors = {t.color for t in tiles}
+    shapes = {t.shape for t in tiles}
+    valid_color_run = len(colors) == 1 and len(shapes) == len(tiles)
+    valid_shape_run = len(shapes) == 1 and len(colors) == len(tiles)
+    return (valid_color_run or valid_shape_run) and len(tiles) <= 6
+
+
+def iter_tile_sequences(tiles: Counter[Tile], length: int) -> Iterable[tuple[Tile, ...]]:
+    if length == 0:
+        yield ()
+        return
+
+    for tile in list(tiles.keys()):
+        if tiles[tile] == 0:
+            continue
+        tiles[tile] -= 1
+        for suffix in iter_tile_sequences(tiles, length - 1):
+            yield (tile,) + suffix
+        tiles[tile] += 1
+
+
+def is_legal_multi_move(
+    engine: QwirkleEngine,
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> bool:
+    if not placements:
+        return False
+
+    moves = [move for move, _ in placements]
+    if len(set(moves)) != len(moves):
+        return False
+
+    for move in moves:
+        if move in engine.board:
+            return False
+
+    xs = {move[0] for move in moves}
+    ys = {move[1] for move in moves}
+    if len(xs) == 1:
+        axis = "vertical"
+    elif len(ys) == 1:
+        axis = "horizontal"
+    else:
+        return False
+
+    temp_board = engine.board.copy()
+    for move, tile in placements:
+        temp_board[move] = tile
+
+    if engine.board:
+        has_connection = False
+        for x, y in moves:
+            for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                if (x + dx, y + dy) in engine.board:
+                    has_connection = True
+                    break
+            if has_connection:
+                break
+        if not has_connection:
+            return False
+
+    if axis == "horizontal":
+        fixed_y = moves[0][1]
+        min_x = min(move[0] for move in moves)
+        max_x = max(move[0] for move in moves)
+        for x in range(min_x, max_x + 1):
+            if (x, fixed_y) not in temp_board:
+                return False
+    else:
+        fixed_x = moves[0][0]
+        min_y = min(move[1] for move in moves)
+        max_y = max(move[1] for move in moves)
+        for y in range(min_y, max_y + 1):
+            if (fixed_x, y) not in temp_board:
+                return False
+
+    sample_x, sample_y = moves[0]
+    main_line = get_line_on_board(temp_board, sample_x, sample_y, axis)
+    main_line_tiles = main_line + [temp_board[(sample_x, sample_y)]]
+    if not validate_full_line(main_line_tiles):
+        return False
+
+    perpendicular = "vertical" if axis == "horizontal" else "horizontal"
+    for x, y in moves:
+        line = get_line_on_board(temp_board, x, y, perpendicular)
+        line_tiles = line + [temp_board[(x, y)]]
+        if not validate_full_line(line_tiles):
+            return False
+
+    return True
+
+
+def calculate_score_multi(
+    engine: QwirkleEngine,
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> Optional[int]:
+    if not is_legal_multi_move(engine, placements):
+        return None
+
+    temp_board = engine.board.copy()
+    for move, tile in placements:
+        temp_board[move] = tile
+
+    moves = [move for move, _ in placements]
+    xs = {move[0] for move in moves}
+    axis = "vertical" if len(xs) == 1 else "horizontal"
+    perpendicular = "vertical" if axis == "horizontal" else "horizontal"
+
+    sample_x, sample_y = moves[0]
+    main_length = 1 + len(get_line_on_board(temp_board, sample_x, sample_y, axis))
+    total_score = 0
+    if main_length > 1:
+        total_score += main_length
+        if main_length == 6:
+            total_score += 6
+
+    for x, y in moves:
+        line_length = 1 + len(get_line_on_board(temp_board, x, y, perpendicular))
+        if line_length > 1:
+            total_score += line_length
+            if line_length == 6:
+                total_score += 6
+
+    return max(total_score, 1)
+
+
+def generate_all_multi_moves(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
+    segments = generate_connected_segments(engine)
+    results: list[tuple[int, list[tuple[tuple[int, int], Tile]]]] = []
+
+    for segment in segments:
+        for sequence in iter_tile_sequences(tiles, len(segment)):
+            placements = list(zip(segment, sequence))
+            score = calculate_score_multi(engine, placements)
+            if score is not None:
+                results.append((score, placements))
+
+    results.sort(key=lambda item: item[0], reverse=True)
+    return results
 
 # Example usage
 if __name__ == "__main__":
@@ -257,11 +454,11 @@ if __name__ == "__main__":
         ]
     )
 
-    best_moves = find_best_moves(engine, my_tiles)
-    if not best_moves:
-        print("No legal moves found.")
-    else:
-        best_score = best_moves[0][0]
-        print(f"Best score: {best_score}")
-        for score, tile, move in best_moves:
-            print(f"  {tile} at {move} -> {score}")
+    all_moves = generate_all_multi_moves(engine, my_tiles)
+    print(f"Total legal multi-tile moves: {len(all_moves)}")
+    top_n = 5
+    for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
+        placement_str = ", ".join(
+            f"{tile} @ {move}" for move, tile in placements
+        )
+        print(f"Rank {rank}: {score} points -> {placement_str}")
