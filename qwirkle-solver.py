@@ -11,7 +11,12 @@ from typing import Optional, TypedDict
 #  MILESTONE: It works! - Loads in-progress game state (from my manually entered game_state), 
 #   check if a move is legal, and calculate the score for that move.
 #  Fixed inability to commit & push by rm'ing subdirs (no subdirs allowed w/gists!)
-# Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!)
+# Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!). First .plan ideas added.
+# Day 3. (2026-02-15) Fixed: Score was wrong: 3 instead of 6 given.
+#   - TODO: Test out in an actual game (w/NO strategy besides Max score) 
+#   - TODO: Add ~loop to try all possible positions w/1 tile.
+#   - TODO: Then outer loop to test all tiles in hand.
+# Day 4
 
 # .plan: 
 #   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
@@ -19,8 +24,6 @@ from typing import Optional, TypedDict
 #   Start "simple" GUI (but 1st try "ambitious" 1st small jump to use screenshot) -> game_state 
 #   How to suggest next move?
 #   Understand current code's mv selection THEN implement simple "intelligence"[2] to improve it.
-# Day 3. ... 
-# Day 4
 # 
     # [2] Integrating with a Hand Solver
     # To find the best move, you'll want to wrap this in a loop 
@@ -47,8 +50,9 @@ and a shape (e.g., circle, square, diamond, star, clover, cross-X).
 """
 ## Rand. Notes
     - Pylance in use: Since vscode suggested I change its settings so some type checking happens
-        and gave URL: https://microsoft.github.io/pyright/#/configuration?id=type-check-diagnostics-settings
+        and gave URL (not to Pylance*): https://microsoft.github.io/pyright/#/configuration?id=type-check-diagnostics-settings
         vs. AI here gave URL: https://code.visualstudio.com/docs/python/linting#_pylance-type-checking, I turned on "basic" type checking.
+        *Pylance vs. Pyright: "Pylance incorporates the Pyright type checker but features additional capabilities" -- https://microsoft.github.io/pyright/#/installation?id=vs-code
       AI: "...built-in Python extension includes Pylance, you can leverage its features for better code analysis and suggestions."
 
 ## Ideas to make Qwirkle solver beat 'Expert' level:
@@ -113,7 +117,7 @@ class QwirkleEngine:
         
         return (valid_color_run or valid_shape_run) and len(line) < 6
 
-    def calculate_score(self, x, y, tile):
+    def calculate_score(self, move, tile):
         """
         Calculates the total points for placing a tile at (x, y),
         including bonuses for Qwirkles (lines of 6).
@@ -127,7 +131,7 @@ class QwirkleEngine:
 
         for axis, vecs in directions:
             line_length = 1  # The tile itself
-            
+            x, y = move
             for dx, dy in vecs:
                 curr_x, curr_y = x + dx, y + dy
                 while (curr_x, curr_y) in self.board:
@@ -209,12 +213,11 @@ if __name__ == "__main__":
 
     # Now you can check moves against this board state
     test_tile = Tile(color='purple', shape='square')
-
-    # test_move = (3, 0)
     test_move = (5, 4)
+
 # TODO put in func. so can try mult. moves easily:
     if engine.is_legal_move(test_move, test_tile):
-        score = engine.calculate_score(3, 0, test_tile)
+        score = engine.calculate_score(test_move, test_tile)
         print(f"Valid move! Score: {score}")
     else:
-        print("Not valid move: " + str(test_tile) + " at (3, 0)") # FIXME hardcoded move in print statement. 
+        print("Not valid move: " + str(test_tile) + " at (test_move)") # FIXME hardcoded move in print statement. 
