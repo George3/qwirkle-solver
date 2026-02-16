@@ -243,10 +243,13 @@ def get_empty_line_through(
     positions = {start}
     for dx, dy in directions:
         curr_x, curr_y = x + dx, y + dy
-        while (curr_x, curr_y) not in engine.board:
+        # Scan at most 5 spaces in each direction, since max line length is 6
+        steps = 0
+        while steps < 6 and (curr_x, curr_y) not in engine.board:
             positions.add((curr_x, curr_y))
             curr_x += dx
             curr_y += dy
+            steps += 1
 
     return sorted(positions, key=lambda pos: pos[key_index])
 
