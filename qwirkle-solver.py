@@ -1,3 +1,4 @@
+from collections import Counter
 from dataclasses import dataclass
 from typing import Optional, TypedDict
 
@@ -13,10 +14,11 @@ from typing import Optional, TypedDict
 #  Fixed inability to commit & push by rm'ing subdirs (no subdirs allowed w/gists!)
 # Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!). First .plan ideas added.
 # Day 3. (2026-02-15) Fixed: Score was wrong: 3 instead of 6 given.
-#   - TODO: Test out in an actual game (w/NO strategy besides Max score) 
 #   - TODO: Add ~loop to try all possible positions w/1 tile.
 #   - TODO: Then outer loop to test all tiles in hand.
-# Day 4
+#   - TODO: Test out in an actual game (w/NO strategy besides Max score) 
+# Day 4. Future - 
+# - Moves w/>1 tile at a time (to find best move from hand)
 
 # .plan: 
 #   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
@@ -186,7 +188,40 @@ class QwirkleEngine:
                 curr_y += dy
         
         return line
-    
+
+def try_move(engine, move, tile) -> Optional[int]:
+    if engine.is_legal_move(move, tile):
+        return engine.calculate_score(move, tile)
+    return None
+
+
+def get_candidate_moves(engine: QwirkleEngine) -> set[tuple[int, int]]:
+    candidates: set[tuple[int, int]] = set()
+    for x, y in engine.board:
+        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            move = (x + dx, y + dy)
+            if move not in engine.board:
+                candidates.add(move)
+    return candidates
+
+
+def find_best_moves(engine: QwirkleEngine, tiles: Counter[Tile]) -> list[tuple[int, Tile, tuple[int, int]]]:
+    candidates = get_candidate_moves(engine)
+    best_score = 0
+    best_moves: list[tuple[int, Tile, tuple[int, int]]] = []
+
+    for tile in tiles:
+        for move in candidates:
+            score = try_move(engine, move, tile)
+            if score is None:
+                continue
+            if score > best_score:
+                best_score = score
+                best_moves = [(score, tile, move)]
+            elif score == best_score:
+                best_moves.append((score, tile, move))
+
+    return best_moves
 
 # Example usage
 if __name__ == "__main__":
@@ -211,13 +246,22 @@ if __name__ == "__main__":
     # Load the in-progress game
     engine.load_board_state(game_state)
 
-    # Now you can check moves against this board state
-    test_tile = Tile(color='purple', shape='square')
-    test_move = (5, 4)
+    my_tiles = Counter(
+        [
+            Tile(color="purple", shape="square"),
+            Tile(color="blue", shape="circle"),
+            Tile(color="red", shape="diamond"),
+            Tile(color="yellow", shape="clover"),
+            Tile(color="green", shape="star"),
+            Tile(color="orange", shape="cross-X"),
+        ]
+    )
 
-# TODO put in func. so can try mult. moves easily:
-    if engine.is_legal_move(test_move, test_tile):
-        score = engine.calculate_score(test_move, test_tile)
-        print(f"Valid move! Score: {score}")
+    best_moves = find_best_moves(engine, my_tiles)
+    if not best_moves:
+        print("No legal moves found.")
     else:
-        print("Not valid move: " + str(test_tile) + " at (test_move)") # FIXME hardcoded move in print statement. 
+        best_score = best_moves[0][0]
+        print(f"Best score: {best_score}")
+        for score, tile, move in best_moves:
+            print(f"  {tile} at {move} -> {score}")
