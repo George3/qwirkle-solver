@@ -469,11 +469,13 @@ if __name__ == "__main__":
 
     all_moves = generate_all_multi_moves(engine, my_tiles)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
+    
     top_n = 5
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
         )
-        if len(placement_str) > 50:             
+        # If len( ..............vvv... sample string of a long-ish move) shows >1 tile in the move, add trailing comma for easier copy-paste
+        if len(placement_str) > len("(-100, -100): Tile(color='yellow', shape='diamond')"):
             placement_str = placement_str + ","
         print(f"Rank {rank}: {score} points -> {placement_str}")
