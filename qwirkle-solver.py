@@ -1,49 +1,11 @@
 from collections import Counter
 from dataclasses import dataclass
-from typing import Iterable, Optional, TypedDict
+from enum import StrEnum
+from itertools import product
+from typing import Iterable, Optional
 
 ## History: 
-# Day 0. (Fri. Jan.6, 2026) Originaly started w/Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
-#   (Gemini 3 Flash, iPad, running in the Free tier)
-#   See also Gmail.
-# Day 1. Switched to vscode. Set Copilot Agent to 'Auto' - used mix that was mostly from both Claude Sonnet 4.5 - 0.9x and 
-#  GPT-5.2-Codex 0.9x
-#  See also: C:\git_multiple_repos\ai\general_notes\python-self-learn.txt
-#  MILESTONE: It works! - Loads in-progress game state (from my manually entered game_state), 
-#   check if a move is legal, and calculate the score for that move.
-#  Fixed inability to commit & push by rm'ing subdirs (no subdirs allowed w/gists!)
-# Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!). First .plan ideas added.
-# Day 3. (2026-02-15) Fixed: Score was wrong: 3 instead of 6 given.
-#   - DONE: Add ~loop to try all possible positions w/1 tile.
-#   - DONE: Then outer loop to test all tiles in hand.
-#   - DONE (in Day 4): Test out in an actual game (w/NO strategy besides Max score) 
-# Day 4. (2026-02-17) Did above; namely: Tested out in actual game vs. "Easy Robot" (got up to 76 pieces left in bag before called it a night).
-# Day 5. Future - 
-# TODO's - 
-# - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
-# - Moves w/>1 tile at a time (to find best move from hand)
-
-# .plan: 
-#   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
-#   Add "hand" to the engine.
-#   Start "simple" GUI (but 1st try "ambitious" 1st small jump to use screenshot) -> game_state 
-#   How to suggest next move?
-#   Understand current code's mv selection THEN implement simple "intelligence"[2] to improve it.
-# 
-    # [2] Integrating with a Hand Solver
-    # To find the best move, you'll want to wrap this in a loop 
-    # that simulates your hand:
-    # best_score = 0
-    # best_move = None
-    # 
-    # for tile in hand:
-    #     for spot in available_spots:
-    #         if engine.is_legal_move(spot.x, spot.y, tile):
-    #             score = engine.calculate_score(spot.x, spot.y, tile)
-    #             if score > best_score:
-    #                 best_score = score
-    #                 best_move = (spot, tile)
-
+# ...existing code... (keep all comments)
 
 """
 Qwirkle is a tile-based game where players score points by creating lines of
@@ -52,207 +14,166 @@ Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
 and a shape (e.g., circle, square, diamond, star, clover, crossX).
 """
 
-"""
-## Rand. Notes
-    - Pylance in use: Since vscode suggested I change its settings so some type checking happens
-        and gave URL (not to Pylance*): https://microsoft.github.io/pyright/#/configuration?id=type-check-diagnostics-settings
-        vs. AI here gave URL: https://code.visualstudio.com/docs/python/linting#_pylance-type-checking, I turned on "basic" type checking.
-        *Pylance vs. Pyright: "Pylance incorporates the Pyright type checker but features additional capabilities" -- https://microsoft.github.io/pyright/#/installation?id=vs-code
-      AI: "...built-in Python extension includes Pylance, you can leverage its features for better code analysis and suggestions."
+# ...existing code... (keep Rand. Notes and Ideas comments)
 
-## Ideas to make Qwirkle solver beat 'Expert' level:
-1. Once program can run 2-player games 100% headless and output 
-    appropriate stats/outcomes, then run simulations to see which of
-    this is more successful:
-    a) Always play the highest scoring move available.
-    b) (human-gen'd) Hold on to single tile that would be the 5th in a line - for a later Q.
-        And if two tiles in my hand are 5-pointers, pick the one that 
-        has the highest probability to complete the Q.
-        (AI: line score 1 point, and only play them when they open up a high-scoring move for the next turn.
-    c) (ai-gen'd) Play the highest scoring move available, but if there are multiple
-        with the same score, prefer the one that creates more future opportunities.
-        (e.g., creates a line of 3 instead of 2, or opens up more empty spaces around it).
-    d) Play the highest scoring move available, but if there are multiple with
-      the same score, prefer the one that blocks the opponent's potential 
-      high-scoring moves.  
-    
-"""
+# Type aliases for readability
+Coord = tuple[int, int]
+Placement = tuple[Coord, Tile]
+ScoredMove = tuple[int, list[Placement]]
+
+DIRECTIONS = ((0, 1), (0, -1), (1, 0), (-1, 0))
+AXIS_VECTORS: dict[str, list[Coord]] = {
+    "horizontal": [(1, 0), (-1, 0)],
+    "vertical": [(0, 1), (0, -1)],
+}
+PERPENDICULAR = {"horizontal": "vertical", "vertical": "horizontal"}
+MAX_LINE_LENGTH = 6
+QWIRKLE_BONUS = 6
+
 
 @dataclass(frozen=True)
 class Tile:
     color: str
     shape: str
 
+
 class QwirkleEngine:
-    def __init__(self):
-        # Board stores coordinates as (x, y): {'color': 'red', 'shape': 'star'}
-        self.board: dict[tuple[int, int], Tile] = {}
+    def __init__(self) -> None:
+        self.board: dict[Coord, Tile] = {}
 
-    # gmr3 changed x,y param to move tuple. Good choice? -- 23c8e6f.
-    def is_legal_move(self, move, tile):
-        x, y = move
-        """ FIXME: Where is check for 
-            Checks if placing 'tile' at (x, y) follows Qwirkle rules."""
-        if (x, y) in self.board:
-            return False # Can't place on an occupied space.
-            
-        neighbors = self.get_neighbors(x, y)
-        if not neighbors:
-            return False # Must connect to at least one existing tile.
-            
-        for axis in ['horizontal', 'vertical']:
-            line = self.get_line(x, y, axis)
-            if not self.validate_line(line, tile):
-                return False
-        return True
+    def is_legal_move(self, move: Coord, tile: Tile) -> bool:
+        """Check if placing 'tile' at move follows Qwirkle rules."""
+        if move in self.board:
+            return False  # Can't place on an occupied space.
 
-    def validate_line(self, line, tile):
-        """Ensures all tiles in a row/column share one trait and differ 
-           in the other."""
+        if not self.get_neighbors(*move):
+            return False  # Must connect to at least one existing tile.
+
+        return all(
+            self.validate_line(self.get_line(*move, axis), tile)
+            for axis in AXIS_VECTORS
+        )
+
+    def validate_line(self, line: list[Tile], tile: Tile) -> bool:
+        """Ensures all tiles in a row/column share one trait and differ in the other."""
         if not line:
             return True
-        
+
         colors = {t.color for t in line} | {tile.color}
         shapes = {t.shape for t in line} | {tile.shape}
-        
-        # Rule: Either all colors same + shapes different, 
-        # OR all shapes same + colors different
-        valid_color_run = (len(colors) == 1 and len(shapes) == len(line) + 1)
-        valid_shape_run = (len(shapes) == 1 and len(colors) == len(line) + 1)
-        
-        return (valid_color_run or valid_shape_run) and len(line) < 6
+        n = len(line) + 1
 
-    def calculate_score(self, move, tile):
+        valid_color_run = len(colors) == 1 and len(shapes) == n
+        valid_shape_run = len(shapes) == 1 and len(colors) == n
+
+        return (valid_color_run or valid_shape_run) and len(line) < MAX_LINE_LENGTH
+
+    def calculate_score(self, move: Coord, tile: Tile) -> int:
         """
-        Calculates the total points for placing a tile at (x, y),
+        Calculates the total points for placing a tile at move,
         including bonuses for Qwirkles (lines of 6).
-        A tile can score in two directions: Horizontal and Vertical.
         """
-        total_score = 0
-        directions = [
-            ('horizontal', [(1, 0), (-1, 0)]), # Change in x
-            ('vertical', [(0, 1), (0, -1)])    # Change in y
-        ]
-
-        for axis, vecs in directions:
-            line_length = 1  # The tile itself
-            x, y = move
-            for dx, dy in vecs:
-                curr_x, curr_y = x + dx, y + dy
-                while (curr_x, curr_y) in self.board:
-                    line_length += 1
-                    curr_x += dx
-                    curr_y += dy
-            
-            # In Qwirkle, a line only scores if it's at least 2 tiles long
-            # (unless it's the very first move of the game)
-            if line_length > 1:
-                total_score += line_length
-                
-                # Add Qwirkle Bonus
-                if line_length == 6:
-                    total_score += 6
-                    
-        # Edge case: If the tile doesn't form a line (lonely tile), it's worth 1
+        x, y = move
+        total_score = sum(
+            self._score_axis(x, y, vectors)
+            for vectors in AXIS_VECTORS.values()
+        )
         return max(total_score, 1)
+
+    def _score_axis(self, x: int, y: int, vectors: list[Coord]) -> int:
+        """Score a single axis (horizontal or vertical) for a tile placement."""
+        line_length = 1  # The tile itself
+        for dx, dy in vectors:
+            cx, cy = x + dx, y + dy
+            while (cx, cy) in self.board:
+                line_length += 1
+                cx += dx
+                cy += dy
+
+        if line_length <= 1:
+            return 0
+
+        bonus = QWIRKLE_BONUS if line_length == MAX_LINE_LENGTH else 0
+        return line_length + bonus
 
     def get_tile(self, x: int, y: int) -> Optional[Tile]:
         return self.board.get((x, y))
 
     def has_tile(self, x: int, y: int) -> bool:
         return (x, y) in self.board
-    
-    def load_board_state(self, tiles: dict[tuple[int, int], Tile]) -> None:
+
+    def load_board_state(self, tiles: dict[Coord, Tile]) -> None:
         """Load board state for an in-progress game."""
         self.board = tiles.copy()
-    
+
     def get_neighbors(self, x: int, y: int) -> list[Tile]:
         """Get all adjacent tiles (up, down, left, right)."""
-        neighbors = []
-        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            tile = self.get_tile(x + dx, y + dy)
-            if tile:
-                neighbors.append(tile)
-        return neighbors
-    
+        return [
+            tile
+            for dx, dy in DIRECTIONS
+            if (tile := self.get_tile(x + dx, y + dy)) is not None
+        ]
+
     def get_line(self, x: int, y: int, axis: str) -> list[Tile]:
         """Get all tiles in a line (horizontal or vertical) adjacent to (x, y)."""
-        line = []
-        if axis == 'horizontal':
-            directions = [(1, 0), (-1, 0)]
-        else:  # vertical
-            directions = [(0, 1), (0, -1)]
-        
-        for dx, dy in directions:
-            curr_x, curr_y = x + dx, y + dy
-            while (curr_x, curr_y) in self.board:
-                line.append(self.board[(curr_x, curr_y)])
-                curr_x += dx
-                curr_y += dy
-        
+        line: list[Tile] = []
+        for dx, dy in AXIS_VECTORS[axis]:
+            cx, cy = x + dx, y + dy
+            while (cx, cy) in self.board:
+                line.append(self.board[(cx, cy)])
+                cx += dx
+                cy += dy
         return line
 
-def try_move(engine, move, tile) -> Optional[int]:
+
+def try_move(engine: QwirkleEngine, move: Coord, tile: Tile) -> Optional[int]:
     if engine.is_legal_move(move, tile):
         return engine.calculate_score(move, tile)
     return None
 
 
 def get_line_on_board(
-    board: dict[tuple[int, int], Tile],
+    board: dict[Coord, Tile],
     x: int,
     y: int,
     axis: str,
 ) -> list[Tile]:
     line: list[Tile] = []
-    if axis == "horizontal":
-        directions = [(1, 0), (-1, 0)]
-    else:  # vertical
-        directions = [(0, 1), (0, -1)]
-
-    for dx, dy in directions:
-        curr_x, curr_y = x + dx, y + dy
-        while (curr_x, curr_y) in board:
-            line.append(board[(curr_x, curr_y)])
-            curr_x += dx
-            curr_y += dy
-
+    for dx, dy in AXIS_VECTORS[axis]:
+        cx, cy = x + dx, y + dy
+        while (cx, cy) in board:
+            line.append(board[(cx, cy)])
+            cx += dx
+            cy += dy
     return line
 
 
-def get_adjacent_empty_cells(engine: QwirkleEngine) -> set[tuple[int, int]]:
-    candidates: set[tuple[int, int]] = set()
-    for x, y in engine.board:
-        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            move = (x + dx, y + dy)
-            if move not in engine.board:
-                candidates.add(move)
-    return candidates
+def get_adjacent_empty_cells(engine: QwirkleEngine) -> set[Coord]:
+    return {
+        (x + dx, y + dy)
+        for x, y in engine.board
+        for dx, dy in DIRECTIONS
+        if (x + dx, y + dy) not in engine.board
+    }
 
 
 def get_empty_line_through(
     engine: QwirkleEngine,
-    start: tuple[int, int],
+    start: Coord,
     axis: str,
-) -> list[tuple[int, int]]:
+) -> list[Coord]:
     x, y = start
-    if axis == "horizontal":
-        directions = [(1, 0), (-1, 0)]
-        key_index = 0
-    else:
-        directions = [(0, 1), (0, -1)]
-        key_index = 1
+    key_index = 0 if axis == "horizontal" else 1
 
     positions = {start}
-    for dx, dy in directions:
-        curr_x, curr_y = x + dx, y + dy
-        # Scan at most 5 spaces in each direction, since max line length is 6
-        steps = 0
-        while steps < 6 and (curr_x, curr_y) not in engine.board:
-            positions.add((curr_x, curr_y))
-            curr_x += dx
-            curr_y += dy
-            steps += 1
+    for dx, dy in AXIS_VECTORS[axis]:
+        cx, cy = x + dx, y + dy
+        for _ in range(MAX_LINE_LENGTH):
+            if (cx, cy) in engine.board:
+                break
+            positions.add((cx, cy))
+            cx += dx
+            cy += dy
 
     return sorted(positions, key=lambda pos: pos[key_index])
 
@@ -260,21 +181,21 @@ def get_empty_line_through(
 def generate_connected_segments(
     engine: QwirkleEngine,
     min_len: int = 1,
-    max_len: int = 6,
-) -> list[tuple[tuple[int, int], ...]]:
+    max_len: int = MAX_LINE_LENGTH,
+) -> list[tuple[Coord, ...]]:
     anchors = get_adjacent_empty_cells(engine)
-    segments: set[tuple[tuple[int, int], ...]] = set()
+    segments: set[tuple[Coord, ...]] = set()
 
     for anchor in anchors:
-        for axis in ["horizontal", "vertical"]:
+        for axis in AXIS_VECTORS:
             line = get_empty_line_through(engine, anchor, axis)
             if len(line) < min_len:
                 continue
             for i in range(len(line)):
                 for j in range(i + min_len - 1, min(len(line), i + max_len)):
-                    segment = line[i : j + 1]
+                    segment = tuple(line[i : j + 1])
                     if anchor in segment:
-                        segments.add(tuple(segment))
+                        segments.add(segment)
 
     return list(segments)
 
@@ -285,9 +206,12 @@ def validate_full_line(tiles: list[Tile]) -> bool:
 
     colors = {t.color for t in tiles}
     shapes = {t.shape for t in tiles}
-    valid_color_run = len(colors) == 1 and len(shapes) == len(tiles)
-    valid_shape_run = len(shapes) == 1 and len(colors) == len(tiles)
-    return (valid_color_run or valid_shape_run) and len(tiles) <= 6
+    n = len(tiles)
+
+    valid_color_run = len(colors) == 1 and len(shapes) == n
+    valid_shape_run = len(shapes) == 1 and len(colors) == n
+
+    return (valid_color_run or valid_shape_run) and n <= MAX_LINE_LENGTH
 
 
 def iter_tile_sequences(tiles: Counter[Tile], length: int) -> Iterable[tuple[Tile, ...]]:
@@ -295,116 +219,109 @@ def iter_tile_sequences(tiles: Counter[Tile], length: int) -> Iterable[tuple[Til
         yield ()
         return
 
-    for tile in list(tiles.keys()):
-        if tiles[tile] == 0:
+    for tile in list(tiles):
+        if tiles[tile] <= 0:
             continue
         tiles[tile] -= 1
         for suffix in iter_tile_sequences(tiles, length - 1):
-            yield (tile,) + suffix
+            yield (tile, *suffix)
         tiles[tile] += 1
+
+
+def _has_board_connection(engine: QwirkleEngine, moves: list[Coord]) -> bool:
+    """Check if any placement is adjacent to an existing board tile."""
+    return any(
+        (x + dx, y + dy) in engine.board
+        for x, y in moves
+        for dx, dy in DIRECTIONS
+    )
+
+
+def _is_contiguous(temp_board: dict[Coord, Tile], moves: list[Coord], axis: str) -> bool:
+    """Check that the placed tiles form a contiguous line with no gaps."""
+    if axis == "horizontal":
+        fixed = moves[0][1]
+        min_v, max_v = min(m[0] for m in moves), max(m[0] for m in moves)
+        return all((v, fixed) in temp_board for v in range(min_v, max_v + 1))
+    else:
+        fixed = moves[0][0]
+        min_v, max_v = min(m[1] for m in moves), max(m[1] for m in moves)
+        return all((fixed, v) in temp_board for v in range(min_v, max_v + 1))
 
 
 def is_legal_multi_move(
     engine: QwirkleEngine,
-    placements: list[tuple[tuple[int, int], Tile]],
+    placements: list[Placement],
 ) -> bool:
     if not placements:
         return False
 
     moves = [move for move, _ in placements]
-    if len(set(moves)) != len(moves):
+
+    # Check for duplicate or occupied positions
+    if len(set(moves)) != len(moves) or any(m in engine.board for m in moves):
         return False
 
-    for move in moves:
-        if move in engine.board:
+    # Determine axis — all tiles must share a row or column
+    xs = {m[0] for m in moves}
+    ys = {m[1] for m in moves}
+    match len(xs) == 1, len(ys) == 1:
+        case True, _:
+            axis = "vertical"
+        case _, True:
+            axis = "horizontal"
+        case _:
             return False
 
-    xs = {move[0] for move in moves}
-    ys = {move[1] for move in moves}
-    if len(xs) == 1:
-        axis = "vertical"
-    elif len(ys) == 1:
-        axis = "horizontal"
-    else:
+    temp_board = engine.board | dict(placements)
+
+    # Must connect to existing board (unless first move)
+    if engine.board and not _has_board_connection(engine, moves):
         return False
 
-    temp_board = engine.board.copy()
-    for move, tile in placements:
-        temp_board[move] = tile
-
-    if engine.board:
-        has_connection = False
-        for x, y in moves:
-            for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                if (x + dx, y + dy) in engine.board:
-                    has_connection = True
-                    break
-            if has_connection:
-                break
-        if not has_connection:
-            return False
-
-    if axis == "horizontal":
-        fixed_y = moves[0][1]
-        min_x = min(move[0] for move in moves)
-        max_x = max(move[0] for move in moves)
-        for x in range(min_x, max_x + 1):
-            if (x, fixed_y) not in temp_board:
-                return False
-    else:
-        fixed_x = moves[0][0]
-        min_y = min(move[1] for move in moves)
-        max_y = max(move[1] for move in moves)
-        for y in range(min_y, max_y + 1):
-            if (fixed_x, y) not in temp_board:
-                return False
-
-    sample_x, sample_y = moves[0]
-    main_line = get_line_on_board(temp_board, sample_x, sample_y, axis)
-    main_line_tiles = main_line + [temp_board[(sample_x, sample_y)]]
-    if not validate_full_line(main_line_tiles):
+    # Check contiguity
+    if not _is_contiguous(temp_board, moves, axis):
         return False
 
-    perpendicular = "vertical" if axis == "horizontal" else "horizontal"
-    for x, y in moves:
-        line = get_line_on_board(temp_board, x, y, perpendicular)
-        line_tiles = line + [temp_board[(x, y)]]
-        if not validate_full_line(line_tiles):
-            return False
+    # Validate main line
+    sx, sy = moves[0]
+    main_line = [*get_line_on_board(temp_board, sx, sy, axis), temp_board[(sx, sy)]]
+    if not validate_full_line(main_line):
+        return False
 
-    return True
+    # Validate all perpendicular lines
+    perp = PERPENDICULAR[axis]
+    return all(
+        validate_full_line([*get_line_on_board(temp_board, x, y, perp), temp_board[(x, y)]])
+        for x, y in moves
+    )
 
 
 def calculate_score_multi(
     engine: QwirkleEngine,
-    placements: list[tuple[tuple[int, int], Tile]],
+    placements: list[Placement],
 ) -> Optional[int]:
     if not is_legal_multi_move(engine, placements):
         return None
 
-    temp_board = engine.board.copy()
-    for move, tile in placements:
-        temp_board[move] = tile
-
+    temp_board = engine.board | dict(placements)
     moves = [move for move, _ in placements]
-    xs = {move[0] for move in moves}
+
+    xs = {m[0] for m in moves}
     axis = "vertical" if len(xs) == 1 else "horizontal"
-    perpendicular = "vertical" if axis == "horizontal" else "horizontal"
+    perp = PERPENDICULAR[axis]
 
-    sample_x, sample_y = moves[0]
-    main_length = 1 + len(get_line_on_board(temp_board, sample_x, sample_y, axis))
-    total_score = 0
-    if main_length > 1:
-        total_score += main_length
-        if main_length == 6:
-            total_score += 6
+    def _line_score(x: int, y: int, ax: str) -> int:
+        length = 1 + len(get_line_on_board(temp_board, x, y, ax))
+        if length <= 1:
+            return 0
+        bonus = QWIRKLE_BONUS if length == MAX_LINE_LENGTH else 0
+        return length + bonus
 
-    for x, y in moves:
-        line_length = 1 + len(get_line_on_board(temp_board, x, y, perpendicular))
-        if line_length > 1:
-            total_score += line_length
-            if line_length == 6:
-                total_score += 6
+    sx, sy = moves[0]
+    total_score = _line_score(sx, sy, axis) + sum(
+        _line_score(x, y, perp) for x, y in moves
+    )
 
     return max(total_score, 1)
 
@@ -412,19 +329,19 @@ def calculate_score_multi(
 def generate_all_multi_moves(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
-) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
+) -> list[ScoredMove]:
     segments = generate_connected_segments(engine)
-    results: list[tuple[int, list[tuple[tuple[int, int], Tile]]]] = []
+    results: list[ScoredMove] = []
 
     for segment in segments:
         for sequence in iter_tile_sequences(tiles, len(segment)):
             placements = list(zip(segment, sequence))
-            score = calculate_score_multi(engine, placements)
-            if score is not None:
+            if (score := calculate_score_multi(engine, placements)) is not None:
                 results.append((score, placements))
 
     results.sort(key=lambda item: item[0], reverse=True)
     return results
+
 
 # Example usage
 if __name__ == "__main__":
@@ -432,7 +349,7 @@ if __name__ == "__main__":
 
     # Define some tiles already on the board
     # board for vs. tinyb (not robot)
-    game_state = {
+    game_state: dict[Coord, Tile] = {
         # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, clover, crossX.
         (0, 0): Tile(color='red', shape='clover'),
@@ -442,40 +359,41 @@ if __name__ == "__main__":
         (-1, 2): Tile(color='blue', shape='diamond'),
         (-1, 3): Tile(color='green', shape='diamond'),
         (-1, 4): Tile(color='yellow', shape='diamond'),
-        (-2, 3): Tile(color='green', shape='square'), (-2, 4): Tile(color='yellow', shape='square'),
+        (-2, 3): Tile(color='green', shape='square'),
+        (-2, 4): Tile(color='yellow', shape='square'),
         (0, 4): Tile(color='yellow', shape='circle'),
         (0, 3): Tile(color='green', shape='circle'),
         (-3, 3): Tile(color='green', shape='star'),
-        (-4, 3): Tile(color='green', shape='crossX'), (-4, 4): Tile(color='orange', shape='crossX'),
+        (-4, 3): Tile(color='green', shape='crossX'),
+        (-4, 4): Tile(color='orange', shape='crossX'),
         (-4, 2): Tile(color='red', shape='crossX'),
-        (0, 5): Tile(color='blue', shape='circle'), (1, 5): Tile(color='green', shape='circle'),
-        (1, 6): Tile(color='green', shape='square'), (1, 7): Tile(color='green', shape='star'),
-        (2, 1): Tile(color='red', shape='clover')
+        (0, 5): Tile(color='blue', shape='circle'),
+        (1, 5): Tile(color='green', shape='circle'),
+        (1, 6): Tile(color='green', shape='square'),
+        (1, 7): Tile(color='green', shape='star'),
+        (2, 1): Tile(color='red', shape='clover'),
     }
-    
-    # Load the in-progress game
+
     engine.load_board_state(game_state)
-    my_tiles = Counter(
-        [ # Possible colors: red, orange, yellow, green, blue, purple.
+    my_tiles = Counter([
+        # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="purple", shape="diamond"),
-            Tile(color="red", shape="square"),
-            Tile(color="yellow", shape="clover"),
-            Tile(color="green", shape="star"),
-            Tile(color="yellow", shape="star"),
-            Tile(color="blue", shape="circle")
-        ]
-    )
+        Tile(color="purple", shape="diamond"),
+        Tile(color="red", shape="square"),
+        Tile(color="yellow", shape="clover"),
+        Tile(color="green", shape="star"),
+        Tile(color="yellow", shape="star"),
+        Tile(color="blue", shape="circle"),
+    ])
 
     all_moves = generate_all_multi_moves(engine, my_tiles)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
-    
+
+    MULTI_TILE_THRESHOLD = 50
     top_n = 5
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
-        placement_str = ", ".join(
-            f"{move}: {tile}" for move, tile in placements
-        )
-        # If len( ..............vvv... sample string of a long-ish move) shows >1 tile in the move, add trailing comma for easier copy-paste
-        if len(placement_str) > len("(-100, -100): Tile(color='yellow', shape='diamond')"):
-            placement_str = placement_str + ","
+        placement_str = ", ".join(f"{move}: {tile}" for move, tile in placements)
+        # Add trailing comma for multi-tile moves for easier copy-paste
+        if len(placement_str) > MULTI_TILE_THRESHOLD:
+            placement_str += ","
         print(f"Rank {rank}: {score} points -> {placement_str}")
