@@ -14,10 +14,13 @@ from typing import Iterable, Optional, TypedDict
 #  Fixed inability to commit & push by rm'ing subdirs (no subdirs allowed w/gists!)
 # Day 2. (2026-02-09) Changed "(x,y)" param to "move tuple.  Hardcoded tiles for a real game with Expert (but no optimization implemented yet!). First .plan ideas added.
 # Day 3. (2026-02-15) Fixed: Score was wrong: 3 instead of 6 given.
-#   - TODO: Add ~loop to try all possible positions w/1 tile.
-#   - TODO: Then outer loop to test all tiles in hand.
-#   - TODO: Test out in an actual game (w/NO strategy besides Max score) 
-# Day 4. Future - 
+#   - DONE: Add ~loop to try all possible positions w/1 tile.
+#   - DONE: Then outer loop to test all tiles in hand.
+#   - DONE (in Day 4): Test out in an actual game (w/NO strategy besides Max score) 
+# Day 4. (2026-02-17) Did above; namely: Tested out in actual game vs. "Easy Robot" (got up to 76 pieces left in bag before called it a night).
+# Day 5. Future - 
+# TODO's - 
+# - Validate game_state.
 # - Moves w/>1 tile at a time (to find best move from hand)
 
 # .plan: 
@@ -46,7 +49,7 @@ from typing import Iterable, Optional, TypedDict
 Qwirkle is a tile-based game where players score points by creating lines of
 tiles that share a common attribute (color or shape) but differ in the other.
 Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
-and a shape (e.g., circle, square, diamond, star, clover, cross-X).
+and a shape (e.g., circle, square, diamond, star, clover, crossX).
 """
 
 """
@@ -430,30 +433,37 @@ if __name__ == "__main__":
     # Define some tiles already on the board
     # board for vs. tinyb (not robot)
     game_state = {
-        # Worked in 23c8e6f:  (-1, 0): Tile(color='red', shape='cross-X'),
-        (0, 0): Tile(color='blue', shape='clover'),
-        (1, 0): Tile(color='green', shape='clover'),
-        (2, 0): Tile(color='yellow', shape='clover'),
-        (2, 1): Tile(color='yellow', shape='star'),
-        (3, 1): Tile(color='orange', shape='star'),
-        (4, 1): Tile(color='red', shape='star'),
-        (4, 2): Tile(color='red', shape='cross-X'),
-        (5, 2): Tile(color='purple', shape='cross-X'),
-        (4, 3): Tile(color='red', shape='circle'),
-        (5, 3): Tile(color='purple', shape='circle')
+        # Possible colors: red, orange, yellow, green, blue, purple.
+        # Possible shapes: circle, square, diamond, star, clover, crossX.
+        (0, 0): Tile(color='red', shape='clover'),
+        (0, 1): Tile(color='red', shape='crossX'),
+        (1, 1): Tile(color='red', shape='circle'),
+        (-1, 1): Tile(color='red', shape='diamond'),
+        (-1, 2): Tile(color='blue', shape='diamond'),
+        (-1, 3): Tile(color='green', shape='diamond'),
+        (-1, 4): Tile(color='yellow', shape='diamond'),
+        (-2, 3): Tile(color='green', shape='square'), (-2, 4): Tile(color='yellow', shape='square'),
+        (0, 4): Tile(color='yellow', shape='circle'),
+        (0, 3): Tile(color='green', shape='circle'),
+        (-3, 3): Tile(color='green', shape='star'),
+        (-4, 3): Tile(color='green', shape='crossX'), (-4, 4): Tile(color='orange', shape='crossX'),
+        (-4, 2): Tile(color='red', shape='crossX'),
+        (0, 5): Tile(color='blue', shape='circle'), (1, 5): Tile(color='green', shape='circle'),
+        (1, 6): Tile(color='green', shape='square'), (1, 7): Tile(color='green', shape='star'),
+        (2, 1): Tile(color='red', shape='clover')
     }
-
+    
     # Load the in-progress game
     engine.load_board_state(game_state)
-
     my_tiles = Counter(
-        [
-            Tile(color="purple", shape="square"),
-            Tile(color="blue", shape="circle"),
-            Tile(color="red", shape="diamond"),
+        [ # Possible colors: red, orange, yellow, green, blue, purple.
+        # Possible shapes: circle, square, diamond, star, crossX, clover.
+            Tile(color="purple", shape="diamond"),
+            Tile(color="red", shape="square"),
             Tile(color="yellow", shape="clover"),
             Tile(color="green", shape="star"),
-            Tile(color="orange", shape="cross-X"),
+            Tile(color="yellow", shape="star"),
+            Tile(color="blue", shape="circle")
         ]
     )
 
@@ -462,6 +472,8 @@ if __name__ == "__main__":
     top_n = 5
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
-            f"{tile} @ {move}" for move, tile in placements
+            f"{move}: {tile}" for move, tile in placements
         )
+        if len(placement_str) > 50:             
+            placement_str = placement_str + ","
         print(f"Rank {rank}: {score} points -> {placement_str}")
