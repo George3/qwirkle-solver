@@ -20,7 +20,7 @@ from typing import Iterable, Optional, TypedDict
 # Day 4. (2026-02-17) Did above; namely: Tested out in actual game vs. "Easy Robot" (got up to 76 pieces left in bag before called it a night).
 # Day 5. Future - 
 # TODO's - 
-# - Validate game_state.
+# - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
 # - Moves w/>1 tile at a time (to find best move from hand)
 
 # .plan: 
