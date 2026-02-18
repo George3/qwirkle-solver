@@ -18,12 +18,11 @@
 
   <!-- 4. Clover / 4-pointed cross (orange) -->
   <g transform="translate(385,55)">
-    <circle cx="0"   cy="-26" r="14" fill="#ff8800"/>
-    <circle cx="26"  cy="0"   r="14" fill="#ff8800"/>
-    <circle cx="0"   cy="26"  r="14" fill="#ff8800"/>
-    <circle cx="-26" cy="0"   r="14" fill="#ff8800"/>
+    <circle cx="0"   cy="-26" r="18" fill="#ff8800"/>
+    <circle cx="26"  cy="0"   r="18" fill="#ff8800"/>
+    <circle cx="0"   cy="26"  r="18" fill="#ff8800"/>
+    <circle cx="-26" cy="0"   r="18" fill="#ff8800"/>
     <rect x="-9" y="-26" width="18" height="52" fill="#ff8800"/>
-    <rect x="-26" y="-9" width="52" height="18" fill="#ff8800"/>
   </g>
 
   <!-- 5. 4-pointed starburst (yellow)  -->
