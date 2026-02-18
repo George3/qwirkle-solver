@@ -27,14 +27,14 @@
   </g>
 
   <!-- 5. 4-pointed starburst (yellow)  -->
-  <g transform="translate(495,55) rotate(40)">
+  <g transform="translate(495,55) rotate(45)">
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000"/>
   </g>
 
-  <!-- 6. 6-pointed star (purple) -->
+  <!-- 6. 8-pointed star (purple) -->
   <g transform="translate(605,55)">
     <polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc" transform="rotate(30)"/>
-    <polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc" transform="rotate(-30)"/>
+    <!-- polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc" transform="rotate(-30)"/ -->
     <polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc"/>
   </g>
 
