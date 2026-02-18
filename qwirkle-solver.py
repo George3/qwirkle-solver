@@ -25,6 +25,7 @@ from typing import Iterable, Optional, TypedDict
 # - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
 #>- Continue with OpenCV idea on Claude iPad app.
 # - Is GPLv2 what you want to keep as license? (Check w/AI - esp. their TOS and do research on it).
+# - Housekeeping: Either delete gist on GH (since private) or make 1 last commit to point to this repo - Either way, del my local gist.
 
 # .plan: 
 #   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
