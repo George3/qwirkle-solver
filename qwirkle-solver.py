@@ -17,11 +17,14 @@ from typing import Iterable, Optional, TypedDict
 #   - DONE: Add ~loop to try all possible positions w/1 tile.
 #   - DONE: Then outer loop to test all tiles in hand.
 #   - DONE (in Day 4): Test out in an actual game (w/NO strategy besides Max score) 
+#   - DONE: (Around this time or earlier & w/AI's help surprisingly easy to add) Support moves w/>1 tile at a time (to find best move from hand)
 # Day 4. (2026-02-17) Did above; namely: Tested out in actual game vs. "Easy Robot" (got up to 76 pieces left in bag before called it a night).
+# Day 5. (2026-02-18) git work: Combined gist w/a "full" repo w/only SVG so far and created git-history.md in ~ai/gen...nts repo.
 # Day 5. Future - 
 # TODO's - 
 # - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
-# - Moves w/>1 tile at a time (to find best move from hand)
+#>- Continue with OpenCV idea on Claude iPad app.
+# - Is GPLv2 what you want to keep as license? (Check w/AI - esp. their TOS and do research on it).
 
 # .plan: 
 #   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
