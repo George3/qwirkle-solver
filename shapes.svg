@@ -26,8 +26,8 @@
     <rect x="-26" y="-9" width="52" height="18" fill="#ff8800"/>
   </g>
 
-  <!-- 5. 4-pointed starburst (yellow), rotated 35° clockwise -->
-  <g transform="translate(495,55) rotate(35)">
+  <!-- 5. 4-pointed starburst (yellow)  -->
+  <g transform="translate(495,55) rotate(40)">
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000"/>
   </g>
 
