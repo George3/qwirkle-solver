@@ -33,9 +33,8 @@
 
   <!-- 6. 8-pointed star (purple) -->
   <g transform="translate(605,55)">
-    <polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc" transform="rotate(30)"/>
-    <polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc" transform="rotate(-30)"/>
-    <!-- polygon points="0,-40 10,-10 40,0 10,10 0,40 -10,10 -40,0 -10,-10" fill="#8833cc"/ -->
+     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc"/>
+     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc" transform="rotate(45)" />
   </g>
 
   <!-- Labels -->
