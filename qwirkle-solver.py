@@ -20,7 +20,19 @@ from typing import Iterable, Optional, TypedDict
 #   - DONE: (Around this time or earlier & w/AI's help surprisingly easy to add) Support moves w/>1 tile at a time (to find best move from hand)
 # Day 4. (2026-02-17) Did above; namely: Tested out in actual game vs. "Easy Robot" (got up to 76 pieces left in bag before called it a night).
 # Day 5. (2026-02-18) git work: Combined gist w/a "full" repo w/only SVG so far and created git-history.md in ~ai/gen...nts repo.
-# Day 5. Future - 
+# Day 6. (2026-02-19) In branch "new-game-w-Mom" it seems to prove it won't suggest 5-tile moves:
+"""
+    $ date; python ./qwirkle-solver.py; date
+    Thu, Feb 19, 2026  9:31:37 PM
+    Total legal multi-tile moves: 27
+    Rank 1: 6 points -> (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
+    Rank 2: 6 points -> (4, 0): Tile(color='red', shape='diamond'), (4, 1): Tile(color='green', shape='diamond'),
+    Rank 3: 6 points -> (0, 0): Tile(color='red', shape='diamond'), (0, 1): Tile(color='green', shape='diamond'),
+    Rank 4: 6 points -> (0, 1): Tile(color='green', shape='diamond'), (0, 2): Tile(color='red', shape='diamond'),
+    Rank 5: 4 points -> (3, 2): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
+    Rank 6: 4 points -> (1, -3): Tile(color='red', shape='diamond'), (1, -2): Tile(color='green', shape='diamond'),
+"""
+# Day Future - 
 # TODO's - 
 # - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
 #>- Continue with OpenCV idea on Claude iPad app.
@@ -439,22 +451,18 @@ if __name__ == "__main__":
     game_state = {
         # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, clover, crossX.
-        (0, 0): Tile(color='red', shape='clover'),
-        (0, 1): Tile(color='red', shape='crossX'),
-        (1, 1): Tile(color='red', shape='circle'),
-        (-1, 1): Tile(color='red', shape='diamond'),
-        (-1, 2): Tile(color='blue', shape='diamond'),
-        (-1, 3): Tile(color='green', shape='diamond'),
-        (-1, 4): Tile(color='yellow', shape='diamond'),
-        (-2, 3): Tile(color='green', shape='square'), (-2, 4): Tile(color='yellow', shape='square'),
-        (0, 4): Tile(color='yellow', shape='circle'),
-        (0, 3): Tile(color='green', shape='circle'),
-        (-3, 3): Tile(color='green', shape='star'),
-        (-4, 3): Tile(color='green', shape='crossX'), (-4, 4): Tile(color='orange', shape='crossX'),
-        (-4, 2): Tile(color='red', shape='crossX'),
-        (0, 5): Tile(color='blue', shape='circle'), (1, 5): Tile(color='green', shape='circle'),
-        (1, 6): Tile(color='green', shape='square'), (1, 7): Tile(color='green', shape='star'),
-        (2, 1): Tile(color='red', shape='clover')
+        (1, 1): Tile(color='green', shape='star'),
+        (2, 1): Tile(color='green', shape='clover'),
+        (3, 1): Tile(color='green', shape='square'),
+        (2, -1): Tile(color='yellow', shape='clover'), (2, 0): Tile(color='purple', shape='clover'),
+        (3, 2): Tile(color='red', shape='clover'), 
+        (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
+        (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
+    # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
+    # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
+    ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
+    ,(5, 3): Tile(color='blue', shape='diamond'), (5, -2): Tile(color='orange', shape='diamond')
+    
     }
     
     # Load the in-progress game
@@ -462,19 +470,19 @@ if __name__ == "__main__":
     my_tiles = Counter(
         [ # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="purple", shape="diamond"),
-            Tile(color="red", shape="square"),
-            Tile(color="yellow", shape="clover"),
-            Tile(color="green", shape="star"),
-            Tile(color="yellow", shape="star"),
-            Tile(color="blue", shape="circle")
+            Tile(color="yellow", shape="circle"),
+            Tile(color="purple", shape="clover"),
+            Tile(color="red", shape="circle"),
+            Tile(color="orange", shape="square"),
+            Tile(color="purple", shape="circle"),
+            Tile(color="blue", shape="clover")
         ]
     )
 
     all_moves = generate_all_multi_moves(engine, my_tiles)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
     
-    top_n = 5
+    top_n = 9
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
