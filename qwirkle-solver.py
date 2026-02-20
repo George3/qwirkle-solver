@@ -455,14 +455,30 @@ if __name__ == "__main__":
         (2, 1): Tile(color='green', shape='clover'),
         (3, 1): Tile(color='green', shape='square'),
         (2, -1): Tile(color='yellow', shape='clover'), (2, 0): Tile(color='purple', shape='clover'),
-        (3, 2): Tile(color='red', shape='clover'), 
+        (2, -2): Tile(color='red', shape='clover'), 
         (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
         (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
     # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
     # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
     ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
-    ,(5, 3): Tile(color='blue', shape='diamond'), (5, -2): Tile(color='orange', shape='diamond')
-    
+    ,(4, 3): Tile(color='blue', shape='diamond'), (4, -2): Tile(color='orange', shape='diamond')
+    # Below is bad move on my part: Since had red clover above in wrong place!
+    ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
+    # Mom:
+    ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
+    """ My next top scoring moves:
+==> I am here:
+        jackr@DESKTOP-HITHITM MINGW64 /c/git_multiple_repos/GitHub-privateRepos/qwirkle-solver (new-game-w-Mom)
+        $ date; python ./qwirkle-solver.py; date
+        Thu, Feb 19, 2026 10:26:28 PM
+        Total legal multi-tile moves: 79
+        Rank 1: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle'),
+        Rank 2: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='yellow', shape='diamond'),
+        Rank 3: 6 points -> (5, -1): Tile(color='red', shape='diamond'), (5, 0): Tile(color='yellow', shape='diamond'),
+        Rank 4: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='yellow', shape='circle'),
+        Rank 5: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='red', shape='diamond'),
+        Rank 6: 5 points -> (6, 2): Tile(color='yellow', shape='circle')...        
+    """
     }
     
     # Load the in-progress game
@@ -471,11 +487,11 @@ if __name__ == "__main__":
         [ # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="yellow", shape="circle"),
-            Tile(color="purple", shape="clover"),
+            Tile(color="red", shape="diamond"),
             Tile(color="red", shape="circle"),
             Tile(color="orange", shape="square"),
             Tile(color="purple", shape="circle"),
-            Tile(color="blue", shape="clover")
+            Tile(color="yellow", shape="diamond")
         ]
     )
 
