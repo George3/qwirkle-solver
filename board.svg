@@ -176,6 +176,14 @@
   <rect x="705" y="55" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="760" cy="110" r="36" fill="#1a6edb"/>
 
+  <!-- (5,0) purple circle  |  px=595 py=385  cx=650 cy=440 -->
+  <rect x="595" y="385" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="650" cy="440" r="36" fill="#8833cc"/>
+
+  <!-- (5,-1) yellow circle  |  px=595 py=495  cx=650 cy=550 -->
+  <rect x="595" y="495" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="650" cy="550" r="36" fill="#f5d000"/>
+
   <!-- ============================================ -->
   <!-- Legend                                       -->
   <!-- ============================================ -->
@@ -190,25 +198,38 @@
   <!-- 1) yellow circle -->
   <rect x="90" y="790" width="90" height="90" rx="8" fill="#222"/>
   <circle cx="135" cy="835" r="30" fill="#f5d000"/>
+  <text x="135" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">yellow circle</text>
 
-  <!-- 2) red diamond -->
+  <!-- 2) green circle -->
   <rect x="200" y="790" width="90" height="90" rx="8" fill="#222"/>
-  <polygon points="245,805 275,835 245,865 215,835" fill="#e02020"/>
+  <circle cx="245" cy="835" r="30" fill="#22aa33"/>
+  <text x="245" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green circle</text>
 
   <!-- 3) red circle -->
   <rect x="310" y="790" width="90" height="90" rx="8" fill="#222"/>
   <circle cx="355" cy="835" r="30" fill="#e02020"/>
+  <text x="355" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red circle</text>
 
   <!-- 4) orange square -->
   <rect x="420" y="790" width="90" height="90" rx="8" fill="#222"/>
   <rect x="443" y="813" width="44" height="44" rx="4" fill="#ff8800"/>
+  <text x="465" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange square</text>
 
-  <!-- 5) purple circle -->
+  <!-- 5) purple clover -->
   <rect x="530" y="790" width="90" height="90" rx="8" fill="#222"/>
-  <circle cx="575" cy="835" r="30" fill="#8833cc"/>
+  <g transform="translate(575,835)">
+    <circle cx="0" cy="-26" r="18" fill="#8833cc"/>
+    <circle cx="26" cy="0" r="18" fill="#8833cc"/>
+    <circle cx="0" cy="26" r="18" fill="#8833cc"/>
+    <circle cx="-26" cy="0" r="18" fill="#8833cc"/>
+    <rect x="-9" y="-26" width="18" height="52" fill="#8833cc"/>
+    <rect x="-26" y="-9" width="52" height="18" fill="#8833cc"/>
+  </g>
+  <text x="575" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">purple clover</text>
 
   <!-- 6) yellow diamond -->
   <rect x="640" y="790" width="90" height="90" rx="8" fill="#222"/>
   <polygon points="685,805 715,835 685,865 655,835" fill="#f5d000"/>
+  <text x="685" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">yellow diamond</text>
 
 </svg>

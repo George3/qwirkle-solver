@@ -2,6 +2,14 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable, Optional, TypedDict
 
+
+"""
+Qwirkle is a tile-based game where players score points by creating lines of
+tiles that share a common attribute (color or shape) but differ in the other.
+Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
+and a shape (e.g., circle, square, diamond, star, clover, crossX).
+"""
+
 ## History: 
 # Day 0. (Fri. Jan.6, 2026) Originaly started w/Gemini - PROMPT: "Program something to help me find the best moves in qwirkle"
 #   (Gemini 3 Flash, iPad, running in the Free tier)
@@ -32,10 +40,19 @@ from typing import Iterable, Optional, TypedDict
     Rank 5: 4 points -> (3, 2): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
     Rank 6: 4 points -> (1, -3): Tile(color='red', shape='diamond'), (1, -2): Tile(color='green', shape='diamond'),
 """
-# Day 7. (2026-02-21) Add validation for game board. Break away for 1st learnings about OpenCV.
-#   (12:25am->)
-# Day Future - 
-# TODO's - 
+# Day 7. (2026-02-21) Unplanned creation of board.svg and sync_board.py - which make it easier to keep up
+#(TODO)=total time-->   (12:25am-> ~fell asleep ~1:15am, woke: ~2:45am - END at 4:25am)
+#   with a game on iPad.  Plus, I'm starting to see how I can build on this, with "heavy-lifting" 
+#   from AI, to create a full GUI app that either easily follows games on the iPad or, like my boss (dmc)
+#   suggested, reimplements the current Qwirkle app.
+# ==>> NEXT-IS-HERE::  FIXME?: Line ~494 not sync'ing to svg. It should "see": Tile(color="red", shape="diamond"),
+# Day #TOMORROW#. (2026-02-22) Fixed above FIXME - (AI's prediction: "was a typo in game_state.")
+# The Future ...is near.
+
+# TODO's - See any FIXME or TODO above.
+# - Use OpenCV to "see" the game board from a screenshot or iPhone's camera.
+# - Add validation for game board. 
+# - Break away for 1st learnings about OpenCV.
 # - Validate game_state (To catch my typos and also useful when fully automated might catch a lot of OpenCV errors (acts as an assert when a tile not a legal placement).
 #>- Continue with OpenCV idea on Claude iPad app.
 # - Is GPLv2 what you want to keep as license? (Check w/AI - esp. their TOS and do research on it).
@@ -43,7 +60,7 @@ from typing import Iterable, Optional, TypedDict
 
 # .plan: 
 #   Baby step?: Test if move with a set of tiles works w/code (or adjust accordingly) and calculate score for it.
-#   Add "hand" to the engine.
+#   By end-of-weekend (Sun.2026-02-22): Go public w/CONTRIBUTING.md, IFF some form of GUI tile placement is working.
 #   Start "simple" GUI (but 1st try "ambitious" 1st small jump to use screenshot) -> game_state 
 #   How to suggest next move?
 #   Understand current code's mv selection THEN implement simple "intelligence"[2] to improve it.
@@ -62,13 +79,6 @@ from typing import Iterable, Optional, TypedDict
     #                 best_score = score
     #                 best_move = (spot, tile)
 
-
-"""
-Qwirkle is a tile-based game where players score points by creating lines of
-tiles that share a common attribute (color or shape) but differ in the other.
-Each tile has a color (e.g., red, orange, yellow, green, blue, purple)
-and a shape (e.g., circle, square, diamond, star, clover, crossX).
-"""
 
 """
 ## Rand. Notes
@@ -468,6 +478,8 @@ if __name__ == "__main__":
     ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
     # Mom:
     ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
+    # me (mv. #~10)
+    ,(5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle')
     }
     # ^... My next top scoring moves:
     # ==> I am here:
@@ -488,11 +500,11 @@ if __name__ == "__main__":
     my_tiles = Counter(
         [ # Possible colors: red, orange, yellow, green, blue, purple.
         # Possible shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="yellow", shape="circle"),
             Tile(color="red", shape="diamond"),
+            Tile(color="green", shape="circle"),
             Tile(color="red", shape="circle"),
             Tile(color="orange", shape="square"),
-            Tile(color="purple", shape="circle"),
+            Tile(color="purple", shape="clover"),
             Tile(color="yellow", shape="diamond")
         ]
     )
