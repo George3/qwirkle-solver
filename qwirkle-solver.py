@@ -32,9 +32,11 @@ from typing import Iterable, Optional, TypedDict
     Rank 5: 4 points -> (3, 2): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
     Rank 6: 4 points -> (1, -3): Tile(color='red', shape='diamond'), (1, -2): Tile(color='green', shape='diamond'),
 """
+# Day 7. (2026-02-21) Add validation for game board. Break away for 1st learnings about OpenCV.
+#   (12:25am->)
 # Day Future - 
 # TODO's - 
-# - Validate game_state (To catch my typos and when fully automated, act as an assert to catch flaws).
+# - Validate game_state (To catch my typos and also useful when fully automated might catch a lot of OpenCV errors (acts as an assert when a tile not a legal placement).
 #>- Continue with OpenCV idea on Claude iPad app.
 # - Is GPLv2 what you want to keep as license? (Check w/AI - esp. their TOS and do research on it).
 # - Housekeeping: Either delete gist on GH (since private) or make 1 last commit to point to this repo - Either way, del my local gist.
@@ -466,21 +468,21 @@ if __name__ == "__main__":
     ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
     # Mom:
     ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
-    """ My next top scoring moves:
-==> I am here:
-        jackr@DESKTOP-HITHITM MINGW64 /c/git_multiple_repos/GitHub-privateRepos/qwirkle-solver (new-game-w-Mom)
-        $ date; python ./qwirkle-solver.py; date
-        Thu, Feb 19, 2026 10:26:28 PM
-        Total legal multi-tile moves: 79
-        Rank 1: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle'),
-        Rank 2: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='yellow', shape='diamond'),
-        Rank 3: 6 points -> (5, -1): Tile(color='red', shape='diamond'), (5, 0): Tile(color='yellow', shape='diamond'),
-        Rank 4: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='yellow', shape='circle'),
-        Rank 5: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='red', shape='diamond'),
-        Rank 6: 5 points -> (6, 2): Tile(color='yellow', shape='circle')...        
-    """
     }
-    
+    # ^... My next top scoring moves:
+    # ==> I am here:
+    # jackr@DESKTOP-HITHITM MINGW64 /c/git_multiple_repos/GitHub-privateRepos/qwirkle-solver (new-game-w-Mom)
+    # $ date; python ./qwirkle-solver.py; date
+    # Thu, Feb 19, 2026 10:26:28 PM
+    # Total legal multi-tile moves: 79
+    # Rank 1: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle'),
+    # Rank 2: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='yellow', shape='diamond'),
+    # Rank 3: 6 points -> (5, -1): Tile(color='red', shape='diamond'), (5, 0): Tile(color='yellow', shape='diamond'),
+    # Rank 4: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='yellow', shape='circle'),
+    # Rank 5: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='red', shape='diamond'),
+    # Rank 6: 5 points -> (6, 2): Tile(color='yellow', shape='circle')...
+
+
     # Load the in-progress game
     engine.load_board_state(game_state)
     my_tiles = Counter(
