@@ -41,10 +41,14 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
     Rank 6: 4 points -> (1, -3): Tile(color='red', shape='diamond'), (1, -2): Tile(color='green', shape='diamond'),
 """
 # Day 7. (2026-02-21) Unplanned creation of board.svg and sync_board.py - which make it easier to keep up
+# Day 8. (2026-02-22) Unplanned: Prompted "rename_files.py" to hide old board.svg backups. 
+#   Made my move #~12.
+#   (start ~11:10pm to 11:23pm; RESUME...)
 #(TODO)=total time-->   (12:25am-> ~fell asleep ~1:15am, woke: ~2:45am - END at 4:25am)
 #   with a game on iPad.  Plus, I'm starting to see how I can build on this, with "heavy-lifting" 
 #   from AI, to create a full GUI app that either easily follows games on the iPad or, like my boss (dmc)
-#   suggested, reimplements the current Qwirkle app.
+#   suggested, reimplements the current Qwirkle app. (Simplest would be to have a GUI in SVG that 
+#   I setup be read and updates the board and my_tiles in the solver.)
 # ==>> NEXT-IS-HERE::  FIXME?: Line ~494 not sync'ing to svg. It should "see": Tile(color="red", shape="diamond"),
 # Day #TOMORROW#. (2026-02-22) Fixed above FIXME - (AI's prediction: "was a typo in game_state.")
 # The Future ...is near.
@@ -461,8 +465,8 @@ if __name__ == "__main__":
     # Define some tiles already on the board
     # board for vs. tinyb (not robot)
     game_state = {
-        # Possible colors: red, orange, yellow, green, blue, purple.
-        # Possible shapes: circle, square, diamond, star, clover, crossX.
+        # colors: red, orange, yellow, green, blue, purple.
+        # shapes: circle, square, diamond, star, clover, crossX.
         (1, 1): Tile(color='green', shape='star'),
         (2, 1): Tile(color='green', shape='clover'),
         (3, 1): Tile(color='green', shape='square'),
@@ -470,38 +474,33 @@ if __name__ == "__main__":
         (2, -2): Tile(color='red', shape='clover'), 
         (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
         (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
-    # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
-    # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
-    ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
-    ,(4, 3): Tile(color='blue', shape='diamond'), (4, -2): Tile(color='orange', shape='diamond')
-    # Below is bad move on my part: Since had red clover above in wrong place!
-    ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
-    # Mom:
-    ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
-    # me (mv. #~10)
-    ,(5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle')
+        # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
+        # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
+        ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
+        ,(4, 3): Tile(color='blue', shape='diamond'), (4, -2): Tile(color='orange', shape='diamond')
+        # Below is bad move on my part: Since had red clover above in wrong place!
+        ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
+        # Mom:
+        ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
+        # me (mv. #~10)
+        ,(5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle')
+        ,(0, 2): Tile(color='orange', shape='crossX')
+        # My move #~11:  1st Qwirkle found by this solver! = 15 points!
+        ,(5, 1): Tile(color='green', shape='circle')
+        ,(-1, 2): Tile(color='orange', shape='diamond')
+        # My mv #~12:
+        ,(5, -2): Tile(color='orange', shape='circle'), (6, -2): Tile(color='orange', shape='square')
+        # Score: me: 52; Mom: 31
     }
-    # ^... My next top scoring moves:
-    # ==> I am here:
-    # jackr@DESKTOP-HITHITM MINGW64 /c/git_multiple_repos/GitHub-privateRepos/qwirkle-solver (new-game-w-Mom)
-    # $ date; python ./qwirkle-solver.py; date
-    # Thu, Feb 19, 2026 10:26:28 PM
-    # Total legal multi-tile moves: 79
-    # Rank 1: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle'),
-    # Rank 2: 6 points -> (5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='yellow', shape='diamond'),
-    # Rank 3: 6 points -> (5, -1): Tile(color='red', shape='diamond'), (5, 0): Tile(color='yellow', shape='diamond'),
-    # Rank 4: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='yellow', shape='circle'),
-    # Rank 5: 6 points -> (5, -2): Tile(color='yellow', shape='diamond'), (5, -1): Tile(color='red', shape='diamond'),
-    # Rank 6: 5 points -> (6, 2): Tile(color='yellow', shape='circle')...
-
-
+    
     # Load the in-progress game
     engine.load_board_state(game_state)
     my_tiles = Counter(
-        [ # Possible colors: red, orange, yellow, green, blue, purple.
-        # Possible shapes: circle, square, diamond, star, crossX, clover.
+        [ 
+        # colors: red, orange, yellow, green, blue, purple.
+        # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="red", shape="diamond"),
-            Tile(color="green", shape="circle"),
+            Tile(color="orange", shape="circle"),
             Tile(color="red", shape="circle"),
             Tile(color="orange", shape="square"),
             Tile(color="purple", shape="clover"),
@@ -512,12 +511,9 @@ if __name__ == "__main__":
     all_moves = generate_all_multi_moves(engine, my_tiles)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
     
-    top_n = 9
+    top_n = 4
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
         )
-        # If len( ..............vvv... sample string of a long-ish move) shows >1 tile in the move, add trailing comma for easier copy-paste
-        if len(placement_str) > len("(-100, -100): Tile(color='yellow', shape='diamond')"):
-            placement_str = placement_str + ","
-        print(f"Rank {rank}: {score} points -> {placement_str}")
+        print(f"Rank {rank}: {score} points -> ,{placement_str}")

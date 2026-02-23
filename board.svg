@@ -48,9 +48,19 @@
   <!--                               py = 605 - (gy+2)*110 -->
   <!--                               cx = px+55,  cy = py+55 -->
 
-      <!-- ============================================ -->
+                          <!-- ============================================ -->
   <!-- TILES                                        -->
   <!-- ============================================ -->
+
+  <!-- (-1,2) orange diamond  |  px=-65 py=165  cx=-10 cy=220 -->
+  <rect x="-65" y="165" width="110" height="110" rx="8" fill="#222"/>
+  <polygon points="-10,179 31,220 -10,261 -51,220" fill="#ff8800"/>
+
+  <!-- (0,2) orange crossX  |  px=45 py=165  cx=100 cy=220 -->
+  <rect x="45" y="165" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(100,220) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800"/>
+  </g>
 
   <!-- (0,1) green crossX  |  px=45 py=275  cx=100 cy=330 -->
   <rect x="45" y="275" width="110" height="110" rx="8" fill="#222"/>
@@ -172,6 +182,10 @@
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb" transform="rotate(45)" />
   </g>
 
+  <!-- (5,1) green circle  |  px=595 py=275  cx=650 cy=330 -->
+  <rect x="595" y="275" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="650" cy="330" r="36" fill="#22aa33"/>
+
   <!-- (5,0) purple circle  |  px=595 py=385  cx=650 cy=440 -->
   <rect x="595" y="385" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="650" cy="440" r="36" fill="#8833cc"/>
@@ -180,15 +194,23 @@
   <rect x="595" y="495" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="650" cy="550" r="36" fill="#f5d000"/>
 
+  <!-- (5,-2) orange circle  |  px=595 py=605  cx=650 cy=660 -->
+  <rect x="595" y="605" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="650" cy="660" r="36" fill="#ff8800"/>
+
   <!-- (6,3) blue circle  |  px=705 py=55  cx=760 cy=110 -->
   <rect x="705" y="55" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="760" cy="110" r="36" fill="#1a6edb"/>
+
+  <!-- (6,-2) orange square  |  px=705 py=605  cx=760 cy=660 -->
+  <rect x="705" y="605" width="110" height="110" rx="8" fill="#222"/>
+  <rect x="727" y="627" width="66" height="66" rx="4" fill="#ff8800"/>
 
   <!-- ============================================ -->
   <!-- Legend                                       -->
   <!-- ============================================ -->
 
-      <!-- ============================================ -->
+                          <!-- ============================================ -->
   <!-- MY TILES (bottom center)                     -->
   <!-- ============================================ -->
   <text x="410" y="765" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
@@ -198,10 +220,10 @@
   <polygon points="135,805 165,835 135,865 105,835" fill="#e02020"/>
   <text x="135" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red diamond</text>
 
-  <!-- 2) green circle -->
+  <!-- 2) orange circle -->
   <rect x="200" y="790" width="90" height="90" rx="8" fill="#222"/>
-  <circle cx="245" cy="835" r="30" fill="#22aa33"/>
-  <text x="245" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green circle</text>
+  <circle cx="245" cy="835" r="30" fill="#ff8800"/>
+  <text x="245" y="900" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange circle</text>
 
   <!-- 3) red circle -->
   <rect x="310" y="790" width="90" height="90" rx="8" fill="#222"/>
