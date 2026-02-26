@@ -44,11 +44,15 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 # Day 8. (2026-02-22) Unplanned: Prompted "rename_files.py" to hide old board.svg backups. 
 #   Made my move #~12.
 #   (start ~11:10pm to 11:23pm; RESUME...)
-#(TODO)=total time-->   (12:25am-> ~fell asleep ~1:15am, woke: ~2:45am - END at 4:25am)
+#   ...total time-->   (12:25am-> ~fell asleep ~1:15am, woke: ~2:45am - END at 4:25am)
 #   with a game on iPad.  Plus, I'm starting to see how I can build on this, with "heavy-lifting" 
 #   from AI, to create a full GUI app that either easily follows games on the iPad or, like my boss (dmc)
 #   suggested, reimplements the current Qwirkle app. (Simplest would be to have a GUI in SVG that 
 #   I setup be read and updates the board and my_tiles in the solver.)
+# Day 9. (2026-02-25): Start w/ bde64ab3a08accb666e4f3d8c66b85141e35a7eb
+'TODO: run rename >> chg. sync's out put to have .svg at end after .bak.svg. >> either plan then/or do a small...
+    ...step toward interactive GUI.  cr' "standing" check list w/security chk/prompt and other best practices (Think of boss's 
+    "standing" ~project instructions if hit enter - detect mid-thought).
 # ==>> NEXT-IS-HERE::  FIXME?: Line ~494 not sync'ing to svg. It should "see": Tile(color="red", shape="diamond"),
 # Day #TOMORROW#. (2026-02-22) Fixed above FIXME - (AI's prediction: "was a typo in game_state.")
 # The Future ...is near.
