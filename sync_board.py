@@ -139,7 +139,7 @@ def sync_svg(game_state: dict, hand_list: list):
     )
 
     # Build My Tiles section
-    hand_xs = [90, 200, 310, 420, 530, 640]
+    # Remove spaces between tiles: each tile is 90px wide, so x = 90 + idx*90
     hand_parts = [
         "  <!-- ============================================ -->",
         "  <!-- MY TILES (bottom center)                     -->",
@@ -148,7 +148,7 @@ def sync_svg(game_state: dict, hand_list: list):
     ]
 
     for idx, t in enumerate(hand_list):
-        px = hand_xs[idx]
+        px = 90 + idx * 90  # No gap between tiles
         py = 790
         cx = px + 45
         cy = py + 45

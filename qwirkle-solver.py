@@ -50,9 +50,10 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 #   suggested, reimplements the current Qwirkle app. (Simplest would be to have a GUI in SVG that 
 #   I setup be read and updates the board and my_tiles in the solver.)
 # Day 9. (2026-02-25): Start w/ bde64ab3a08accb666e4f3d8c66b85141e35a7eb
-'TODO: run rename >> chg. sync's out put to have .svg at end after .bak.svg. >> either plan then/or do a small...
-    ...step toward interactive GUI.  cr' "standing" check list w/security chk/prompt and other best practices (Think of boss's 
-    "standing" ~project instructions if hit enter - detect mid-thought).
+# Day 10. (2026-02-27): Played move #~13.  Score: me: 63; Mom: 31. 
+# 'TODO || DONE? - on ~2/25: run rename >> chg. sync's out put to have .svg at end after .bak.svg. >> either plan then/or do a small...
+#    ...step toward interactive GUI.  cr' "standing" check list w/security chk/prompt and other best practices (Think of boss's 
+#    "standing" ~project instructions if hit enter - detect mid-thought).
 # ==>> NEXT-IS-HERE::  FIXME?: Line ~494 not sync'ing to svg. It should "see": Tile(color="red", shape="diamond"),
 # Day #TOMORROW#. (2026-02-22) Fixed above FIXME - (AI's prediction: "was a typo in game_state.")
 # The Future ...is near.
@@ -496,6 +497,8 @@ if __name__ == "__main__":
         ,(5, -2): Tile(color='orange', shape='circle'), (6, -2): Tile(color='orange', shape='square')
         # Score: me: 52; Mom: 31
         ,(7, -2): Tile(color='orange', shape='clover')
+        # My mv #~13:
+        ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')        
     }
     
     # Load the in-progress game
@@ -505,10 +508,10 @@ if __name__ == "__main__":
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="red", shape="diamond"),
-            Tile(color="purple", shape="star"),
+            Tile(color="blue", shape="clover"),
             Tile(color="red", shape="circle"),
             Tile(color="green", shape="star"),
-            Tile(color="purple", shape="clover"),
+            Tile(color="yellow", shape="crossX"),
             Tile(color="yellow", shape="diamond")
         ]
     )
