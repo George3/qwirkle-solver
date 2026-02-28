@@ -51,6 +51,10 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 #   I setup be read and updates the board and my_tiles in the solver.)
 # Day 9. (2026-02-25): Start w/ bde64ab3a08accb666e4f3d8c66b85141e35a7eb
 # Day 10. (2026-02-27): Played move #~13.  Score: me: 63; Mom: 31. 
+# .. been working on this for ~21 calendar days (See subj:"Qwirkle solver by Gemini" emailed from self to "ycj" on 2/6/2026 )
+# ... enough with the day-by-day history. Omitting going fwd for brevity. Of course can always see git-history for future details 
+#     & even get AI in on that to see how well it interprets a git commit history ;-) / 😉.
+
 # 'TODO || DONE? - on ~2/25: run rename >> chg. sync's out put to have .svg at end after .bak.svg. >> either plan then/or do a small...
 #    ...step toward interactive GUI.  cr' "standing" check list w/security chk/prompt and other best practices (Think of boss's 
 #    "standing" ~project instructions if hit enter - detect mid-thought).
@@ -499,6 +503,9 @@ if __name__ == "__main__":
         ,(7, -2): Tile(color='orange', shape='clover')
         # My mv #~13:
         ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')        
+        ,(3, 2): Tile(color='red', shape='square')
+        # My mv #14 = 8 points -> 
+        ,(-1, 3): Tile(color='yellow', shape='diamond'), (0, 3): Tile(color='yellow', shape='crossX')
     }
     
     # Load the in-progress game
