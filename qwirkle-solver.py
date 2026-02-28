@@ -476,12 +476,15 @@ if __name__ == "__main__":
     game_state = {
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, clover, crossX.
-        (1, 1): Tile(color='green', shape='star'),
-        (2, 1): Tile(color='green', shape='clover'),
-        (3, 1): Tile(color='green', shape='square'),
+        # My move #1:
+        (1, 1): Tile(color='green', shape='star'), (2, 1): Tile(color='green', shape='clover'), (3, 1): Tile(color='green', shape='square'),
+        # Mom's move #1:
         (2, -1): Tile(color='yellow', shape='clover'), (2, 0): Tile(color='purple', shape='clover'),
+        # My move #2:
         (2, -2): Tile(color='red', shape='clover'), 
+        # Mom's move #2:
         (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
+        # My move #3:
         (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
         # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
         # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
@@ -506,6 +509,9 @@ if __name__ == "__main__":
         ,(3, 2): Tile(color='red', shape='square')
         # My mv #14 = 8 points -> 
         ,(-1, 3): Tile(color='yellow', shape='diamond'), (0, 3): Tile(color='yellow', shape='crossX')
+        ,(-3, 3): Tile(color='yellow', shape='circle'), (-2, 3): Tile(color='yellow', shape='clover')
+        # My mv #15
+        ,(2, -3): Tile(color='blue', shape='clover'), (3, -3): Tile(color='blue', shape='diamond')
     }
     
     # Load the in-progress game
@@ -518,8 +524,8 @@ if __name__ == "__main__":
             Tile(color="blue", shape="clover"),
             Tile(color="red", shape="circle"),
             Tile(color="green", shape="star"),
-            Tile(color="yellow", shape="crossX"),
-            Tile(color="yellow", shape="diamond")
+            Tile(color="purple", shape="square"),
+            Tile(color="blue", shape="diamond")
         ]
     )
 
