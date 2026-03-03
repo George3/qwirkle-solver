@@ -505,13 +505,19 @@ if __name__ == "__main__":
         # Score: me: 52; Mom: 31
         ,(7, -2): Tile(color='orange', shape='clover')
         # My mv #~13:
-        ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')        
+        ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')
         ,(3, 2): Tile(color='red', shape='square')
         # My mv #14 = 8 points -> 
         ,(-1, 3): Tile(color='yellow', shape='diamond'), (0, 3): Tile(color='yellow', shape='crossX')
         ,(-3, 3): Tile(color='yellow', shape='circle'), (-2, 3): Tile(color='yellow', shape='clover')
         # My mv #15
         ,(2, -3): Tile(color='blue', shape='clover'), (3, -3): Tile(color='blue', shape='diamond')
+        # Mom
+        ,(9, -1): Tile(color='purple', shape='circle')
+        # My mv #16 (11 points)
+        ,(-1, 4): Tile(color='red', shape='diamond'), (0, 4): Tile(color='red', shape='crossX'), (1, 4): Tile(color='red', shape='circle')
+        # Mom
+        ,(3, 3): Tile(color='blue', shape='square'), (3, 4): Tile(color='yellow', shape='square')
     }
     
     # Load the in-progress game
@@ -520,12 +526,12 @@ if __name__ == "__main__":
         [ 
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="red", shape="diamond"),
-            Tile(color="blue", shape="clover"),
-            Tile(color="red", shape="circle"),
+            Tile(color="green", shape="crossX"),
+            Tile(color="orange", shape="star"),
+            Tile(color="green", shape="star"),
             Tile(color="green", shape="star"),
             Tile(color="purple", shape="square"),
-            Tile(color="blue", shape="diamond")
+            Tile(color="blue", shape="star")
         ]
     )
 

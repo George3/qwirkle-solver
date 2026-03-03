@@ -57,40 +57,68 @@ def extract_game_state_and_hand(py_text: str):
     return game_state, hand_list
 
 
-def svg_px_py(x: int, y: int):
-    px = 45 + x * 110
-    py = 605 - (y + 2) * 110
-    cx = px + 55
-    cy = py + 55
-    return px, py, cx, cy
-
-
 def sync_svg(game_state: dict, hand_list: list):
 
     if not SVG.exists():
-        raise SystemExit(f"{SVG} not found")
+        pass # we can recreate it 
 
     # Backup SVG before overwriting
-    now = datetime.now().strftime("%Y%m%d-%H%M%S")
-    backup_path = SVG.with_name(f"{SVG.name}.bak-{now}")
-    shutil.copy2(SVG, backup_path)
-    print(f"Backed up {SVG} to {backup_path}")
+    if SVG.exists():
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        backup_path = SVG.with_name(f"{SVG.name}.bak-{now}")
+        shutil.copy2(SVG, backup_path)
+        print(f"Backed up {SVG} to {backup_path}")
 
-    s = SVG.read_text(encoding="utf-8")
+    # Calculate exact bounds
+    if not game_state:
+        min_x, max_x, min_y, max_y = 0, 0, 0, 0
+    else:
+        min_x = min(x for x, y in game_state.keys())
+        max_x = max(x for x, y in game_state.keys())
+        min_y = min(y for x, y in game_state.keys())
+        max_y = max(y for x, y in game_state.keys())
 
-    # Replace coordinate comments like <!-- (x,y) ... -->
-    def board_comment_repl(m):
-        gx = int(m.group(1))
-        gy = int(m.group(2))
-        tile = game_state.get((gx, gy))
-        if tile is None:
-            return m.group(0)
-        px, py, cx, cy = svg_px_py(gx, gy)
-        return f"<!-- ({gx},{gy}) {tile.color} {tile.shape}  |  px={px} py={py}  cx={cx} cy={cy} -->"
+    # 2 tiles margin on every side
+    grid_min_x = min_x - 2
+    grid_max_x = max_x + 2
+    grid_min_y = min_y - 2
+    grid_max_y = max_y + 2
 
-    s = re.sub(r"<!--\s*\((-?\d+),\s*(-?\d+)\)\s*[^>]*-->", board_comment_repl, s)
+    cols = grid_max_x - grid_min_x + 1
+    rows = grid_max_y - grid_min_y + 1
 
-    # Always regenerate the big TILES and MY TILES sections from source
+    tile_size = 110
+    board_offset_x = 50
+    board_offset_y = 60
+
+    # compute board bounding box size
+    board_w = board_offset_x * 2 + cols * tile_size
+    board_h = board_offset_y + rows * tile_size
+
+    # The hand tiles list is 'hand_count' * 90 width
+    hand_count = len(hand_list)
+    hand_w = hand_count * 90
+    
+    # Let the svg width be max of board and hand
+    svg_w = max(board_w, hand_w + 100)
+    
+    # Centre hand
+    hand_start_x = (svg_w - hand_w) // 2
+
+    # y-coordinates for hand rendering below board
+    hand_label_y = board_h + 30
+    hand_y = hand_label_y + 15
+    hand_text_y = hand_y + 110
+    
+    svg_h = hand_text_y + 20
+
+    def get_px_py(x: int, y: int):
+        px = board_offset_x + (x - grid_min_x) * tile_size
+        py = board_offset_y + (grid_max_y - y) * tile_size
+        cx = px + tile_size // 2
+        cy = py + tile_size // 2
+        return px, py, cx, cy
+
     color_map = {
         "red": "#e02020",
         "blue": "#1a6edb",
@@ -100,107 +128,88 @@ def sync_svg(game_state: dict, hand_list: list):
         "purple": "#8833cc",
     }
 
-    def render_tile_svg(gx: int, gy: int, tile: Tile) -> str:
-        px, py, cx, cy = svg_px_py(gx, gy)
-        color = color_map.get(tile.color, tile.color)
-        parts = []
-        parts.append(f"  <!-- ({gx},{gy}) {tile.color} {tile.shape}  |  px={px} py={py}  cx={cx} cy={cy} -->")
-        parts.append(f"  <rect x=\"{px}\" y=\"{py}\" width=\"110\" height=\"110\" rx=\"8\" fill=\"#222\"/>")
-        shape = tile.shape.lower()
-        if shape == "circle":
-            parts.append(f"  <circle cx=\"{cx}\" cy=\"{cy}\" r=\"36\" fill=\"{color}\"/>")
-        elif shape == "square":
-            parts.append(f"  <rect x=\"{px+22}\" y=\"{py+22}\" width=\"66\" height=\"66\" rx=\"4\" fill=\"{color}\"/>")
-        elif shape == "diamond":
-            parts.append(f"  <polygon points=\"{cx},{cy-41} {cx+41},{cy} {cx},{cy+41} {cx-41},{cy}\" fill=\"{color}\"/>")
-        elif shape == "clover":
-            parts.append(
-                f"  <g transform=\"translate({cx},{cy})\">\n    <circle cx=\"0\" cy=\"-26\" r=\"18\" fill=\"{color}\"/>\n    <circle cx=\"26\" cy=\"0\" r=\"18\" fill=\"{color}\"/>\n    <circle cx=\"0\" cy=\"26\" r=\"18\" fill=\"{color}\"/>\n    <circle cx=\"-26\" cy=\"0\" r=\"18\" fill=\"{color}\"/>\n    <rect x=\"-9\" y=\"-26\" width=\"18\" height=\"52\" fill=\"{color}\"/>\n    <rect x=\"-26\" y=\"-9\" width=\"52\" height=\"18\" fill=\"{color}\"/>\n  </g>")
-        elif shape == "crossx":
-            parts.append(
-                f"  <g transform=\"translate({cx},{cy}) rotate(45)\">\n    <polygon points=\"0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8\" fill=\"{color}\"/>\n  </g>")
-        elif shape == "star":
-            parts.append(
-                f"  <g transform=\"translate({cx},{cy})\">\n    <polygon points=\"0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8\" fill=\"{color}\"/>\n    <polygon points=\"0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8\" fill=\"{color}\" transform=\"rotate(45)\" />\n  </g>")
-        else:
-            parts.append(f"  <text x=\"{cx}\" y=\"{cy}\" text-anchor=\"middle\" font-size=\"12\" fill=\"{color}\" font-family=\"sans-serif\">{tile.shape}</text>")
-        return "\n".join(parts)
+    svg_parts = []
+    svg_parts.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {svg_w} {svg_h}" width="{svg_w}" height="{svg_h}" style="background:#f5f0e8">')
+    
+    # Title
+    svg_parts.append(f'  <text x="{svg_w//2}" y="30" text-anchor="middle" font-size="20" fill="#333" font-family="sans-serif" font-weight="bold">Qwirkle Board State</text>')
 
-    board_tiles = []
+    svg_parts.append("  <!-- Coordinate labels: x (columns) -->")
+    for x in range(grid_min_x, grid_max_x + 1):
+        px, py, cx, cy = get_px_py(x, grid_max_y)
+        svg_parts.append(f'  <text x="{cx}"  y="{board_offset_y - 12}" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">{x}</text>')
+
+    svg_parts.append("  <!-- Coordinate labels: y (rows) -->")
+    for y in range(grid_min_y, grid_max_y + 1):
+        px, py, cx, cy = get_px_py(grid_min_x, y)
+        svg_parts.append(f'  <text x="{board_offset_x - 20}" y="{cy + 4}" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">{y}</text>')
+
+    svg_parts.append("\n  <!-- ============================================ -->")
+    svg_parts.append("  <!-- TILES                                        -->")
+    svg_parts.append("  <!-- ============================================ -->\n")
+
     for (gx, gy), tile in sorted(game_state.items(), key=lambda kv: (kv[0][0], -kv[0][1])):
-        board_tiles.append(render_tile_svg(gx, gy, tile))
+        px, py, cx, cy = get_px_py(gx, gy)
+        color = color_map.get(tile.color, tile.color)
+        shape = tile.shape.lower()
 
-    board_section = (
-        "  <!-- ============================================ -->\n"
-        "  <!-- TILES                                        -->\n"
-        "  <!-- ============================================ -->\n\n"
-        + "\n\n".join(board_tiles)
-        + "\n\n  <!-- ============================================ -->\n  <!-- Legend                                       -->\n  <!-- ============================================ -->\n"
-    )
+        svg_parts.append(f"  <!-- ({gx},{gy}) {tile.color} {tile.shape}  |  px={px} py={py}  cx={cx} cy={cy} -->")
+        svg_parts.append(f'  <rect x="{px}" y="{py}" width="110" height="110" rx="8" fill="#222"/>')
+        
+        if shape == "circle":
+            svg_parts.append(f'  <circle cx="{cx}" cy="{cy}" r="36" fill="{color}"/>')
+        elif shape == "square":
+            svg_parts.append(f'  <rect x="{px+22}" y="{py+22}" width="66" height="66" rx="4" fill="{color}"/>')
+        elif shape == "diamond":
+            svg_parts.append(f'  <polygon points="{cx},{cy-41} {cx+41},{cy} {cx},{cy+41} {cx-41},{cy}" fill="{color}"/>')
+        elif shape == "clover":
+            svg_parts.append(f'  <g transform="translate({cx},{cy})">\n    <circle cx="0" cy="-26" r="18" fill="{color}"/>\n    <circle cx="26" cy="0" r="18" fill="{color}"/>\n    <circle cx="0" cy="26" r="18" fill="{color}"/>\n    <circle cx="-26" cy="0" r="18" fill="{color}"/>\n    <rect x="-9" y="-26" width="18" height="52" fill="{color}"/>\n    <rect x="-26" y="-9" width="52" height="18" fill="{color}"/>\n  </g>')
+        elif shape == "crossx":
+            svg_parts.append(f'  <g transform="translate({cx},{cy}) rotate(45)">\n    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="{color}"/>\n  </g>')
+        elif shape == "star":
+            svg_parts.append(f'  <g transform="translate({cx},{cy})">\n    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="{color}"/>\n    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="{color}" transform="rotate(45)" />\n  </g>')
+        else:
+            svg_parts.append(f'  <text x="{cx}" y="{cy}" text-anchor="middle" font-size="12" fill="{color}" font-family="sans-serif">{tile.shape}</text>')
+        svg_parts.append("")
 
-    # Build My Tiles section
-    # Remove spaces between tiles: each tile is 90px wide, so x = 90 + idx*90
-    hand_parts = [
-        "  <!-- ============================================ -->",
-        "  <!-- MY TILES (bottom center)                     -->",
-        "  <!-- ============================================ -->",
-        "  <text x=\"410\" y=\"765\" text-anchor=\"middle\" font-size=\"18\" fill=\"#333\" font-family=\"sans-serif\" font-weight=\"bold\">My Tiles</text>\n",
-    ]
+    svg_parts.append("  <!-- ============================================ -->")
+    svg_parts.append("  <!-- MY TILES (bottom center)                     -->")
+    svg_parts.append("  <!-- ============================================ -->")
+    svg_parts.append(f'  <text x="{svg_w//2}" y="{hand_label_y}" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>\n')
 
     for idx, t in enumerate(hand_list):
-        px = 90 + idx * 90  # No gap between tiles
-        py = 790
+        px = hand_start_x + idx * 90
+        py = hand_y
         cx = px + 45
         cy = py + 45
         color = color_map.get(t.color, t.color)
-        hand_parts.append(f"  <!-- {idx+1}) {t.color} {t.shape} -->")
-        hand_parts.append(f"  <rect x=\"{px}\" y=\"{py}\" width=\"90\" height=\"90\" rx=\"8\" fill=\"#222\"/>")
         shape = t.shape.lower()
+
+        svg_parts.append(f'  <!-- {idx+1}) {t.color} {t.shape} -->')
+        svg_parts.append(f'  <rect x="{px}" y="{py}" width="90" height="90" rx="8" fill="#222"/>')
+
         if shape == "circle":
-            hand_parts.append(f"  <circle cx=\"{cx}\" cy=\"{cy}\" r=\"30\" fill=\"{color}\"/>")
+            svg_parts.append(f'  <circle cx="{cx}" cy="{cy}" r="30" fill="{color}"/>')
         elif shape == "square":
-            hand_parts.append(f"  <rect x=\"{px+22}\" y=\"{py+22}\" width=\"44\" height=\"44\" rx=\"4\" fill=\"{color}\"/>")
+            svg_parts.append(f'  <rect x="{px+22}" y="{py+22}" width="44" height="44" rx="4" fill="{color}"/>')
         elif shape == "diamond":
-            hand_parts.append(f"  <polygon points=\"{cx},{cy-30} {cx+30},{cy} {cx},{cy+30} {cx-30},{cy}\" fill=\"{color}\"/>")
+            svg_parts.append(f'  <polygon points="{cx},{cy-30} {cx+30},{cy} {cx},{cy+30} {cx-30},{cy}" fill="{color}"/>')
         elif shape == "clover":
-            hand_parts.append(f"""  <g transform="translate({cx},{cy})">
-    <circle cx="0" cy="-18" r="12" fill="{color}"/>
-    <circle cx="18" cy="0" r="12" fill="{color}"/>
-    <circle cx="0" cy="18" r="12" fill="{color}"/>
-    <circle cx="-18" cy="0" r="12" fill="{color}"/>
-    <rect x="-6" y="-18" width="12" height="36" fill="{color}"/>
-  </g>""")
+            svg_parts.append(f'  <g transform="translate({cx},{cy})">\n    <circle cx="0" cy="-18" r="12" fill="{color}"/>\n    <circle cx="18" cy="0" r="12" fill="{color}"/>\n    <circle cx="0" cy="18" r="12" fill="{color}"/>\n    <circle cx="-18" cy="0" r="12" fill="{color}"/>\n    <rect x="-6" y="-18" width="12" height="36" fill="{color}"/>\n  </g>')
         elif shape == "crossx":
-            hand_parts.append(f"""  <g transform="translate({cx},{cy}) rotate(45)">
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}"/>
-  </g>""")
+            svg_parts.append(f'  <g transform="translate({cx},{cy}) rotate(45)">\n    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}"/>\n  </g>')
         elif shape == "star":
-            hand_parts.append(f"""  <g transform="translate({cx},{cy})">
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}"/>
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}" transform="rotate(45)" />
-  </g>""")
+            svg_parts.append(f'  <g transform="translate({cx},{cy})">\n    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}"/>\n    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="{color}" transform="rotate(45)" />\n  </g>')
         else:
-            hand_parts.append(f"  <text x=\"{cx}\" y=\"{cy}\" text-anchor=\"middle\" font-size=\"11\" fill=\"{color}\" font-family=\"sans-serif\">{t.shape}</text>")
+            svg_parts.append(f'  <text x="{cx}" y="{cy}" text-anchor="middle" font-size="11" fill="{color}" font-family="sans-serif">{t.shape}</text>')
 
         # label under tile
-        hand_parts.append(f"  <text x=\"{cx}\" y=\"900\" text-anchor=\"middle\" font-size=\"11\" fill=\"#555\" font-family=\"sans-serif\">{t.color} {t.shape}</text>\n")
+        svg_parts.append(f'  <text x="{cx}" y="{hand_text_y}" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">{t.color} {t.shape}</text>\n')
 
-    hand_section = "\n".join(hand_parts)
+    svg_parts.append("</svg>")
 
-    # Replace existing TILES ... Legend block
-    s_new = re.sub(r"<!-- =+ -->\n\s*<!-- TILES[\s\S]*?<!-- =+ -->\n\s*<!-- Legend[\s\S]*?<!-- =+ -->\n",
-                   board_section, s, count=1)
-
-    # Replace existing MY TILES block (after Legend) and insert our hand_section before </svg>
-    if "<!-- MY TILES" in s_new:
-        s_new = re.sub(r"<!-- =+ -->\n\s*<!-- MY TILES[\s\S]*?</svg>", hand_section + "\n</svg>", s_new, count=1)
-    else:
-        # append before </svg>
-        s_new = s_new.replace("</svg>", hand_section + "\n</svg>")
-
-    SVG.write_text(s_new, encoding="utf-8")
-    print(f"Regenerated {SVG} from {PY}")
-
+    SVG.write_text("\n".join(svg_parts), encoding="utf-8")
+    print(f"Regenerated {SVG} from {PY} with total w={svg_w}, h={svg_h}")
 
 if __name__ == "__main__":
     py_text = PY.read_text(encoding="utf-8")
