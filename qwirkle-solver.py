@@ -67,6 +67,12 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 # - Add validation for game board. 
 # - Break away for 1st learnings about OpenCV.
 # - Validate game_state (To catch my typos and also useful when fully automated might catch a lot of OpenCV errors (acts as an assert when a tile not a legal placement).
+## Strategy ##
+#  - Come up w/more sophisticated strategy for suggesting moves: 
+#  - Also, consider adding a "difficulty" setting that adjusts (ai:) how much it prioritizes blocking opponent's moves vs. maximizing own score.
+#  - Rare but sometimes (~if >=3 tiles in hand) it might be worth (ai:) playing a lower-scoring move if it sets up a Qwirkle for the next turn.
+#  - Rare but sometimes (~if true for >=3 tiles in hand and other tiles are low scoring), put trade X # of tiles in instead of laying down tiles on game board.
+#  - (ai) Eventually, could even add a "learning" component where it tracks which moves lead to wins/losses and adjusts its strategy over time.
 #>- Continue with OpenCV idea on Claude iPad app.
 # - Is GPLv2 what you want to keep as license? (Check w/AI - esp. their TOS and do research on it).
 # - Housekeeping: Either delete gist on GH (since private) or make 1 last commit to point to this repo - Either way, del my local gist.
@@ -518,6 +524,11 @@ if __name__ == "__main__":
         ,(-1, 4): Tile(color='red', shape='diamond'), (0, 4): Tile(color='red', shape='crossX'), (1, 4): Tile(color='red', shape='circle')
         # Mom
         ,(3, 3): Tile(color='blue', shape='square'), (3, 4): Tile(color='yellow', shape='square')
+        # My mv #17 (9 points)
+        ,(8, -4): Tile(color='green', shape='star'), (8, -3): Tile(color='blue', shape='star'), (8, -2): Tile(color='orange', shape='star')
+        ,(8, -5): Tile(color='yellow', shape='star'), (8, -6): Tile(color='red', shape='star')
+        # My mv #18 (9 points)
+        ,(3, 0): Tile(color='purple', shape='square') # Risky move since sets up Mom for a Qwirkle w/orange square.s 
     }
     
     # Load the in-progress game
@@ -527,11 +538,11 @@ if __name__ == "__main__":
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="green", shape="crossX"),
-            Tile(color="orange", shape="star"),
-            Tile(color="green", shape="star"),
+            Tile(color="yellow", shape="star"),
+            Tile(color="orange", shape="circle"),
             Tile(color="green", shape="star"),
             Tile(color="purple", shape="square"),
-            Tile(color="blue", shape="star")
+            Tile(color="green", shape="circle")
         ]
     )
 
