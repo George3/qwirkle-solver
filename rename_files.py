@@ -2,7 +2,8 @@ import os
 import re
 
 # Written by GPT-4o given prompt:
-# Create a simple script to rename the series a files with names like "board.svg.bak-20260221-224934" by moving the ".bak" part to the end.
+# Create a simple script to rename the series a files with names like
+#  "board.svg.bak-20260221-224934" by moving the ".bak" part to the end.
 # TODO: If a file with new name already exists, this fails.
 
 # Directory containing the files
@@ -21,3 +22,4 @@ for filename in os.listdir(directory):
         # Rename the file
         os.rename(old_path, new_path)
         print(f"Renamed: {filename} -> {new_filename}")
+        
