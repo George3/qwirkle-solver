@@ -541,7 +541,7 @@ if __name__ == "__main__":
             Tile(color="yellow", shape="star"),
             Tile(color="orange", shape="circle"),
             Tile(color="green", shape="star"),
-            Tile(color="purple", shape="square"),
+            Tile(color="red", shape="diamond"),
             Tile(color="green", shape="circle")
         ]
     )
