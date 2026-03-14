@@ -529,6 +529,10 @@ if __name__ == "__main__":
         ,(8, -5): Tile(color='yellow', shape='star'), (8, -6): Tile(color='red', shape='star')
         # My mv #18 (9 points)
         ,(3, 0): Tile(color='purple', shape='square') # Risky move since sets up Mom for a Qwirkle w/orange square.s 
+        # Mom
+        ,(10, -1): Tile(color='purple', shape='diamond')
+        # My mv #19 (7 points -> 
+        ,(-4, 3): Tile(color='yellow', shape='star'), (-4, 4): Tile(color='green', shape='star')
     }
     
     # Load the in-progress game
