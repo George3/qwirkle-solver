@@ -31,7 +31,7 @@ There is now a local Flask app that runs in a browser and keeps the move validat
 
 - Using ~CoPilot Pro (1 month Trial) $10/mo.  Upgraded from CoPilot free because pro allows use of premium models like Claude Opus 4.6.
 
-- Most code gen'd w/Claude Haiku #.#?, Sonnet #.#?, GPT-5.3-Codex. 
+- Most code gen'd w/Claude Haiku #.#?, Sonnet #.#?, GPT-5.3-Codex.
 ...Occasionally, used cutting edge Claude Opus 4.6 and Gemini -see branches for example.
 
 (*Heavily AI-assisted)
