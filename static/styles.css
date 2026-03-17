@@ -95,6 +95,12 @@ button.active {
   gap: 18px;
 }
 
+.left-column {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
 .panel {
   background: var(--panel);
   border: 1px solid rgba(157, 143, 120, 0.32);
@@ -305,6 +311,14 @@ button.active {
 @media (max-width: 1120px) {
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .left-column {
+    order: 1;
+  }
+
+  .side-column {
+    order: 2;
   }
 
   .board-panel {

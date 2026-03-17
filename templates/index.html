@@ -20,24 +20,36 @@
       </header>
 
       <main class="layout">
-        <section class="panel board-panel">
-          <div class="panel-header">
-            <div>
-              <h2>Board</h2>
-              <p id="board-status">No pending move.</p>
+        <section class="left-column">
+          <section class="panel board-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Board</h2>
+                <p id="board-status">No pending move.</p>
+              </div>
+              <div class="mode-switches">
+                <button id="mode-play" class="mode-button active" type="button">Play From Hand</button>
+                <button id="mode-setup" class="mode-button" type="button">Board Setup</button>
+              </div>
             </div>
-            <div class="mode-switches">
-              <button id="mode-play" class="mode-button active" type="button">Play From Hand</button>
-              <button id="mode-setup" class="mode-button" type="button">Board Setup</button>
+            <div id="board-scroll" class="board-scroll">
+              <div id="board-grid" class="board-grid"></div>
             </div>
-          </div>
-          <div id="board-scroll" class="board-scroll">
-            <div id="board-grid" class="board-grid"></div>
-          </div>
-          <div class="board-actions">
-            <button id="commit-button" type="button">Commit Move</button>
-            <button id="clear-pending-button" type="button">Clear Pending</button>
-          </div>
+            <div class="board-actions">
+              <button id="commit-button" type="button">Commit Move</button>
+              <button id="clear-pending-button" type="button">Clear Pending</button>
+            </div>
+          </section>
+
+          <section class="panel suggestions-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Suggestions</h2>
+                <p>Top solver moves for the current board and hand.</p>
+              </div>
+            </div>
+            <div id="suggestions-list" class="suggestions-list"></div>
+          </section>
         </section>
 
         <aside class="side-column">
@@ -66,15 +78,6 @@
             <div id="palette-grid" class="palette-grid"></div>
           </section>
 
-          <section class="panel suggestions-panel">
-            <div class="panel-header">
-              <div>
-                <h2>Suggestions</h2>
-                <p>Top solver moves for the current board and hand.</p>
-              </div>
-            </div>
-            <div id="suggestions-list" class="suggestions-list"></div>
-          </section>
         </aside>
       </main>
     </div>
