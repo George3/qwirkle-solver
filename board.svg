@@ -65,9 +65,20 @@
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000" transform="rotate(45)" />
   </g>
 
+  <!-- (-4,2) orange star  |  px=380 py=610  cx=435 cy=665 -->
+  <rect x="380" y="610" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(435,665)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800"/>
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800" transform="rotate(45)" />
+  </g>
+
   <!-- (-3,3) yellow circle  |  px=490 py=500  cx=545 cy=555 -->
   <rect x="490" y="500" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="545" cy="555" r="36" fill="#f5d000"/>
+
+  <!-- (-3,2) orange circle  |  px=490 py=610  cx=545 cy=665 -->
+  <rect x="490" y="610" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="545" cy="665" r="36" fill="#ff8800"/>
 
   <!-- (-2,3) yellow clover  |  px=600 py=500  cx=655 cy=555 -->
   <rect x="600" y="500" width="110" height="110" rx="8" fill="#222"/>
@@ -95,6 +106,12 @@
   <!-- (-1,2) orange diamond  |  px=710 py=610  cx=765 cy=665 -->
   <rect x="710" y="610" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="765,624 806,665 765,706 724,665" fill="#ff8800"/>
+
+  <!-- (0,5) purple crossX  |  px=820 py=280  cx=875 cy=335 -->
+  <rect x="820" y="280" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(875,335) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc"/>
+  </g>
 
   <!-- (0,4) red crossX  |  px=820 py=390  cx=875 cy=445 -->
   <rect x="820" y="390" width="110" height="110" rx="8" fill="#222"/>
@@ -125,6 +142,10 @@
   <g transform="translate(875,885) rotate(45)">
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb"/>
   </g>
+
+  <!-- (1,5) purple circle  |  px=930 py=280  cx=985 cy=335 -->
+  <rect x="930" y="280" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="985" cy="335" r="36" fill="#8833cc"/>
 
   <!-- (1,4) red circle  |  px=930 py=390  cx=985 cy=445 -->
   <rect x="930" y="390" width="110" height="110" rx="8" fill="#222"/>
@@ -377,20 +398,25 @@
   </g>
   <text x="925" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green crossX</text>
 
-  <!-- 2) yellow square -->
+  <!-- 2) green crossX -->
   <rect x="970" y="1865" width="90" height="90" rx="8" fill="#222"/>
-  <rect x="992" y="1887" width="44" height="44" rx="4" fill="#f5d000"/>
-  <text x="1015" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">yellow square</text>
+  <g transform="translate(1015,1910) rotate(45)">
+    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#22aa33"/>
+  </g>
+  <text x="1015" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green crossX</text>
 
   <!-- 3) orange circle -->
   <rect x="1060" y="1865" width="90" height="90" rx="8" fill="#222"/>
   <circle cx="1105" cy="1910" r="30" fill="#ff8800"/>
   <text x="1105" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange circle</text>
 
-  <!-- 4) green square -->
+  <!-- 4) orange star -->
   <rect x="1150" y="1865" width="90" height="90" rx="8" fill="#222"/>
-  <rect x="1172" y="1887" width="44" height="44" rx="4" fill="#22aa33"/>
-  <text x="1195" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green square</text>
+  <g transform="translate(1195,1910)">
+    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#ff8800"/>
+    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#ff8800" transform="rotate(45)" />
+  </g>
+  <text x="1195" y="1975" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange star</text>
 
   <!-- 5) red diamond -->
   <rect x="1240" y="1865" width="90" height="90" rx="8" fill="#222"/>
