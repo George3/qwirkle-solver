@@ -1,6 +1,8 @@
 # Another Qwirkle™ Solver
 
-- but the first I've "written"*
+- ...but the first I've _"written"_[*]
+
+> ⚠️ **Caution:** Pre-release quality. Mostly AI/LLM-generated. **Use at your own risk!**
 
 ## Intro
 
@@ -34,4 +36,6 @@ There is now a local Flask app that runs in a browser and keeps the move validat
 - Most code gen'd w/Claude Haiku #.#?, Sonnet #.#?, GPT-5.3-Codex.
 ...Occasionally, used cutting edge Claude Opus 4.6 and Gemini -see branches for example.
 
-(*Heavily AI-assisted)
+## Footnotes
+
+[*] Heavily AI-assisted
