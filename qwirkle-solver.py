@@ -483,65 +483,7 @@ if __name__ == "__main__":
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, clover, crossX.
         # My move #1:
-        (1, 1): Tile(color='green', shape='star'), (2, 1): Tile(color='green', shape='clover'), (3, 1): Tile(color='green', shape='square'),
-        # Mom's move #1:
-        (2, -1): Tile(color='yellow', shape='clover'), (2, 0): Tile(color='purple', shape='clover'),
-        # My move #2:
-        (2, -2): Tile(color='red', shape='clover'), 
-        # Mom's move #2:
-        (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
-        # My move #3:
-        (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
-        # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
-        # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
-        ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
-        ,(4, 3): Tile(color='blue', shape='diamond'), (4, -2): Tile(color='orange', shape='diamond')
-        # Below is bad move on my part: Since had red clover above in wrong place!
-        ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
-        # Mom:
-        ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
-        # me (mv. #~10)
-        ,(5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle')
-        ,(0, 2): Tile(color='orange', shape='crossX')
-        # My move #~11:  1st Qwirkle found by this solver! = 15 points!
-        ,(5, 1): Tile(color='green', shape='circle')
-        ,(-1, 2): Tile(color='orange', shape='diamond')
-        # My mv #~12:
-        ,(5, -2): Tile(color='orange', shape='circle'), (6, -2): Tile(color='orange', shape='square')
-        # Score: me: 52; Mom: 31
-        ,(7, -2): Tile(color='orange', shape='clover')
-        # My mv #~13:
-        ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')
-        ,(3, 2): Tile(color='red', shape='square')
-        # My mv #14 = 8 points -> 
-        ,(-1, 3): Tile(color='yellow', shape='diamond'), (0, 3): Tile(color='yellow', shape='crossX')
-        ,(-3, 3): Tile(color='yellow', shape='circle'), (-2, 3): Tile(color='yellow', shape='clover')
-        # My mv #15
-        ,(2, -3): Tile(color='blue', shape='clover'), (3, -3): Tile(color='blue', shape='diamond')
-        # Mom
-        ,(9, -1): Tile(color='purple', shape='circle')
-        # My mv #16 (11 points)
-        ,(-1, 4): Tile(color='red', shape='diamond'), (0, 4): Tile(color='red', shape='crossX'), (1, 4): Tile(color='red', shape='circle')
-        # Mom
-        ,(3, 3): Tile(color='blue', shape='square'), (3, 4): Tile(color='yellow', shape='square')
-        # My mv #17 (9 points)
-        ,(8, -4): Tile(color='green', shape='star'), (8, -3): Tile(color='blue', shape='star'), (8, -2): Tile(color='orange', shape='star')
-        ,(8, -5): Tile(color='yellow', shape='star'), (8, -6): Tile(color='red', shape='star')
-        # My mv #18 (9 points)
-        ,(3, 0): Tile(color='purple', shape='square') # Risky move since sets up Mom for a Qwirkle w/orange square.s 
-        # Mom
-        ,(10, -1): Tile(color='purple', shape='diamond')
-        # My mv #19 (7 points -> 
-        ,(-4, 3): Tile(color='yellow', shape='star'), (-4, 4): Tile(color='green', shape='star')
-        # Mom
-        ,(-1, 5): Tile(color='purple', shape='diamond')
-        # my mv #20 (16 points)
-        ,(-5, 3): Tile(color='yellow', shape='square'), (-5, 4): Tile(color='green', shape='square')
-        # Mom
-        ,(0, 5): Tile(color='purple', shape='crossX'), (1, 5): Tile(color='purple', shape='circle')
-        # My mv #21 (7 points)
-        # AI-autocomplete ("wrong") while only typing here: ,(-6, 3): Tile(color='yellow', shape='circle'), (-6, 4): Tile(color='green', shape='circle')
-        ,(-4, 2): Tile(color='orange', shape='star'), (-3, 2): Tile(color='orange', shape='circle')
+        # Example: (1, 1): Tile(color='green', shape='star'), (2, 1): Tile(color='green', shape='clover'), (3, 1): Tile(color='green', shape='square')
     }
     
     # Load the in-progress game
