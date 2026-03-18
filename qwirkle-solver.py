@@ -542,6 +542,10 @@ if __name__ == "__main__":
         # My mv #21 (7 points)
         # AI-autocomplete ("wrong") while only typing here: ,(-6, 3): Tile(color='yellow', shape='circle'), (-6, 4): Tile(color='green', shape='circle')
         ,(-4, 2): Tile(color='orange', shape='star'), (-3, 2): Tile(color='orange', shape='circle')
+        # Mom
+        ,(-5, 5): Tile(color='purple', shape='square'), (-5, 6): Tile(color='red', shape='square')
+        # My mv #22 (8 points)
+        ,(-3, 6): Tile(color='green', shape='crossX'), (-2, 6): Tile(color='green', shape='circle'), (-1, 6): Tile(color='green', shape='diamond')
     }
     
     # Load the in-progress game
@@ -552,8 +556,8 @@ if __name__ == "__main__":
         # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="green", shape="crossX"),
             Tile(color="green", shape="crossX"),
-            Tile(color="orange", shape="circle"),
-            Tile(color="orange", shape="star"),
+            Tile(color="blue", shape="square"),
+            Tile(color="green", shape="diamond"),
             Tile(color="red", shape="diamond"),
             Tile(color="green", shape="circle")
         ]
