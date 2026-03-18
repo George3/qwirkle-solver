@@ -546,6 +546,10 @@ if __name__ == "__main__":
         ,(-5, 5): Tile(color='purple', shape='square'), (-5, 6): Tile(color='red', shape='square')
         # My mv #22 (8 points)
         ,(-3, 6): Tile(color='green', shape='crossX'), (-2, 6): Tile(color='green', shape='circle'), (-1, 6): Tile(color='green', shape='diamond')
+# !>    # Mom (AI "error"/limitation - Allowed a 1-tile Qwirkle that should have been blocked!)
+        ,(-1, 7): Tile(color='blue', shape='diamond')
+        # My mv #23 (7 points)
+        ,(2, -4): Tile(color='orange', shape='clover')
     }
     
     # Load the in-progress game
@@ -555,7 +559,7 @@ if __name__ == "__main__":
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="green", shape="crossX"),
-            Tile(color="green", shape="crossX"),
+            Tile(color="orange", shape="crossX"),
             Tile(color="blue", shape="square"),
             Tile(color="green", shape="diamond"),
             Tile(color="red", shape="diamond"),
