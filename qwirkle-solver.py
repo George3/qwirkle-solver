@@ -3,6 +3,11 @@ from dataclasses import dataclass
 from typing import Iterable, Optional, TypedDict
 
 
+TOTAL_QWIRKLE_TILES = 108
+LATE_GAME_BAG_THRESHOLD = 30
+SAFE_ALTERNATIVE_SCORE_GAP = 2
+
+
 """
 Qwirkle is a tile-based game where players score points by creating lines of
 tiles that share a common attribute (color or shape) but differ in the other.
@@ -456,6 +461,118 @@ def calculate_score_multi(
     return max(total_score, 1)
 
 
+def estimate_tiles_left_in_bag(
+    board_tile_count: int,
+    my_hand_count: int,
+    players: int = 2,
+    hand_size: int = 6,
+    total_tiles: int = TOTAL_QWIRKLE_TILES,
+) -> int:
+    other_players = max(players - 1, 0)
+    reserved_for_other_hands = other_players * hand_size
+    return max(total_tiles - board_tile_count - my_hand_count - reserved_for_other_hands, 0)
+
+def get_line_positions_on_board(
+    board: dict[tuple[int, int], Tile],
+    x: int,
+    y: int,
+    axis: str,
+) -> list[tuple[int, int]]:
+    if axis == "horizontal":
+        directions = [(1, 0), (-1, 0)]
+    else:
+        directions = [(0, 1), (0, -1)]
+
+    positions = [(x, y)]
+    for dx, dy in directions:
+        curr_x, curr_y = x + dx, y + dy
+        while (curr_x, curr_y) in board:
+            positions.append((curr_x, curr_y))
+            curr_x += dx
+            curr_y += dy
+    return positions
+
+
+def has_open_endpoint(
+    board: dict[tuple[int, int], Tile],
+    line_positions: list[tuple[int, int]],
+    axis: str,
+) -> bool:
+    if axis == "horizontal":
+        y = line_positions[0][1]
+        min_x = min(pos[0] for pos in line_positions)
+        max_x = max(pos[0] for pos in line_positions)
+        return (min_x - 1, y) not in board or (max_x + 1, y) not in board
+
+    x = line_positions[0][0]
+    min_y = min(pos[1] for pos in line_positions)
+    max_y = max(pos[1] for pos in line_positions)
+    return (x, min_y - 1) not in board or (x, max_y + 1) not in board
+
+
+def creates_risky_open_five_line(
+    engine: QwirkleEngine,
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> bool:
+    temp_board = engine.board.copy()
+    for move, tile in placements:
+        temp_board[move] = tile
+
+    for (x, y), _ in placements:
+        for axis in ["horizontal", "vertical"]:
+            line_positions = get_line_positions_on_board(temp_board, x, y, axis)
+            if len(line_positions) != 5:
+                continue
+
+            line_tiles = [temp_board[pos] for pos in line_positions]
+            if validate_full_line(line_tiles) and has_open_endpoint(temp_board, line_positions, axis):
+                return True
+
+    return False
+
+
+def apply_late_game_risk_filter(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+    ranked_moves: list[tuple[int, list[tuple[tuple[int, int], Tile]]]],
+    bag_threshold: int = LATE_GAME_BAG_THRESHOLD,
+    score_gap: int = SAFE_ALTERNATIVE_SCORE_GAP,
+) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
+    if len(ranked_moves) < 2:
+        return ranked_moves
+
+    tiles_left_in_bag = estimate_tiles_left_in_bag(
+        board_tile_count=len(engine.board),
+        my_hand_count=sum(tiles.values()),
+    )
+    if tiles_left_in_bag > bag_threshold:
+        return ranked_moves
+
+    ranked_with_risk = [
+        (score, placements, creates_risky_open_five_line(engine, placements))
+        for score, placements in ranked_moves
+    ]
+
+    best_score = ranked_with_risk[0][0]
+    best_safe_score = next(
+        (score for score, _, is_risky in ranked_with_risk if not is_risky),
+        None,
+    )
+
+    if best_safe_score is None:
+        return ranked_moves
+
+    if best_safe_score < best_score - score_gap:
+        return ranked_moves
+
+    safe_moves = [
+        (score, placements)
+        for score, placements, is_risky in ranked_with_risk
+        if not is_risky
+    ]
+    return safe_moves if safe_moves else ranked_moves
+
+
 def generate_all_multi_moves(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
@@ -471,7 +588,7 @@ def generate_all_multi_moves(
                 results.append((score, placements))
 
     results.sort(key=lambda item: item[0], reverse=True)
-    return results
+    return apply_late_game_risk_filter(engine, tiles, results)
 
 # Example usage
 if __name__ == "__main__":
@@ -550,6 +667,11 @@ if __name__ == "__main__":
         ,(-1, 7): Tile(color='blue', shape='diamond')
         # My mv #23 (7 points)
         ,(2, -4): Tile(color='orange', shape='clover')
+        # Mom
+        ,(-1, 0): Tile(color='orange', shape='crossX'), (-2, 0): Tile(color='purple', shape='crossX'), (-3, 0): Tile(color='yellow', shape='crossX')
+        # My mv #24 (8 points)
+        # AVOID; AI-added (GPT-5.3-Codex) rule to avoid 5-in-a-row: ,(-4, -2): Tile(color='green', shape='diamond'), (-4, -1): Tile(color='green', shape='circle'), (-4, 0): Tile(color='green', shape='crossX')
+        ,(9, 0): Tile(color='green', shape='circle'), (10, 0): Tile(color='green', shape='diamond'), (11, 0): Tile(color='green', shape='crossX')
     }
     
     # Load the in-progress game
