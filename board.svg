@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2410 2215" width="2410" height="2215" style="background:#f5f0e8">
-  <text x="1205" y="30" text-anchor="middle" font-size="20" fill="#333" font-family="sans-serif" font-weight="bold">Qwirkle Board State</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2520 2215" width="2520" height="2215" style="background:#f5f0e8">
+  <text x="1260" y="30" text-anchor="middle" font-size="20" fill="#333" font-family="sans-serif" font-weight="bold">Qwirkle Board State</text>
   <!-- Coordinate labels: x (columns) -->
   <text x="105"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">-7</text>
   <text x="215"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">-6</text>
@@ -22,6 +22,7 @@
   <text x="2085"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">11</text>
   <text x="2195"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">12</text>
   <text x="2305"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">13</text>
+  <text x="2415"  y="48" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">14</text>
   <!-- Coordinate labels: y (rows) -->
   <text x="30" y="1989" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">-8</text>
   <text x="30" y="1879" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">-7</text>
@@ -364,6 +365,14 @@
   <rect x="1370" y="1270" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1425" cy="1325" r="36" fill="#ff8800"/>
 
+  <!-- (5,-3) blue circle  |  px=1370 py=1380  cx=1425 cy=1435 -->
+  <rect x="1370" y="1380" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="1425" cy="1435" r="36" fill="#1a6edb"/>
+
+  <!-- (5,-4) red circle  |  px=1370 py=1490  cx=1425 cy=1545 -->
+  <rect x="1370" y="1490" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="1425" cy="1545" r="36" fill="#e02020"/>
+
   <!-- (6,3) blue circle  |  px=1480 py=720  cx=1535 cy=775 -->
   <rect x="1480" y="720" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1535" cy="775" r="36" fill="#1a6edb"/>
@@ -444,6 +453,10 @@
   <rect x="1810" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1865" cy="1215" r="36" fill="#8833cc"/>
 
+  <!-- (10,1) orange diamond  |  px=1920 py=940  cx=1975 cy=995 -->
+  <rect x="1920" y="940" width="110" height="110" rx="8" fill="#222"/>
+  <polygon points="1975,954 2016,995 1975,1036 1934,995" fill="#ff8800"/>
+
   <!-- (10,0) green diamond  |  px=1920 py=1050  cx=1975 cy=1105 -->
   <rect x="1920" y="1050" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1975,1064 2016,1105 1975,1146 1934,1105" fill="#22aa33"/>
@@ -452,49 +465,70 @@
   <rect x="1920" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1975,1174 2016,1215 1975,1256 1934,1215" fill="#8833cc"/>
 
+  <!-- (11,1) orange crossX  |  px=2030 py=940  cx=2085 cy=995 -->
+  <rect x="2030" y="940" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(2085,995) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800"/>
+  </g>
+
   <!-- (11,0) green crossX  |  px=2030 py=1050  cx=2085 cy=1105 -->
   <rect x="2030" y="1050" width="110" height="110" rx="8" fill="#222"/>
   <g transform="translate(2085,1105) rotate(45)">
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#22aa33"/>
   </g>
 
+  <!-- (12,1) orange clover  |  px=2140 py=940  cx=2195 cy=995 -->
+  <rect x="2140" y="940" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(2195,995)">
+    <circle cx="0" cy="-26" r="18" fill="#ff8800"/>
+    <circle cx="26" cy="0" r="18" fill="#ff8800"/>
+    <circle cx="0" cy="26" r="18" fill="#ff8800"/>
+    <circle cx="-26" cy="0" r="18" fill="#ff8800"/>
+    <rect x="-9" y="-26" width="18" height="52" fill="#ff8800"/>
+    <rect x="-26" y="-9" width="52" height="18" fill="#ff8800"/>
+  </g>
+
   <!-- ============================================ -->
   <!-- MY TILES (bottom center)                     -->
   <!-- ============================================ -->
-  <text x="1205" y="2070" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
+  <text x="1260" y="2070" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
 
-  <!-- 1) green crossX -->
-  <rect x="935" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <g transform="translate(980,2130) rotate(45)">
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#22aa33"/>
-  </g>
-  <text x="980" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green crossX</text>
+  <!-- 1) blue circle -->
+  <rect x="990" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <circle cx="1035" cy="2130" r="30" fill="#1a6edb"/>
+  <text x="1035" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue circle</text>
 
   <!-- 2) orange crossX -->
-  <rect x="1025" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <g transform="translate(1070,2130) rotate(45)">
+  <rect x="1080" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <g transform="translate(1125,2130) rotate(45)">
     <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#ff8800"/>
   </g>
-  <text x="1070" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange crossX</text>
+  <text x="1125" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange crossX</text>
 
   <!-- 3) blue square -->
-  <rect x="1115" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <rect x="1137" y="2107" width="44" height="44" rx="4" fill="#1a6edb"/>
-  <text x="1160" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue square</text>
+  <rect x="1170" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <rect x="1192" y="2107" width="44" height="44" rx="4" fill="#1a6edb"/>
+  <text x="1215" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue square</text>
 
-  <!-- 4) green diamond -->
-  <rect x="1205" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <polygon points="1250,2100 1280,2130 1250,2160 1220,2130" fill="#22aa33"/>
-  <text x="1250" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green diamond</text>
+  <!-- 4) orange diamond -->
+  <rect x="1260" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <polygon points="1305,2100 1335,2130 1305,2160 1275,2130" fill="#ff8800"/>
+  <text x="1305" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange diamond</text>
 
   <!-- 5) red diamond -->
-  <rect x="1295" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <polygon points="1340,2100 1370,2130 1340,2160 1310,2130" fill="#e02020"/>
-  <text x="1340" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red diamond</text>
+  <rect x="1350" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <polygon points="1395,2100 1425,2130 1395,2160 1365,2130" fill="#e02020"/>
+  <text x="1395" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red diamond</text>
 
-  <!-- 6) green circle -->
-  <rect x="1385" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <circle cx="1430" cy="2130" r="30" fill="#22aa33"/>
-  <text x="1430" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">green circle</text>
+  <!-- 6) orange clover -->
+  <rect x="1440" y="2085" width="90" height="90" rx="8" fill="#222"/>
+  <g transform="translate(1485,2130)">
+    <circle cx="0" cy="-18" r="12" fill="#ff8800"/>
+    <circle cx="18" cy="0" r="12" fill="#ff8800"/>
+    <circle cx="0" cy="18" r="12" fill="#ff8800"/>
+    <circle cx="-18" cy="0" r="12" fill="#ff8800"/>
+    <rect x="-6" y="-18" width="12" height="36" fill="#ff8800"/>
+  </g>
+  <text x="1485" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange clover</text>
 
 </svg>

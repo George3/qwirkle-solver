@@ -672,6 +672,10 @@ if __name__ == "__main__":
         # My mv #24 (8 points)
         # AVOID; AI-added (GPT-5.3-Codex) rule to avoid 5-in-a-row: ,(-4, -2): Tile(color='green', shape='diamond'), (-4, -1): Tile(color='green', shape='circle'), (-4, 0): Tile(color='green', shape='crossX')
         ,(9, 0): Tile(color='green', shape='circle'), (10, 0): Tile(color='green', shape='diamond'), (11, 0): Tile(color='green', shape='crossX')
+        # Mom
+        ,(5, -3): Tile(color='blue', shape='circle'), (5, -4): Tile(color='red', shape='circle')
+        # My mv #25 (7 points) - Score: 165 vs. 123 (Mom)
+        ,(10, 1): Tile(color='orange', shape='diamond'), (11, 1): Tile(color='orange', shape='crossX'), (12, 1): Tile(color='orange', shape='clover')
     }
     
     # Load the in-progress game
@@ -680,12 +684,12 @@ if __name__ == "__main__":
         [ 
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="green", shape="crossX"),
+            Tile(color="blue", shape="circle"),
             Tile(color="orange", shape="crossX"),
             Tile(color="blue", shape="square"),
-            Tile(color="green", shape="diamond"),
+            Tile(color="orange", shape="diamond"),
             Tile(color="red", shape="diamond"),
-            Tile(color="green", shape="circle")
+            Tile(color="orange", shape="clover")
         ]
     )
 
