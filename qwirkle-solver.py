@@ -680,6 +680,10 @@ if __name__ == "__main__":
         ,(12, 0): Tile(color='green', shape='clover'), (13, 0): Tile(color='green', shape='square')
         # My mv #26 (8 points)
         ,(11, 2): Tile(color='yellow', shape='crossX'), (12, 2): Tile(color='yellow', shape='clover')
+        # Mom
+        ,(-2, 4): Tile(color='red', shape='clover')
+        # My mv #27 (15 points)
+        ,(-5, 1): Tile(color='blue', shape='square'), (-5, 2): Tile(color='orange', shape='square')
     }
     
     # Load the in-progress game
@@ -690,10 +694,10 @@ if __name__ == "__main__":
         # shapes: circle, square, diamond, star, crossX, clover.
             Tile(color="blue", shape="circle"),
             Tile(color="green", shape="clover"),
-            Tile(color="blue", shape="square"),
-            Tile(color="yellow", shape="clover"),
+            Tile(color="red", shape="clover"),
+            Tile(color="red", shape="star"),
             Tile(color="red", shape="diamond"),
-            Tile(color="yellow", shape="crossX")
+            Tile(color="blue", shape="crossX")
         ]
     )
 
