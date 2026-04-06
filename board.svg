@@ -465,6 +465,10 @@
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#e02020" transform="rotate(45)" />
   </g>
 
+  <!-- (9,2) yellow circle  |  px=1810 py=830  cx=1865 cy=885 -->
+  <rect x="1810" y="830" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="1865" cy="885" r="36" fill="#f5d000"/>
+
   <!-- (9,0) green circle  |  px=1810 py=1050  cx=1865 cy=1105 -->
   <rect x="1810" y="1050" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1865" cy="1105" r="36" fill="#22aa33"/>
@@ -472,6 +476,12 @@
   <!-- (9,-1) purple circle  |  px=1810 py=1160  cx=1865 cy=1215 -->
   <rect x="1810" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1865" cy="1215" r="36" fill="#8833cc"/>
+
+  <!-- (10,2) yellow crossX  |  px=1920 py=830  cx=1975 cy=885 -->
+  <rect x="1920" y="830" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(1975,885) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000"/>
+  </g>
 
   <!-- (10,1) orange diamond  |  px=1920 py=940  cx=1975 cy=995 -->
   <rect x="1920" y="940" width="110" height="110" rx="8" fill="#222"/>

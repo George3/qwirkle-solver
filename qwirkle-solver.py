@@ -684,6 +684,9 @@ if __name__ == "__main__":
         ,(-2, 4): Tile(color='red', shape='clover')
         # My mv #27 (15 points)
         ,(-5, 1): Tile(color='blue', shape='square'), (-5, 2): Tile(color='orange', shape='square')
+        # Mom
+        ,(9, 2): Tile(color='yellow', shape='circle'), (10, 2): Tile(color='yellow', shape='crossX')
+        # My mv #28 (8 points)
     }
     
     # Load the in-progress game
