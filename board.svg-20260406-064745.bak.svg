@@ -477,9 +477,9 @@
   <rect x="1810" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1865" cy="1215" r="36" fill="#8833cc"/>
 
-  <!-- (10,2) yellow diamond  |  px=1920 py=830  cx=1975 cy=885 -->
-  <rect x="1920" y="830" width="110" height="110" rx="8" fill="#222"/>
-  <polygon points="1975,844 2016,885 1975,926 1934,885" fill="#f5d000"/>
+    <!-- (10,2) yellow diamond  |  px=1920 py=830  cx=1975 cy=885 -->
+    <rect x="1920" y="830" width="110" height="110" rx="8" fill="#222"/>
+    <polygon points="1975,844 2016,885 1975,926 1934,885" fill="#f5d000"/>
 
   <!-- (10,1) orange diamond  |  px=1920 py=940  cx=1975 cy=995 -->
   <rect x="1920" y="940" width="110" height="110" rx="8" fill="#222"/>
@@ -493,11 +493,9 @@
   <rect x="1920" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1975,1174 2016,1215 1975,1256 1934,1215" fill="#8833cc"/>
 
-  <!-- (11,2) yellow crossX  |  px=2030 py=830  cx=2085 cy=885 -->
+  <!-- (11,2) yellow diamond  |  px=2030 py=830  cx=2085 cy=885 -->
   <rect x="2030" y="830" width="110" height="110" rx="8" fill="#222"/>
-  <g transform="translate(2085,885) rotate(45)">
-    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000"/>
-  </g>
+  <polygon points="2085,844 2126,885 2085,926 2044,885" fill="#f5d000"/>
 
   <!-- (11,1) orange crossX  |  px=2030 py=940  cx=2085 cy=995 -->
   <rect x="2030" y="940" width="110" height="110" rx="8" fill="#222"/>
