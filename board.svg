@@ -72,6 +72,13 @@
   <rect x="270" y="940" width="110" height="110" rx="8" fill="#222"/>
   <rect x="292" y="962" width="66" height="66" rx="4" fill="#1a6edb"/>
 
+  <!-- (-4,5) purple star  |  px=380 py=500  cx=435 cy=555 -->
+  <rect x="380" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(435,555)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc"/>
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc" transform="rotate(45)" />
+  </g>
+
   <!-- (-4,4) green star  |  px=380 py=610  cx=435 cy=665 -->
   <rect x="380" y="610" width="110" height="110" rx="8" fill="#222"/>
   <g transform="translate(435,665)">
@@ -93,6 +100,12 @@
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800" transform="rotate(45)" />
   </g>
 
+  <!-- (-3,7) blue crossX  |  px=490 py=280  cx=545 cy=335 -->
+  <rect x="490" y="280" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(545,335) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb"/>
+  </g>
+
   <!-- (-3,6) green crossX  |  px=490 py=390  cx=545 cy=445 -->
   <rect x="490" y="390" width="110" height="110" rx="8" fill="#222"/>
   <g transform="translate(545,445) rotate(45)">
@@ -112,6 +125,10 @@
   <g transform="translate(545,1105) rotate(45)">
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#f5d000"/>
   </g>
+
+  <!-- (-2,7) blue circle  |  px=600 py=280  cx=655 cy=335 -->
+  <rect x="600" y="280" width="110" height="110" rx="8" fill="#222"/>
+  <circle cx="655" cy="335" r="36" fill="#1a6edb"/>
 
   <!-- (-2,6) green circle  |  px=600 py=390  cx=655 cy=445 -->
   <rect x="600" y="390" width="110" height="110" rx="8" fill="#222"/>
@@ -575,10 +592,10 @@
   <!-- ============================================ -->
   <text x="1315" y="2070" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
 
-  <!-- 1) blue circle -->
+  <!-- 1) orange circle -->
   <rect x="1045" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <circle cx="1090" cy="2130" r="30" fill="#1a6edb"/>
-  <text x="1090" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue circle</text>
+  <circle cx="1090" cy="2130" r="30" fill="#ff8800"/>
+  <text x="1090" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange circle</text>
 
   <!-- 2) purple square -->
   <rect x="1135" y="2085" width="90" height="90" rx="8" fill="#222"/>
@@ -605,11 +622,15 @@
   <polygon points="1450,2100 1480,2130 1450,2160 1420,2130" fill="#e02020"/>
   <text x="1450" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red diamond</text>
 
-  <!-- 6) blue crossX -->
+  <!-- 6) blue clover -->
   <rect x="1495" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <g transform="translate(1540,2130) rotate(45)">
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#1a6edb"/>
+  <g transform="translate(1540,2130)">
+    <circle cx="0" cy="-18" r="12" fill="#1a6edb"/>
+    <circle cx="18" cy="0" r="12" fill="#1a6edb"/>
+    <circle cx="0" cy="18" r="12" fill="#1a6edb"/>
+    <circle cx="-18" cy="0" r="12" fill="#1a6edb"/>
+    <rect x="-6" y="-18" width="12" height="36" fill="#1a6edb"/>
   </g>
-  <text x="1540" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue crossX</text>
+  <text x="1540" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue clover</text>
 
 </svg>
