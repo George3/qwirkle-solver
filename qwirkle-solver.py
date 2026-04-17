@@ -684,12 +684,12 @@ if __name__ == "__main__":
         [ 
         # colors: red, orange, yellow, green, blue, purple.
         # shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="blue", shape="circle"),
-            Tile(color="orange", shape="crossX"),
-            Tile(color="blue", shape="square"),
-            Tile(color="orange", shape="diamond"),
+            Tile(color="orange", shape="circle"),
+            Tile(color="purple", shape="square"),
+            Tile(color="purple", shape="crossX"),
+            Tile(color="red", shape="star"),
             Tile(color="red", shape="diamond"),
-            Tile(color="orange", shape="clover")
+            Tile(color="blue", shape="clover")
         ]
     )
 
