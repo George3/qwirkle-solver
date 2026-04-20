@@ -113,6 +113,13 @@
     <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#ff8800" transform="rotate(45)" />
   </g>
 
+  <!-- (-4,1) blue star  |  px=600 py=940  cx=655 cy=995 -->
+  <rect x="600" y="940" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(655,995)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb"/>
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb" transform="rotate(45)" />
+  </g>
+
   <!-- (-3,7) blue crossX  |  px=710 py=280  cx=765 cy=335 -->
   <rect x="710" y="280" width="110" height="110" rx="8" fill="#222"/>
   <g transform="translate(765,335) rotate(45)">
@@ -511,6 +518,10 @@
   <rect x="2030" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="2085" cy="1215" r="36" fill="#8833cc"/>
 
+  <!-- (10,3) red diamond  |  px=2140 py=720  cx=2195 cy=775 -->
+  <rect x="2140" y="720" width="110" height="110" rx="8" fill="#222"/>
+  <polygon points="2195,734 2236,775 2195,816 2154,775" fill="#e02020"/>
+
   <!-- (10,2) yellow diamond  |  px=2140 py=830  cx=2195 cy=885 -->
   <rect x="2140" y="830" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="2195,844 2236,885 2195,926 2154,885" fill="#f5d000"/>
@@ -526,6 +537,12 @@
   <!-- (10,-1) purple diamond  |  px=2140 py=1160  cx=2195 cy=1215 -->
   <rect x="2140" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="2195,1174 2236,1215 2195,1256 2154,1215" fill="#8833cc"/>
+
+  <!-- (11,3) red crossX  |  px=2250 py=720  cx=2305 cy=775 -->
+  <rect x="2250" y="720" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(2305,775) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#e02020"/>
+  </g>
 
   <!-- (11,2) yellow crossX  |  px=2250 py=830  cx=2305 cy=885 -->
   <rect x="2250" y="830" width="110" height="110" rx="8" fill="#222"/>
@@ -609,10 +626,12 @@
   <!-- ============================================ -->
   <text x="1425" y="2070" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
 
-  <!-- 1) orange circle -->
+  <!-- 1) red crossX -->
   <rect x="1155" y="2085" width="90" height="90" rx="8" fill="#222"/>
-  <circle cx="1200" cy="2130" r="30" fill="#ff8800"/>
-  <text x="1200" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">orange circle</text>
+  <g transform="translate(1200,2130) rotate(45)">
+    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#e02020"/>
+  </g>
+  <text x="1200" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red crossX</text>
 
   <!-- 2) purple square -->
   <rect x="1245" y="2085" width="90" height="90" rx="8" fill="#222"/>
