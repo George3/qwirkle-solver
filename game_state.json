@@ -1,0 +1,163 @@
+{
+  "moves": [
+    {"n": 1, "player": "me", "tiles": [
+      {"x": 1, "y": 1, "color": "green", "shape": "star"},
+      {"x": 2, "y": 1, "color": "green", "shape": "clover"},
+      {"x": 3, "y": 1, "color": "green", "shape": "square"}
+    ]},
+    {"n": 1, "player": "Mom", "tiles": [
+      {"x": 2, "y": -1, "color": "yellow", "shape": "clover"},
+      {"x": 2, "y": 0, "color": "purple", "shape": "clover"}
+    ]},
+    {"n": 2, "player": "me", "tiles": [
+      {"x": 2, "y": -2, "color": "red", "shape": "clover"}
+    ]},
+    {"n": 2, "player": "Mom", "tiles": [
+      {"x": 4, "y": 1, "color": "green", "shape": "diamond"},
+      {"x": 4, "y": 2, "color": "red", "shape": "diamond"}
+    ]},
+    {"n": 3, "player": "me", "tiles": [
+      {"x": 4, "y": 0, "color": "purple", "shape": "diamond"},
+      {"x": 4, "y": -1, "color": "yellow", "shape": "diamond"}
+    ]},
+    {"n": 3, "player": "Mom", "tiles": [
+      {"x": 0, "y": 0, "color": "blue", "shape": "crossX"},
+      {"x": 0, "y": 1, "color": "green", "shape": "crossX"}
+    ]},
+    {"n": 4, "player": "me", "tiles": [
+      {"x": 4, "y": 3, "color": "blue", "shape": "diamond"},
+      {"x": 4, "y": -2, "color": "orange", "shape": "diamond"}
+    ]},
+    {"n": 5, "player": "me", "tiles": [
+      {"x": 1, "y": -2, "color": "purple", "shape": "clover"},
+      {"x": 1, "y": -1, "color": "blue", "shape": "clover"}
+    ]},
+    {"n": 4, "player": "Mom", "tiles": [
+      {"x": 5, "y": 3, "color": "blue", "shape": "star"},
+      {"x": 6, "y": 3, "color": "blue", "shape": "circle"}
+    ]},
+    {"n": 10, "player": "me", "tiles": [
+      {"x": 5, "y": -1, "color": "yellow", "shape": "circle"},
+      {"x": 5, "y": 0, "color": "purple", "shape": "circle"}
+    ]},
+    {"n": 5, "player": "Mom", "tiles": [
+      {"x": 0, "y": 2, "color": "orange", "shape": "crossX"}
+    ]},
+    {"n": 11, "player": "me", "tiles": [
+      {"x": 5, "y": 1, "color": "green", "shape": "circle"}
+    ]},
+    {"n": 6, "player": "Mom", "tiles": [
+      {"x": -1, "y": 2, "color": "orange", "shape": "diamond"}
+    ]},
+    {"n": 12, "player": "me", "tiles": [
+      {"x": 5, "y": -2, "color": "orange", "shape": "circle"},
+      {"x": 6, "y": -2, "color": "orange", "shape": "square"}
+    ]},
+    {"n": 7, "player": "Mom", "tiles": [
+      {"x": 7, "y": -2, "color": "orange", "shape": "clover"}
+    ]},
+    {"n": 13, "player": "me", "tiles": [
+      {"x": 7, "y": -1, "color": "purple", "shape": "clover"},
+      {"x": 8, "y": -1, "color": "purple", "shape": "star"}
+    ]},
+    {"n": 8, "player": "Mom", "tiles": [
+      {"x": 3, "y": 2, "color": "red", "shape": "square"}
+    ]},
+    {"n": 14, "player": "me", "tiles": [
+      {"x": -1, "y": 3, "color": "yellow", "shape": "diamond"},
+      {"x": 0, "y": 3, "color": "yellow", "shape": "crossX"},
+      {"x": -3, "y": 3, "color": "yellow", "shape": "circle"},
+      {"x": -2, "y": 3, "color": "yellow", "shape": "clover"}
+    ]},
+    {"n": 15, "player": "me", "tiles": [
+      {"x": 2, "y": -3, "color": "blue", "shape": "clover"},
+      {"x": 3, "y": -3, "color": "blue", "shape": "diamond"}
+    ]},
+    {"n": 9, "player": "Mom", "tiles": [
+      {"x": 9, "y": -1, "color": "purple", "shape": "circle"}
+    ]},
+    {"n": 16, "player": "me", "tiles": [
+      {"x": -1, "y": 4, "color": "red", "shape": "diamond"},
+      {"x": 0, "y": 4, "color": "red", "shape": "crossX"},
+      {"x": 1, "y": 4, "color": "red", "shape": "circle"}
+    ]},
+    {"n": 10, "player": "Mom", "tiles": [
+      {"x": 3, "y": 3, "color": "blue", "shape": "square"},
+      {"x": 3, "y": 4, "color": "yellow", "shape": "square"}
+    ]},
+    {"n": 17, "player": "me", "tiles": [
+      {"x": 8, "y": -4, "color": "green", "shape": "star"},
+      {"x": 8, "y": -3, "color": "blue", "shape": "star"},
+      {"x": 8, "y": -2, "color": "orange", "shape": "star"},
+      {"x": 8, "y": -5, "color": "yellow", "shape": "star"},
+      {"x": 8, "y": -6, "color": "red", "shape": "star"}
+    ]},
+    {"n": 18, "player": "me", "tiles": [
+      {"x": 3, "y": 0, "color": "purple", "shape": "square"}
+    ]},
+    {"n": 11, "player": "Mom", "tiles": [
+      {"x": 10, "y": -1, "color": "purple", "shape": "diamond"}
+    ]},
+    {"n": 19, "player": "me", "tiles": [
+      {"x": -4, "y": 3, "color": "yellow", "shape": "star"},
+      {"x": -4, "y": 4, "color": "green", "shape": "star"}
+    ]},
+    {"n": 12, "player": "Mom", "tiles": [
+      {"x": -1, "y": 5, "color": "purple", "shape": "diamond"}
+    ]},
+    {"n": 20, "player": "me", "tiles": [
+      {"x": -5, "y": 3, "color": "yellow", "shape": "square"},
+      {"x": -5, "y": 4, "color": "green", "shape": "square"}
+    ]},
+    {"n": 13, "player": "Mom", "tiles": [
+      {"x": 0, "y": 5, "color": "purple", "shape": "crossX"},
+      {"x": 1, "y": 5, "color": "purple", "shape": "circle"}
+    ]},
+    {"n": 21, "player": "me", "tiles": [
+      {"x": -4, "y": 2, "color": "orange", "shape": "star"},
+      {"x": -3, "y": 2, "color": "orange", "shape": "circle"}
+    ]},
+    {"n": 14, "player": "Mom", "tiles": [
+      {"x": -5, "y": 5, "color": "purple", "shape": "square"},
+      {"x": -5, "y": 6, "color": "red", "shape": "square"}
+    ]},
+    {"n": 22, "player": "me", "tiles": [
+      {"x": -3, "y": 6, "color": "green", "shape": "crossX"},
+      {"x": -2, "y": 6, "color": "green", "shape": "circle"},
+      {"x": -1, "y": 6, "color": "green", "shape": "diamond"}
+    ]},
+    {"n": 15, "player": "Mom", "tiles": [
+      {"x": -1, "y": 7, "color": "blue", "shape": "diamond"}
+    ]},
+    {"n": 23, "player": "me", "tiles": [
+      {"x": 2, "y": -4, "color": "orange", "shape": "clover"}
+    ]},
+    {"n": 16, "player": "Mom", "tiles": [
+      {"x": -1, "y": 0, "color": "orange", "shape": "crossX"},
+      {"x": -2, "y": 0, "color": "purple", "shape": "crossX"},
+      {"x": -3, "y": 0, "color": "yellow", "shape": "crossX"}
+    ]},
+    {"n": 24, "player": "me", "tiles": [
+      {"x": 9, "y": 0, "color": "green", "shape": "circle"},
+      {"x": 10, "y": 0, "color": "green", "shape": "diamond"},
+      {"x": 11, "y": 0, "color": "green", "shape": "crossX"}
+    ]},
+    {"n": 17, "player": "Mom", "tiles": [
+      {"x": 5, "y": -3, "color": "blue", "shape": "circle"},
+      {"x": 5, "y": -4, "color": "red", "shape": "circle"}
+    ]},
+    {"n": 25, "player": "me", "tiles": [
+      {"x": 10, "y": 1, "color": "orange", "shape": "diamond"},
+      {"x": 11, "y": 1, "color": "orange", "shape": "crossX"},
+      {"x": 12, "y": 1, "color": "orange", "shape": "clover"}
+    ]}
+  ],
+  "hand": [
+    {"color": "orange", "shape": "circle"},
+    {"color": "purple", "shape": "square"},
+    {"color": "purple", "shape": "crossX"},
+    {"color": "red", "shape": "star"},
+    {"color": "red", "shape": "diamond"},
+    {"color": "blue", "shape": "clover"}
+  ]
+}

@@ -1,5 +1,7 @@
+import json
 from collections import Counter
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable, Optional, TypedDict
 
 
@@ -590,108 +592,30 @@ def generate_all_multi_moves(
     results.sort(key=lambda item: item[0], reverse=True)
     return apply_late_game_risk_filter(engine, tiles, results)
 
+def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Tile]]:
+    """Load board state and hand from a JSON file.
+
+    JSON shape: {"moves": [{"n", "player", "tiles": [{"x","y","color","shape"}...]}, ...],
+                 "hand":  [{"color","shape"}, ...]}
+    """
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    board: dict[tuple[int, int], Tile] = {}
+    for move in data["moves"]:
+        for t in move["tiles"]:
+            board[(t["x"], t["y"])] = Tile(color=t["color"], shape=t["shape"])
+
+    hand = Counter(Tile(color=t["color"], shape=t["shape"]) for t in data["hand"])
+    return board, hand
+
+
 # Example usage
 if __name__ == "__main__":
     engine = QwirkleEngine()
 
-    # Define some tiles already on the board
-    # board for vs. tinyb (not robot)
-    game_state = {
-        # colors: red, orange, yellow, green, blue, purple.
-        # shapes: circle, square, diamond, star, clover, crossX.
-        # My move #1:
-        (1, 1): Tile(color='green', shape='star'), (2, 1): Tile(color='green', shape='clover'), (3, 1): Tile(color='green', shape='square'),
-        # Mom's move #1:
-        (2, -1): Tile(color='yellow', shape='clover'), (2, 0): Tile(color='purple', shape='clover'),
-        # My move #2:
-        (2, -2): Tile(color='red', shape='clover'), 
-        # Mom's move #2:
-        (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),
-        # My move #3:
-        (4, 0): Tile(color='purple', shape='diamond'), (4, -1): Tile(color='yellow', shape='diamond')
-        # Move below is a "bad" 5-total-tile move that the solver should NOT suggest! 
-        # (But in an earlier round - see comment at top of this doc - it did NOT suggest a 5-pt. move - only 6 and 4!?)        
-        ,(0, 0): Tile(color='blue', shape='crossX'), (0, 1): Tile(color='green', shape='crossX')
-        ,(4, 3): Tile(color='blue', shape='diamond'), (4, -2): Tile(color='orange', shape='diamond')
-        # Below is bad move on my part: Since had red clover above in wrong place!
-        ,(1, -2): Tile(color='purple', shape='clover'), (1, -1): Tile(color='blue', shape='clover')
-        # Mom:
-        ,(5, 3): Tile(color='blue', shape='star'), (6, 3): Tile(color='blue', shape='circle')
-        # me (mv. #~10)
-        ,(5, -1): Tile(color='yellow', shape='circle'), (5, 0): Tile(color='purple', shape='circle')
-        ,(0, 2): Tile(color='orange', shape='crossX')
-        # My move #~11:  1st Qwirkle found by this solver! = 15 points!
-        ,(5, 1): Tile(color='green', shape='circle')
-        ,(-1, 2): Tile(color='orange', shape='diamond')
-        # My mv #~12:
-        ,(5, -2): Tile(color='orange', shape='circle'), (6, -2): Tile(color='orange', shape='square')
-        # Score: me: 52; Mom: 31
-        ,(7, -2): Tile(color='orange', shape='clover')
-        # My mv #~13:
-        ,(7, -1): Tile(color='purple', shape='clover'), (8, -1): Tile(color='purple', shape='star')
-        ,(3, 2): Tile(color='red', shape='square')
-        # My mv #14 = 8 points -> 
-        ,(-1, 3): Tile(color='yellow', shape='diamond'), (0, 3): Tile(color='yellow', shape='crossX')
-        ,(-3, 3): Tile(color='yellow', shape='circle'), (-2, 3): Tile(color='yellow', shape='clover')
-        # My mv #15
-        ,(2, -3): Tile(color='blue', shape='clover'), (3, -3): Tile(color='blue', shape='diamond')
-        # Mom
-        ,(9, -1): Tile(color='purple', shape='circle')
-        # My mv #16 (11 points)
-        ,(-1, 4): Tile(color='red', shape='diamond'), (0, 4): Tile(color='red', shape='crossX'), (1, 4): Tile(color='red', shape='circle')
-        # Mom
-        ,(3, 3): Tile(color='blue', shape='square'), (3, 4): Tile(color='yellow', shape='square')
-        # My mv #17 (9 points)
-        ,(8, -4): Tile(color='green', shape='star'), (8, -3): Tile(color='blue', shape='star'), (8, -2): Tile(color='orange', shape='star')
-        ,(8, -5): Tile(color='yellow', shape='star'), (8, -6): Tile(color='red', shape='star')
-        # My mv #18 (9 points)
-        ,(3, 0): Tile(color='purple', shape='square') # Risky move since sets up Mom for a Qwirkle w/orange square.s 
-        # Mom
-        ,(10, -1): Tile(color='purple', shape='diamond')
-        # My mv #19 (7 points -> 
-        ,(-4, 3): Tile(color='yellow', shape='star'), (-4, 4): Tile(color='green', shape='star')
-        # Mom
-        ,(-1, 5): Tile(color='purple', shape='diamond')
-        # my mv #20 (16 points)
-        ,(-5, 3): Tile(color='yellow', shape='square'), (-5, 4): Tile(color='green', shape='square')
-        # Mom
-        ,(0, 5): Tile(color='purple', shape='crossX'), (1, 5): Tile(color='purple', shape='circle')
-        # My mv #21 (7 points)
-        # AI-autocomplete ("wrong") while only typing here: ,(-6, 3): Tile(color='yellow', shape='circle'), (-6, 4): Tile(color='green', shape='circle')
-        ,(-4, 2): Tile(color='orange', shape='star'), (-3, 2): Tile(color='orange', shape='circle')
-        # Mom
-        ,(-5, 5): Tile(color='purple', shape='square'), (-5, 6): Tile(color='red', shape='square')
-        # My mv #22 (8 points)
-        ,(-3, 6): Tile(color='green', shape='crossX'), (-2, 6): Tile(color='green', shape='circle'), (-1, 6): Tile(color='green', shape='diamond')
-# !>    # Mom (AI "error"/limitation - Allowed a 1-tile Qwirkle that should have been blocked!)
-        ,(-1, 7): Tile(color='blue', shape='diamond')
-        # My mv #23 (7 points)
-        ,(2, -4): Tile(color='orange', shape='clover')
-        # Mom
-        ,(-1, 0): Tile(color='orange', shape='crossX'), (-2, 0): Tile(color='purple', shape='crossX'), (-3, 0): Tile(color='yellow', shape='crossX')
-        # My mv #24 (8 points)
-        # AVOID; AI-added (GPT-5.3-Codex) rule to avoid 5-in-a-row: ,(-4, -2): Tile(color='green', shape='diamond'), (-4, -1): Tile(color='green', shape='circle'), (-4, 0): Tile(color='green', shape='crossX')
-        ,(9, 0): Tile(color='green', shape='circle'), (10, 0): Tile(color='green', shape='diamond'), (11, 0): Tile(color='green', shape='crossX')
-        # Mom
-        ,(5, -3): Tile(color='blue', shape='circle'), (5, -4): Tile(color='red', shape='circle')
-        # My mv #25 (7 points) - Score: 165 vs. 123 (Mom)
-        ,(10, 1): Tile(color='orange', shape='diamond'), (11, 1): Tile(color='orange', shape='crossX'), (12, 1): Tile(color='orange', shape='clover')
-    }
-    
-    # Load the in-progress game
+    game_state, my_tiles = load_game_state(Path(__file__).parent / "game_state.json")
     engine.load_board_state(game_state)
-    my_tiles = Counter(
-        [ 
-        # colors: red, orange, yellow, green, blue, purple.
-        # shapes: circle, square, diamond, star, crossX, clover.
-            Tile(color="orange", shape="circle"),
-            Tile(color="purple", shape="square"),
-            Tile(color="purple", shape="crossX"),
-            Tile(color="red", shape="star"),
-            Tile(color="red", shape="diamond"),
-            Tile(color="blue", shape="clover")
-        ]
-    )
 
     all_moves = generate_all_multi_moves(engine, my_tiles)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
