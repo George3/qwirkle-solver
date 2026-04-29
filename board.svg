@@ -351,6 +351,10 @@
     <rect x="-26" y="-9" width="52" height="18" fill="#ff8800"/>
   </g>
 
+  <!-- (3,5) orange square  |  px=1370 py=500  cx=1425 cy=555 -->
+  <rect x="1370" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <rect x="1392" y="522" width="66" height="66" rx="4" fill="#ff8800"/>
+
   <!-- (3,4) yellow square  |  px=1370 py=610  cx=1425 cy=665 -->
   <rect x="1370" y="610" width="110" height="110" rx="8" fill="#222"/>
   <rect x="1392" y="632" width="66" height="66" rx="4" fill="#f5d000"/>
@@ -375,6 +379,10 @@
   <rect x="1370" y="1380" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1425,1394 1466,1435 1425,1476 1384,1435" fill="#1a6edb"/>
 
+  <!-- (4,5) blue square  |  px=1480 py=500  cx=1535 cy=555 -->
+  <rect x="1480" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <rect x="1502" y="522" width="66" height="66" rx="4" fill="#1a6edb"/>
+
   <!-- (4,3) blue diamond  |  px=1480 py=720  cx=1535 cy=775 -->
   <rect x="1480" y="720" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1535,734 1576,775 1535,816 1494,775" fill="#1a6edb"/>
@@ -398,6 +406,10 @@
   <!-- (4,-2) orange diamond  |  px=1480 py=1270  cx=1535 cy=1325 -->
   <rect x="1480" y="1270" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="1535,1284 1576,1325 1535,1366 1494,1325" fill="#ff8800"/>
+
+  <!-- (5,5) yellow square  |  px=1590 py=500  cx=1645 cy=555 -->
+  <rect x="1590" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <rect x="1612" y="522" width="66" height="66" rx="4" fill="#f5d000"/>
 
   <!-- (5,3) blue star  |  px=1590 py=720  cx=1645 cy=775 -->
   <rect x="1590" y="720" width="110" height="110" rx="8" fill="#222"/>
@@ -429,6 +441,10 @@
   <!-- (5,-4) red circle  |  px=1590 py=1490  cx=1645 cy=1545 -->
   <rect x="1590" y="1490" width="110" height="110" rx="8" fill="#222"/>
   <circle cx="1645" cy="1545" r="36" fill="#e02020"/>
+
+  <!-- (6,5) red square  |  px=1700 py=500  cx=1755 cy=555 -->
+  <rect x="1700" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <rect x="1722" y="522" width="66" height="66" rx="4" fill="#e02020"/>
 
   <!-- (6,3) blue circle  |  px=1700 py=720  cx=1755 cy=775 -->
   <rect x="1700" y="720" width="110" height="110" rx="8" fill="#222"/>
@@ -538,6 +554,18 @@
   <rect x="2140" y="1160" width="110" height="110" rx="8" fill="#222"/>
   <polygon points="2195,1174 2236,1215 2195,1256 2154,1215" fill="#8833cc"/>
 
+  <!-- (11,5) purple crossX  |  px=2250 py=500  cx=2305 cy=555 -->
+  <rect x="2250" y="500" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(2305,555) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#8833cc"/>
+  </g>
+
+  <!-- (11,4) blue crossX  |  px=2250 py=610  cx=2305 cy=665 -->
+  <rect x="2250" y="610" width="110" height="110" rx="8" fill="#222"/>
+  <g transform="translate(2305,665) rotate(45)">
+    <polygon points="0,-42 8,-8 42,0 8,8 0,42 -8,8 -42,0 -8,-8" fill="#1a6edb"/>
+  </g>
+
   <!-- (11,3) red crossX  |  px=2250 py=720  cx=2305 cy=775 -->
   <rect x="2250" y="720" width="110" height="110" rx="8" fill="#222"/>
   <g transform="translate(2305,775) rotate(45)">
@@ -626,12 +654,12 @@
   <!-- ============================================ -->
   <text x="1425" y="2070" text-anchor="middle" font-size="18" fill="#333" font-family="sans-serif" font-weight="bold">My Tiles</text>
 
-  <!-- 1) red crossX -->
+  <!-- 1) blue crossX -->
   <rect x="1155" y="2085" width="90" height="90" rx="8" fill="#222"/>
   <g transform="translate(1200,2130) rotate(45)">
-    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#e02020"/>
+    <polygon points="0,-32 6,-6 32,0 6,6 0,32 -6,6 -32,0 -6,-6" fill="#1a6edb"/>
   </g>
-  <text x="1200" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">red crossX</text>
+  <text x="1200" y="2195" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">blue crossX</text>
 
   <!-- 2) purple square -->
   <rect x="1245" y="2085" width="90" height="90" rx="8" fill="#222"/>
