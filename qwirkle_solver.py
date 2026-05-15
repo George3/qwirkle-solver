@@ -37,7 +37,7 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 # Day 5. (2026-02-18) git work: Combined gist w/a "full" repo w/only SVG so far and created git-history.md in ~ai/gen...nts repo.
 # Day 6. (2026-02-19) In branch "new-game-w-Mom" it seems to prove it won't suggest 5-tile moves:
 """
-    $ date; python ./qwirkle-solver.py; date
+    $ date; python ./qwirkle_solver.py; date
     Thu, Feb 19, 2026  9:31:37 PM
     Total legal multi-tile moves: 27
     Rank 1: 6 points -> (4, 1): Tile(color='green', shape='diamond'), (4, 2): Tile(color='red', shape='diamond'),

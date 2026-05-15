@@ -1,60 +1,15 @@
 #!/usr/bin/env python3
-"""Sync board.svg with `game_state` and `my_tiles` in `qwirkle-solver.py`.
-
-Usage: python sync_board.py
-"""
-from dataclasses import dataclass
-from pathlib import Path
-import re
+"""Sync board.svg with game_state.json. Usage: python sync_board.py"""
+import json
 import shutil
 from datetime import datetime
+from pathlib import Path
+
+from qwirkle_solver import Tile, load_game_state
 
 ROOT = Path(__file__).parent
-PY = ROOT / "qwirkle-solver.py"
+JSON = ROOT / "game_state.json"
 SVG = ROOT / "board.svg"
-
-
-@dataclass(frozen=True)
-class Tile:
-    color: str
-    shape: str
-
-
-def _find_matching(text: str, start: int, open_char: str, close_char: str) -> int:
-    depth = 0
-    for i in range(start, len(text)):
-        c = text[i]
-        if c == open_char:
-            depth += 1
-        elif c == close_char:
-            depth -= 1
-            if depth == 0:
-                return i
-    raise ValueError("No matching closing char found")
-
-
-def extract_game_state_and_hand(py_text: str):
-    # Extract game_state dict literal
-    m = re.search(r"game_state\s*=\s*\{", py_text)
-    game_state = {}
-    if m:
-        open_idx = py_text.find("{", m.start())
-        close_idx = _find_matching(py_text, open_idx, "{", "}")
-        dict_src = py_text[open_idx: close_idx + 1]
-        ns = {"Tile": Tile}
-        game_state = eval(dict_src, ns)
-
-    # Extract list literal inside Counter([...]) for my_tiles to preserve order
-    m2 = re.search(r"my_tiles\s*=\s*Counter\s*\(\s*\[", py_text)
-    hand_list = []
-    if m2:
-        open_idx = py_text.find("[", m2.start())
-        close_idx = _find_matching(py_text, open_idx, "[", "]")
-        list_src = py_text[open_idx: close_idx + 1]
-        ns = {"Tile": Tile}
-        hand_list = eval(list_src, ns)
-
-    return game_state, hand_list
 
 
 def sync_svg(game_state: dict, hand_list: list):
@@ -209,9 +164,10 @@ def sync_svg(game_state: dict, hand_list: list):
     svg_parts.append("</svg>")
 
     SVG.write_text("\n".join(svg_parts), encoding="utf-8")
-    print(f"Regenerated {SVG} from {PY} with total w={svg_w}, h={svg_h}")
+    print(f"Regenerated {SVG} from {JSON} with total w={svg_w}, h={svg_h}")
 
 if __name__ == "__main__":
-    py_text = PY.read_text(encoding="utf-8")
-    game_state, hand_list = extract_game_state_and_hand(py_text)
+    game_state, _ = load_game_state(JSON)
+    with open(JSON, encoding="utf-8") as f:
+        hand_list = [Tile(color=t["color"], shape=t["shape"]) for t in json.load(f)["hand"]]
     sync_svg(game_state, hand_list)

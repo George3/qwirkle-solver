@@ -84,7 +84,7 @@ def score_placement(board, placements):
 # ── Move history in chronological order ──────────────────────────────
 # Each entry: (player, description, [(pos, Tile), ...])
 # "me" = you, "mom" = Mom
-# Player attribution is based on comments in qwirkle-solver.py.
+# Player attribution is based on comments in qwirkle_solver.py.
 # Moves without explicit attribution are marked with "?" for review.
 
 move_history = [
