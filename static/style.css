@@ -1,0 +1,88 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f0e8;
+  color: #333;
+}
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #2a2a2a;
+  color: #f5f0e8;
+}
+header h1 { margin: 0; font-size: 18px; }
+#status { font-size: 12px; opacity: 0.7; font-family: monospace; }
+main { padding: 16px; }
+section { margin-bottom: 24px; }
+h2 { margin: 0 0 8px 0; font-size: 14px; }
+#board { display: block; max-width: 100%; }
+#hand { display: block; }
+
+.cell-empty {
+  fill: transparent;
+  stroke: #bbb;
+  stroke-dasharray: 4 3;
+  stroke-width: 1;
+  cursor: pointer;
+}
+.cell-empty.adjacent {
+  stroke: #888;
+  fill: rgba(255, 255, 255, 0.4);
+}
+.cell-empty:not(.adjacent) { cursor: not-allowed; opacity: 0.4; }
+.cell-empty.adjacent:hover { fill: rgba(255, 255, 220, 0.7); }
+.tile-bg { cursor: pointer; }
+.tile-bg:hover { stroke: gold; stroke-width: 3; }
+.hand-slot-empty {
+  fill: rgba(255, 255, 255, 0.6);
+  stroke: #888;
+  stroke-dasharray: 4 3;
+  cursor: pointer;
+}
+.hand-slot-empty:hover { fill: rgba(255, 255, 220, 0.8); }
+
+#picker-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+#picker-overlay.hidden { display: none; }
+#picker {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+#picker-title { font-weight: bold; margin-bottom: 12px; }
+#picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 56px);
+  gap: 6px;
+}
+.swatch {
+  width: 56px; height: 56px;
+  border-radius: 6px;
+  background: #222;
+  cursor: pointer;
+  border: 2px solid transparent;
+  padding: 0;
+}
+.swatch:hover { border-color: gold; }
+#picker-actions {
+  margin-top: 12px;
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+#picker-actions button {
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  background: #eee;
+  cursor: pointer;
+}
+#picker-remove { background: #fdd; border-color: #c66; }
+.hidden { display: none !important; }

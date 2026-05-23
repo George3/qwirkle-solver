@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Qwirkle Interactive Editor</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Qwirkle Board</h1>
+    <div id="status"></div>
+  </header>
+
+  <main>
+    <section id="board-wrap">
+      <svg id="board" xmlns="http://www.w3.org/2000/svg"></svg>
+    </section>
+
+    <section id="hand-wrap">
+      <h2>My Hand</h2>
+      <svg id="hand" xmlns="http://www.w3.org/2000/svg"></svg>
+    </section>
+  </main>
+
+  <div id="picker-overlay" class="hidden">
+    <div id="picker">
+      <div id="picker-title">Pick a tile</div>
+      <div id="picker-grid"></div>
+      <div id="picker-actions">
+        <button id="picker-remove" class="hidden">Remove</button>
+        <button id="picker-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
