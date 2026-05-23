@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"c:\\\\src\\\\fun\\\\qwirkle-solver\" branch -a)",
+      "Bash(git -C \"c:\\\\src\\\\fun\\\\qwirkle-solver\" diff --stat main \"Exp-01-Interactive-GUI-w/Auto-AI\")",
+      "Bash(git -C \"c:\\\\src\\\\fun\\\\qwirkle-solver\" log --oneline main..Exp-01-Interactive-GUI-w/Auto-AI)",
+      "Bash(git -C \"c:\\\\src\\\\fun\\\\qwirkle-solver\" log --oneline --all -20)",
+      "Bash(git -C \"c:\\\\src\\\\fun\\\\qwirkle-solver\" diff main \"Exp-01-Interactive-GUI-w/Auto-AI\" -- README.md)"
+    ]
+  }
+}
