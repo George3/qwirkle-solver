@@ -33,3 +33,13 @@ The two SVG renderers must stay in sync — sync_board.py (Python) and static/ap
 crossX capitalization quirk in older JSON entries.
 The narrative comment block at the top of qwirkle_solver.py is intentional history, not cruft.
 .bak-* files accumulate on every editor mutation — flagged for cleanup/gitignore.
+
+## TODO
+
+- resize board and "My Hand" to fit better on 1 screen
+- asserts (aka, validation) if a chosen tile breaks any rules of game
+- possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
+- a "Suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
+- a score button (might only be available if every move is assigned to a specific player)
+- **(Claude Opus suggestion)** bag/remaining-tile tracker — derive what's left in the bag from `(108 total) − (tiles on board) − (tiles in hand)` and show a 6×6 grid of remaining counts. Naturally feeds `LATE_GAME_BAG_THRESHOLD` logic and helps real-game strategy (knowing if the last `purple star` is still out there)
+- **(Claude Opus suggestion)** undo/redo using the existing `game_state.json.bak-*` snapshots — they're already written on every mutation, so a `POST /api/undo` that restores the most-recent backup is nearly free and rescues the "oops, wrong click" case
