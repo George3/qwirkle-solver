@@ -208,3 +208,6 @@ __marimo__/
 
 # Don't save backups of board.svg
 board.svg*.bak
+
+# Don't save game state backups
+game_state.json.bak-*

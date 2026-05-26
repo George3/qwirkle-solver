@@ -170,13 +170,11 @@ function renderBoard() {
   // placed tiles
   for (const t of boardTiles) {
     const { px, py, cx, cy } = getPx(t.x, t.y);
-    const bg = el("rect", {
-      x: px, y: py, width: 110, height: 110, rx: 8, fill: "#222",
-    });
-    bg.setAttribute("class", "tile-bg");
-    bg.addEventListener("click", () => openTilePopover(t));
-    svg.appendChild(bg);
-    drawShape(svg, t.shape, t.color, cx, cy, px, py, 1);
+    const g = el("g", { class: "tile-group" });
+    g.addEventListener("click", () => openTilePopover(t));
+    g.appendChild(el("rect", { x: px, y: py, width: 110, height: 110, rx: 8, fill: "#222" }));
+    drawShape(g, t.shape, t.color, cx, cy, px, py, 1);
+    svg.appendChild(g);
   }
 }
 
@@ -239,8 +237,8 @@ function openBoardPicker(x, y) {
 }
 
 function openTilePopover(tile) {
-  if (!confirm(`Remove ${tile.color} ${tile.shape} at (${tile.x}, ${tile.y})?`)) return;
-  api("/api/board/remove", { x: tile.x, y: tile.y }).then(refresh);
+  pickerContext = { kind: "board-edit", x: tile.x, y: tile.y };
+  showPicker(`Edit tile at (${tile.x}, ${tile.y})`, true);
 }
 
 function openHandPicker(slotIndex, existingTile) {
@@ -293,6 +291,11 @@ async function onPickerChoice(color, shape) {
     hidePicker();
     await api("/api/board/place", { x, y, color, shape });
     await refresh();
+  } else if (pickerContext.kind === "board-edit") {
+    const { x, y } = pickerContext;
+    hidePicker();
+    await api("/api/board/replace", { x, y, color, shape });
+    await refresh();
   } else if (pickerContext.kind === "hand") {
     const { slotIndex } = pickerContext;
     const hand = (state.hand || []).slice();
@@ -305,13 +308,20 @@ async function onPickerChoice(color, shape) {
 }
 
 async function onPickerRemove() {
-  if (!pickerContext || pickerContext.kind !== "hand") return;
-  const { slotIndex } = pickerContext;
-  const hand = (state.hand || []).slice();
-  hand.splice(slotIndex, 1);
-  hidePicker();
-  await api("/api/hand", { tiles: hand });
-  await refresh();
+  if (!pickerContext) return;
+  if (pickerContext.kind === "board-edit") {
+    const { x, y } = pickerContext;
+    hidePicker();
+    await api("/api/board/remove", { x, y });
+    await refresh();
+  } else if (pickerContext.kind === "hand") {
+    const { slotIndex } = pickerContext;
+    const hand = (state.hand || []).slice();
+    hand.splice(slotIndex, 1);
+    hidePicker();
+    await api("/api/hand", { tiles: hand });
+    await refresh();
+  }
 }
 
 // ─── API ──────────────────────────────────────────────────────────────

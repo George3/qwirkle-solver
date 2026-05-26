@@ -102,6 +102,22 @@ def place_tile(payload: PlacePayload) -> dict:
     return data
 
 
+@app.post("/api/board/replace")
+def replace_tile(payload: PlacePayload) -> dict:
+    data = _read_state()
+    found = False
+    for move in data.get("moves", []):
+        for t in move.get("tiles", []):
+            if t["x"] == payload.x and t["y"] == payload.y:
+                t["color"] = payload.color
+                t["shape"] = payload.shape
+                found = True
+    if not found:
+        raise HTTPException(status_code=404, detail=f"No tile at ({payload.x},{payload.y})")
+    _atomic_write(data)
+    return data
+
+
 @app.post("/api/board/remove")
 def remove_tile(payload: RemovePayload) -> dict:
     data = _read_state()

@@ -45,8 +45,8 @@ h2 { margin: 0 0 8px 0; font-size: 14px; }
 }
 .cell-empty:not(.adjacent) { cursor: not-allowed; opacity: 0.4; }
 .cell-empty.adjacent:hover { fill: rgba(255, 255, 220, 0.7); }
-.tile-bg { cursor: pointer; }
-.tile-bg:hover { stroke: gold; stroke-width: 3; }
+.tile-group { cursor: pointer; }
+.tile-group:hover rect { stroke: gold; stroke-width: 3; }
 .hand-slot-empty {
   fill: rgba(255, 255, 255, 0.6);
   stroke: #888;
