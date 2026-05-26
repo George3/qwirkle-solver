@@ -77,6 +77,11 @@ Backups accumulate: every mutation produces a `game_state.json.bak-*`. These are
 
 The `.bak` file convention (`<name>.bak-YYYYMMDD-HHMMSS`) is shared by `sync_board.py` (for `board.svg`) and `app.py` (for `game_state.json`). [rename_files.py](rename_files.py) is a one-shot historical tool that migrated old `*.bak-TIMESTAMP` names to `*-TIMESTAMP.bak` — note the *current* convention is `.bak-TIMESTAMP` (no trailing `.bak`), and the rename script reflects an earlier scheme.
 
+## Git conventions
+
+- Always use **merge** (never rebase) when integrating branches. Full history is valued; linear history is not a goal here.
+- When resolving conflicts where one branch should simply win, use `git checkout --ours` / `--theirs` per file, then `git add` and commit to complete the merge.
+
 ## Conventions worth knowing
 
 - Coordinates: `(x, y)` tuples, `+y` is up (north), `+x` is right (east). The SVG renderers flip y for screen coords (`grid_max_y - y`).
