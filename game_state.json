@@ -423,27 +423,27 @@
   ],
   "hand": [
     {
-      "color": "red",
-      "shape": "clover"
+      "color": "green",
+      "shape": "square"
     },
     {
-      "color": "orange",
-      "shape": "diamond"
+      "color": "yellow",
+      "shape": "crossx"
     },
     {
-      "color": "red",
-      "shape": "circle"
+      "color": "blue",
+      "shape": "crossx"
     },
     {
-      "color": "red",
+      "color": "green",
       "shape": "star"
     },
     {
       "color": "yellow",
-      "shape": "square"
+      "shape": "clover"
     },
     {
-      "color": "red",
+      "color": "purple",
       "shape": "star"
     }
   ]
