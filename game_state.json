@@ -417,6 +417,18 @@
           "y": 7,
           "color": "red",
           "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": -1,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -6,
+          "y": -2,
+          "color": "green",
+          "shape": "star"
         }
       ]
     }

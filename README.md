@@ -11,9 +11,9 @@ My first significant foray into vibe-coding(🙄)
 - Fairly impressed with how well the AI agents/LLMs perform responding to my prompts to create this.
 
 DRFT ~ FIXME = FINISH-ME:
+
 - Using ~CoPilot Pro (Trial) $10/mo. (Upgraded from CoPilot free becase allows to use premium models like laude Opus 4.6 -- TODO check usage if "Free" would still cover it?! 💸💳)
 - Most code gen'd w/Claude Haiku #.#?, Sonnet #.#?, GPT-5.3-Codex. ...Occasionally, cutting edge Claude Opus 4.6, ...Gemini -see branch on refactor.
-
 
 ## AI History / How-To
 
@@ -22,7 +22,7 @@ DRFT ~ FIXME = FINISH-ME:
 
 - After prompted for 1st phase of creating an interactive GUI,
 Then ran "/init" to have CLAUDE.md created.
-It noted: 
+It noted:
 Globpattern: "{CLAUDE.md,.cursorrules,.cursor/rules/**,.github/copilot-instructions.md}"
 No files found
 Read c:\src\fun\qwirkle-solver\rename_files.py
