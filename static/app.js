@@ -208,11 +208,11 @@ function renderHand() {
     const tile = hand[i];
 
     if (tile) {
-      const bg = el("rect", { x: px, y: py, width: HAND_TILE_SIZE, height: HAND_TILE_SIZE, rx: 8, fill: "#222" });
-      bg.setAttribute("class", "tile-bg");
-      bg.addEventListener("click", () => openHandPicker(i, tile));
-      svg.appendChild(bg);
-      drawShape(svg, tile.shape, tile.color, cx, cy, px, py, 0.82);
+      const g = el("g", { class: "tile-group" });
+      g.addEventListener("click", () => openHandPicker(i, tile));
+      g.appendChild(el("rect", { x: px, y: py, width: HAND_TILE_SIZE, height: HAND_TILE_SIZE, rx: 8, fill: "#222" }));
+      drawShape(g, tile.shape, tile.color, cx, cy, px, py, 0.82);
+      svg.appendChild(g);
     } else {
       const slot = el("rect", { x: px, y: py, width: HAND_TILE_SIZE, height: HAND_TILE_SIZE, rx: 8 });
       slot.setAttribute("class", "hand-slot-empty");

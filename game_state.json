@@ -435,8 +435,8 @@
   ],
   "hand": [
     {
-      "color": "green",
-      "shape": "square"
+      "color": "red",
+      "shape": "crossx"
     },
     {
       "color": "yellow",
@@ -448,7 +448,7 @@
     },
     {
       "color": "green",
-      "shape": "star"
+      "shape": "square"
     },
     {
       "color": "yellow",
