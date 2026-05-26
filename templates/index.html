@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Qwirkle Browser Board</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Qwirkle Browser Board</h1>
+          <p>Build the board in the browser, drag from your hand, and keep legality checks in Python.</p>
+        </div>
+        <div class="toolbar">
+          <button id="reset-button" type="button">Reset Board</button>
+          <button id="suggestions-button" type="button">Suggest Moves</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="left-column">
+          <section class="panel board-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Board</h2>
+                <p id="board-status">No pending move.</p>
+              </div>
+              <div class="mode-switches">
+                <button id="mode-play" class="mode-button active" type="button">Play From Hand</button>
+                <button id="mode-setup" class="mode-button" type="button">Board Setup</button>
+              </div>
+            </div>
+            <div id="board-scroll" class="board-scroll">
+              <div id="board-grid" class="board-grid"></div>
+            </div>
+            <div class="board-actions">
+              <button id="commit-button" type="button">Commit Move</button>
+              <button id="clear-pending-button" type="button">Clear Pending</button>
+            </div>
+          </section>
+
+          <section class="panel suggestions-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Suggestions</h2>
+                <p>Top solver moves for the current board and hand.</p>
+              </div>
+            </div>
+            <div id="suggestions-list" class="suggestions-list"></div>
+          </section>
+        </section>
+
+        <aside class="side-column">
+          <section class="panel hand-panel">
+            <div class="panel-header">
+              <div>
+                <h2>My Tiles</h2>
+                <p>Drag a tile onto any highlighted legal cell.</p>
+              </div>
+            </div>
+            <div id="hand-list" class="hand-list"></div>
+          </section>
+
+          <section class="panel palette-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Palette</h2>
+                <p>Click a tile to select it, then add it to your hand or place it in setup mode.</p>
+              </div>
+            </div>
+            <div class="palette-actions">
+              <button id="add-to-hand-button" type="button">Add Selected To Hand</button>
+              <button id="remove-selected-from-hand-button" type="button">Remove Selected From Hand</button>
+            </div>
+            <div id="selected-tile-label" class="selected-tile-label">Selected: none</div>
+            <div id="palette-grid" class="palette-grid"></div>
+          </section>
+
+        </aside>
+      </main>
+    </div>
+
+    <template id="tile-template">
+      <div class="tile-frame">
+        <div class="tile-art"></div>
+      </div>
+    </template>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
