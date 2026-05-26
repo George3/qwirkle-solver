@@ -5,6 +5,7 @@ Run:
 """
 import json
 import os
+import random
 import shutil
 from datetime import datetime
 from pathlib import Path
@@ -123,5 +124,22 @@ def remove_tile(payload: RemovePayload) -> dict:
 def set_hand(payload: HandPayload) -> dict:
     data = _read_state()
     data["hand"] = [{"color": t.color, "shape": t.shape} for t in payload.tiles]
+    _atomic_write(data)
+    return data
+
+
+_ALL_COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
+_ALL_SHAPES = ["circle", "square", "diamond", "clover", "crossx", "star"]
+
+
+@app.post("/api/new_game")
+def new_game() -> dict:
+    bag = [{"color": c, "shape": s} for c in _ALL_COLORS for s in _ALL_SHAPES] * 3
+    random.shuffle(bag)
+    center, *hand_tiles = bag[:7]
+    data = {
+        "moves": [{"n": SETUP_KEY, "player": SETUP_KEY, "tiles": [{"x": 0, "y": 0, **center}]}],
+        "hand": hand_tiles,
+    }
     _atomic_write(data)
     return data

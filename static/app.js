@@ -346,6 +346,12 @@ async function refresh() {
 
 // ─── Init ─────────────────────────────────────────────────────────────
 
+document.getElementById("new-game-btn").addEventListener("click", async () => {
+  if (!confirm("Start a new game? This will clear the board and deal 6 random tiles.")) return;
+  await api("/api/new_game", {});
+  await refresh();
+});
+
 document.getElementById("picker-cancel").addEventListener("click", hidePicker);
 document.getElementById("picker-remove").addEventListener("click", onPickerRemove);
 document.getElementById("picker-overlay").addEventListener("click", (e) => {
