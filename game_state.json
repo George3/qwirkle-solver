@@ -429,21 +429,39 @@
           "y": -2,
           "color": "green",
           "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "color": "blue",
+          "shape": "crossx"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "red",
-      "shape": "crossx"
+      "color": "yellow",
+      "shape": "circle"
+    },
+    {
+      "color": "green",
+      "shape": "circle"
     },
     {
       "color": "yellow",
-      "shape": "crossx"
-    },
-    {
-      "color": "blue",
       "shape": "crossx"
     },
     {
