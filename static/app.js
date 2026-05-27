@@ -123,7 +123,7 @@ function renderBoard() {
   const cols = bounds.gridMaxX - bounds.gridMinX + 1;
   const rows = bounds.gridMaxY - bounds.gridMinY + 1;
   const w = BOARD_OFFSET_X * 2 + cols * TILE_SIZE;
-  const h = BOARD_OFFSET_Y + rows * TILE_SIZE + 30;
+  const h = BOARD_OFFSET_Y + rows * TILE_SIZE;
   svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
   svg.setAttribute("width", w);
   svg.setAttribute("height", h);
@@ -133,7 +133,7 @@ function renderBoard() {
     const { cx } = getPx(x, bounds.gridMaxY);
     const t = el("text", {
       x: cx, y: BOARD_OFFSET_Y - 12, "text-anchor": "middle",
-      "font-size": 13, fill: "#777", "font-family": "monospace",
+      "font-size": 36, fill: "#777", "font-family": "monospace",
     });
     t.textContent = x;
     svg.appendChild(t);
@@ -142,7 +142,7 @@ function renderBoard() {
     const { cy } = getPx(bounds.gridMinX, y);
     const t = el("text", {
       x: BOARD_OFFSET_X - 20, y: cy + 4, "text-anchor": "middle",
-      "font-size": 13, fill: "#777", "font-family": "monospace",
+      "font-size": 36, fill: "#777", "font-family": "monospace",
     });
     t.textContent = y;
     svg.appendChild(t);

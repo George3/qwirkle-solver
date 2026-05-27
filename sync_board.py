@@ -92,12 +92,12 @@ def sync_svg(game_state: dict, hand_list: list):
     svg_parts.append("  <!-- Coordinate labels: x (columns) -->")
     for x in range(grid_min_x, grid_max_x + 1):
         px, py, cx, cy = get_px_py(x, grid_max_y)
-        svg_parts.append(f'  <text x="{cx}"  y="{board_offset_y - 12}" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">{x}</text>')
+        svg_parts.append(f'  <text x="{cx}"  y="{board_offset_y - 12}" text-anchor="middle" font-size="36" fill="#777" font-family="monospace">{x}</text>')
 
     svg_parts.append("  <!-- Coordinate labels: y (rows) -->")
     for y in range(grid_min_y, grid_max_y + 1):
         px, py, cx, cy = get_px_py(grid_min_x, y)
-        svg_parts.append(f'  <text x="{board_offset_x - 20}" y="{cy + 4}" text-anchor="middle" font-size="13" fill="#777" font-family="monospace">{y}</text>')
+        svg_parts.append(f'  <text x="{board_offset_x - 20}" y="{cy + 4}" text-anchor="middle" font-size="36" fill="#777" font-family="monospace">{y}</text>')
 
     svg_parts.append("\n  <!-- ============================================ -->")
     svg_parts.append("  <!-- TILES                                        -->")

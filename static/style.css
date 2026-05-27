@@ -16,9 +16,11 @@ header {
 header h1 { margin: 0; font-size: 18px; }
 #status { font-size: 12px; opacity: 0.7; font-family: monospace; }
 main { padding: 16px; }
-section { margin-bottom: 24px; }
+section { margin-bottom: 0; }
+#board-wrap { margin-bottom: 0; padding-bottom: 0; }
+#hand-wrap { margin-top: 0; padding-top: 0; }
 h2 { margin: 0 0 8px 0; font-size: 14px; }
-.hand-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.hand-header { display: flex; align-items: center; gap: 10px; margin: 0 0 4px 0; }
 .hand-header h2 { margin: 0; }
 #new-game-btn {
   padding: 4px 12px;
