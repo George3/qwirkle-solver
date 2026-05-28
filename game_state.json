@@ -447,6 +447,30 @@
           "y": 5,
           "color": "blue",
           "shape": "crossx"
+        },
+        {
+          "x": -6,
+          "y": -3,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -7,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": -2,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -7,
+          "y": -2,
+          "color": "green",
+          "shape": "circle"
         }
       ]
     }
@@ -457,16 +481,16 @@
       "shape": "circle"
     },
     {
-      "color": "green",
-      "shape": "circle"
+      "color": "blue",
+      "shape": "square"
     },
     {
       "color": "yellow",
       "shape": "crossx"
     },
     {
-      "color": "green",
-      "shape": "square"
+      "color": "red",
+      "shape": "crossx"
     },
     {
       "color": "yellow",
