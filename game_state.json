@@ -233,12 +233,12 @@
       "shape": "square"
     },
     {
-      "color": "red",
-      "shape": "crossx"
+      "color": "orange",
+      "shape": "clover"
     },
     {
       "color": "green",
-      "shape": "crossx"
+      "shape": "circle"
     },
     {
       "color": "red",
