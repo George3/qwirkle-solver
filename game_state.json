@@ -171,6 +171,54 @@
           "y": -6,
           "color": "green",
           "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": -6,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": -6,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 3,
+          "y": -6,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -4,
+          "y": -1,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": -3,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": -3,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": -4,
+          "color": "green",
+          "shape": "crossx"
         }
       ]
     }
@@ -181,16 +229,16 @@
       "shape": "square"
     },
     {
-      "color": "yellow",
-      "shape": "crossx"
+      "color": "green",
+      "shape": "square"
     },
     {
       "color": "red",
       "shape": "crossx"
     },
     {
-      "color": "yellow",
-      "shape": "circle"
+      "color": "green",
+      "shape": "crossx"
     },
     {
       "color": "red",
@@ -198,7 +246,7 @@
     },
     {
       "color": "yellow",
-      "shape": "clover"
+      "shape": "diamond"
     }
   ]
 }
