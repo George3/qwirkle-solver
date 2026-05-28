@@ -7,246 +7,36 @@
         {
           "x": 0,
           "y": 0,
-          "color": "orange",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": 1,
-          "color": "red",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": 2,
-          "color": "blue",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": 3,
-          "color": "yellow",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": -1,
-          "color": "purple",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": -2,
-          "color": "green",
-          "shape": "crossx"
-        },
-        {
-          "x": 1,
-          "y": 2,
-          "color": "blue",
-          "shape": "star"
-        },
-        {
-          "x": 1,
-          "y": 3,
-          "color": "yellow",
-          "shape": "star"
-        },
-        {
-          "x": -1,
-          "y": -2,
-          "color": "green",
-          "shape": "diamond"
-        },
-        {
-          "x": -2,
-          "y": -2,
-          "color": "green",
-          "shape": "square"
-        },
-        {
-          "x": 1,
-          "y": -2,
           "color": "green",
           "shape": "clover"
-        },
-        {
-          "x": 1,
-          "y": -3,
-          "color": "orange",
-          "shape": "clover"
-        },
-        {
-          "x": 1,
-          "y": -4,
-          "color": "purple",
-          "shape": "clover"
-        },
-        {
-          "x": 1,
-          "y": -5,
-          "color": "blue",
-          "shape": "clover"
-        },
-        {
-          "x": 2,
-          "y": -5,
-          "color": "blue",
-          "shape": "crossx"
-        },
-        {
-          "x": 2,
-          "y": -4,
-          "color": "purple",
-          "shape": "crossx"
-        },
-        {
-          "x": 0,
-          "y": -4,
-          "color": "purple",
-          "shape": "circle"
-        },
-        {
-          "x": -1,
-          "y": -4,
-          "color": "purple",
-          "shape": "diamond"
-        },
-        {
-          "x": -1,
-          "y": -3,
-          "color": "red",
-          "shape": "diamond"
-        },
-        {
-          "x": -2,
-          "y": -3,
-          "color": "red",
-          "shape": "square"
-        },
-        {
-          "x": -3,
-          "y": -2,
-          "color": "green",
-          "shape": "star"
-        },
-        {
-          "x": -3,
-          "y": -1,
-          "color": "yellow",
-          "shape": "star"
-        },
-        {
-          "x": -3,
-          "y": -3,
-          "color": "red",
-          "shape": "star"
-        },
-        {
-          "x": -4,
-          "y": -2,
-          "color": "green",
-          "shape": "circle"
-        },
-        {
-          "x": -1,
-          "y": -5,
-          "color": "yellow",
-          "shape": "diamond"
-        },
-        {
-          "x": -2,
-          "y": -4,
-          "color": "purple",
-          "shape": "square"
-        },
-        {
-          "x": -1,
-          "y": -6,
-          "color": "blue",
-          "shape": "diamond"
-        },
-        {
-          "x": -2,
-          "y": -6,
-          "color": "green",
-          "shape": "diamond"
-        },
-        {
-          "x": 1,
-          "y": -6,
-          "color": "yellow",
-          "shape": "clover"
-        },
-        {
-          "x": 2,
-          "y": -6,
-          "color": "yellow",
-          "shape": "crossx"
-        },
-        {
-          "x": 3,
-          "y": -6,
-          "color": "yellow",
-          "shape": "circle"
-        },
-        {
-          "x": -4,
-          "y": -1,
-          "color": "yellow",
-          "shape": "circle"
-        },
-        {
-          "x": -2,
-          "y": -1,
-          "color": "yellow",
-          "shape": "square"
-        },
-        {
-          "x": -4,
-          "y": -3,
-          "color": "red",
-          "shape": "circle"
-        },
-        {
-          "x": -5,
-          "y": -3,
-          "color": "red",
-          "shape": "crossx"
-        },
-        {
-          "x": -5,
-          "y": -4,
-          "color": "green",
-          "shape": "crossx"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "purple",
-      "shape": "square"
+      "color": "red",
+      "shape": "diamond"
     },
     {
       "color": "green",
-      "shape": "square"
-    },
-    {
-      "color": "orange",
-      "shape": "clover"
+      "shape": "star"
     },
     {
       "color": "green",
-      "shape": "circle"
+      "shape": "diamond"
     },
     {
       "color": "red",
-      "shape": "square"
+      "shape": "crossx"
     },
     {
-      "color": "yellow",
-      "shape": "diamond"
+      "color": "blue",
+      "shape": "circle"
+    },
+    {
+      "color": "blue",
+      "shape": "star"
     }
   ]
 }
