@@ -471,6 +471,18 @@
           "y": -2,
           "color": "green",
           "shape": "circle"
+        },
+        {
+          "x": 7,
+          "y": 2,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": 8,
+          "y": 2,
+          "color": "purple",
+          "shape": "clover"
         }
       ]
     }
