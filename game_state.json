@@ -483,13 +483,31 @@
           "y": 2,
           "color": "purple",
           "shape": "clover"
+        },
+        {
+          "x": -7,
+          "y": -4,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -8,
+          "y": -4,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": -9,
+          "y": -4,
+          "color": "yellow",
+          "shape": "crossx"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "yellow",
+      "color": "blue",
       "shape": "circle"
     },
     {
@@ -497,16 +515,16 @@
       "shape": "square"
     },
     {
-      "color": "yellow",
-      "shape": "crossx"
+      "color": "green",
+      "shape": "square"
     },
     {
       "color": "red",
       "shape": "crossx"
     },
     {
-      "color": "yellow",
-      "shape": "clover"
+      "color": "green",
+      "shape": "crossx"
     },
     {
       "color": "purple",
