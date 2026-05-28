@@ -300,10 +300,15 @@ def get_empty_line_through(
     positions = {start}
     for dx, dy in directions:
         curr_x, curr_y = x + dx, y + dy
-        # Scan at most 5 spaces in each direction, since max line length is 6
+        # Scan up to 5 cells in each direction (max Qwirkle line length is 6,
+        # so any cell more than 5 away from the anchor can't share a line with it).
+        # Scan THROUGH existing tiles — placements may straddle them as long as
+        # the final row/column is contiguous (e.g. place at y=-4 and y=-1 with
+        # existing tiles at y=-3 and y=-2 bridging the gap).
         steps = 0
-        while steps < 6 and (curr_x, curr_y) not in engine.board:
-            positions.add((curr_x, curr_y))
+        while steps < 5:
+            if (curr_x, curr_y) not in engine.board:
+                positions.add((curr_x, curr_y))
             curr_x += dx
             curr_y += dy
             steps += 1

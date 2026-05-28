@@ -141,6 +141,12 @@
           "y": -3,
           "color": "red",
           "shape": "star"
+        },
+        {
+          "x": -4,
+          "y": -2,
+          "color": "green",
+          "shape": "circle"
         }
       ]
     }
@@ -155,8 +161,8 @@
       "shape": "diamond"
     },
     {
-      "color": "yellow",
-      "shape": "square"
+      "color": "red",
+      "shape": "crossx"
     },
     {
       "color": "yellow",
