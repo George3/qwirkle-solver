@@ -501,6 +501,30 @@
           "y": -4,
           "color": "yellow",
           "shape": "crossx"
+        },
+        {
+          "x": 5,
+          "y": 6,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 6,
+          "y": 6,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": 1,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 1,
+          "color": "green",
+          "shape": "square"
         }
       ]
     }
@@ -511,11 +535,11 @@
       "shape": "circle"
     },
     {
-      "color": "blue",
-      "shape": "square"
+      "color": "red",
+      "shape": "star"
     },
     {
-      "color": "green",
+      "color": "blue",
       "shape": "square"
     },
     {
