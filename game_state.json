@@ -243,6 +243,18 @@
           "y": -1,
           "color": "purple",
           "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 2,
+          "y": 2,
+          "color": "blue",
+          "shape": "square"
         }
       ]
     }
@@ -250,22 +262,22 @@
   "hand": [
     {
       "color": "purple",
-      "shape": "square"
-    },
-    {
-      "color": "green",
-      "shape": "square"
+      "shape": "circle"
     },
     {
       "color": "orange",
       "shape": "clover"
     },
     {
+      "color": "purple",
+      "shape": "circle"
+    },
+    {
       "color": "green",
       "shape": "circle"
     },
     {
-      "color": "red",
+      "color": "yellow",
       "shape": "square"
     },
     {
