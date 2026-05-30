@@ -82,6 +82,16 @@ The `.bak` file convention (`<name>.bak-YYYYMMDD-HHMMSS`) is shared by `sync_boa
 - Always use **merge** (never rebase) when integrating branches. Full history is valued; linear history is not a goal here.
 - When resolving conflicts where one branch should simply win, use `git checkout --ours` / `--theirs` per file, then `git add` and commit to complete the merge.
 
+## Tile counting
+
+Total tiles in a standard Qwirkle set: **108** (6 colors × 6 shapes × 3 copies each).
+
+Tiles left in bag = `108 − board_tiles − my_hand − opponent_hands`
+
+In a 2-player game: `108 − board_tiles − 6 (my hand) − 6 (opponent's hand)`. Never forget the opponent's hand — it is not visible but must be subtracted. The solver's `estimate_tiles_left_in_bag` ([qwirkle_solver.py:471](qwirkle_solver.py#L471)) does this correctly; always use it or replicate its logic rather than computing ad-hoc.
+
+The late-game risk filter activates when the bag estimate drops to ≤ `LATE_GAME_BAG_THRESHOLD` (default 30).
+
 ## Conventions worth knowing
 
 - Coordinates: `(x, y)` tuples, `+y` is up (north), `+x` is right (east). The SVG renderers flip y for screen coords (`grid_max_y - y`).

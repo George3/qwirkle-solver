@@ -525,6 +525,24 @@
           "y": 1,
           "color": "green",
           "shape": "square"
+        },
+        {
+          "x": 6,
+          "y": 8,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": -5,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": -6,
+          "color": "red",
+          "shape": "star"
         }
       ]
     }
@@ -535,7 +553,7 @@
       "shape": "circle"
     },
     {
-      "color": "red",
+      "color": "orange",
       "shape": "star"
     },
     {
@@ -543,8 +561,8 @@
       "shape": "square"
     },
     {
-      "color": "red",
-      "shape": "crossx"
+      "color": "yellow",
+      "shape": "diamond"
     },
     {
       "color": "green",
