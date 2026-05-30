@@ -34,6 +34,21 @@ Install runtime deps (only needed for the interactive editor):
 .venv\Scripts\python.exe -m pip install fastapi "uvicorn[standard]"
 ```
 
+Check requirements drift (imports vs. requirements.txt):
+
+```powershell
+.venv\Scripts\python.exe scripts\check_requirements.py
+```
+
+Enable the repo pre-commit hook (runs the same check before commits):
+
+```powershell
+git config core.hooksPath .githooks
+```
+
+If the script reports drift, update `requirements.txt` in the same change so
+it stays aligned with direct runtime imports and startup dependencies.
+
 ## Architecture
 
 ### Data flow
