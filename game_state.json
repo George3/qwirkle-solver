@@ -219,6 +219,30 @@
           "y": -4,
           "color": "green",
           "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 1,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": -1,
+          "color": "purple",
+          "shape": "square"
         }
       ]
     }
