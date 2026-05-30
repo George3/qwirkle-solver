@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+set -eu
+
+ROOT="$(git rev-parse --show-toplevel)"
+CHECKER="$ROOT/scripts/check_requirements.py"
+
+if [ ! -f "$CHECKER" ]; then
+  echo "Missing checker script: $CHECKER" >&2
+  exit 2
+fi
+
+if [ -x "$ROOT/.venv/Scripts/python.exe" ]; then
+  PYTHON="$ROOT/.venv/Scripts/python.exe"
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHON="python3"
+elif command -v python >/dev/null 2>&1; then
+  PYTHON="python"
+else
+  echo "No python executable found for requirements check." >&2
+  exit 2
+fi
+
+"$PYTHON" "$CHECKER"
