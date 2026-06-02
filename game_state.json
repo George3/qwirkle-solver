@@ -543,14 +543,38 @@
           "y": -6,
           "color": "red",
           "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 7,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": 8,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "color": "blue",
+          "shape": "square"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "blue",
-      "shape": "circle"
+      "color": "yellow",
+      "shape": "crossx"
     },
     {
       "color": "orange",
@@ -558,7 +582,7 @@
     },
     {
       "color": "blue",
-      "shape": "square"
+      "shape": "star"
     },
     {
       "color": "yellow",

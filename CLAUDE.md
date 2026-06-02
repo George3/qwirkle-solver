@@ -40,7 +40,7 @@ Install runtime deps (only needed for the interactive editor):
 
 `game_state.json` is the single source of truth for the in-progress game. Everything else reads or writes it:
 
-```
+```ascii
                   ┌──── qwirkle_solver.py (reads → ranks legal moves)
 game_state.json ──┼──── sync_board.py     (reads → writes board.svg snapshot)
                   └──── app.py / static/  (reads + mutates via FastAPI + JS UI)
@@ -62,6 +62,7 @@ replay_score.py — standalone, uses its own hardcoded move_history list,
 ### Interactive editor (app.py + static/)
 
 FastAPI backend serves:
+
 - `GET /api/state` — returns raw `game_state.json`
 - `POST /api/board/place` `{x, y, color, shape}` — appends to the single `n=="setup"` move entry (creates if missing)
 - `POST /api/board/remove` `{x, y}` — removes the tile from whichever move contains it; prunes empty `setup` entry
@@ -91,6 +92,24 @@ Tiles left in bag = `108 − board_tiles − my_hand − opponent_hands`
 In a 2-player game: `108 − board_tiles − 6 (my hand) − 6 (opponent's hand)`. Never forget the opponent's hand — it is not visible but must be subtracted. The solver's `estimate_tiles_left_in_bag` ([qwirkle_solver.py:471](qwirkle_solver.py#L471)) does this correctly; always use it or replicate its logic rather than computing ad-hoc.
 
 The late-game risk filter activates when the bag estimate drops to ≤ `LATE_GAME_BAG_THRESHOLD` (default 30).
+
+## Move legality (two-axis rule)
+
+A tile placed at `(x, y)` joins a line on **both** axes simultaneously if it has neighbors on both. **Every** such line — horizontal AND vertical — must independently be valid (all tiles share exactly one attribute: same color with distinct shapes, OR same shape with distinct colors, never both, never a repeat, max length 6).
+
+When reasoning about a placement in prose, you MUST check **every adjacent occupied cell on both axes**, not just the line you are trying to extend. The common failure mode (which has happened): aiming to extend a vertical color-line, picking a tile that matches that line, but ignoring an occupied horizontal neighbor the new tile shares neither color nor shape with → **illegal**.
+
+Concrete example of the trap: cell `(-1, 1)` sits above a vertical run of **orange** tiles `(-1,0)`…`(-1,-3)`, so an orange tile "fits" that column. But `(0,1)` holds a **blue-crossx**. Any tile placed at `(-1,1)` also forms a horizontal pair with that blue-crossx, so it must match blue-crossx on color or shape. `orange-star` matches neither → **ILLEGAL**, even though it extends the orange column perfectly. `orange-crossx` would be legal there (shares `crossx` with the blue-crossx, shares `orange` with the column).
+
+The solver's `QwirkleEngine` placement validation and the `valid_tile_at`-style checks in analysis scripts already enforce this on both axes — trust their output over hand-eyeballed prose. Before recommending a move in prose, mentally place it and verify both axes, or just confirm against the engine.
+
+## Blocking analysis (search depth — "poison the cell")
+
+When asked how to deny the opponent a specific high-value cell, do NOT only consider (a) occupying that exact cell, or (b) single-tile plays next to it. A legal placement at a cell C depends on **C's neighbors on both axes**. You can make C illegal for the opponent's intended tile by **changing C's neighborhood** — most often a **multi-tile move on this turn** that drops a tile into a cell *adjacent* to C, breaking the line C relied on.
+
+Worked example from this game: Jeanne's 9-pt `orange-crossx` at `(-1,1)` was legal because `(-1,1)` sat atop a pure-orange vertical column `(-1,0)…(-1,-3)` and beside a pure-crossx horizontal run. We **couldn't** fill `(-1,1)` ourselves (no hand tile satisfied both axes), and capping the column from above seemed impossible with one tile. The actual block was a **two-tile play**: `blue-square at (-1,2)` + `blue-circle at (0,2)`. Placing a *non-orange* tile at `(-1,2)` — directly **above** the chokepoint — means any tile later played at `(-1,1)` joins a vertical line mixing orange + blue → illegal on that axis. The chokepoint is poisoned from an adjacent cell, not occupied. (The second tile `(0,2)` makes the pair a legal blue line and adds points.)
+
+Checklist when hunting blocks: for the target cell C and each of C's four neighbor cells N, ask "can I legally place a tile at N **this turn** (possibly as part of a multi-tile move) such that the line through C on that axis no longer admits the opponent's tile?" Enumerate **multi-tile** combinations, not just singles — the enabling move and the poisoning move may need to be placed together. Single-tile, occupy-the-cell-only reasoning under-searches and will miss real blocks.
 
 ## Conventions worth knowing
 
