@@ -303,6 +303,48 @@
           "y": 3,
           "color": "blue",
           "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 5,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": 5,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 4,
+          "y": 4,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": 5,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": 4,
+          "y": 6,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": -2,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": -2,
+          "color": "yellow",
+          "shape": "diamond"
         }
       ]
     }
@@ -318,19 +360,19 @@
     },
     {
       "color": "orange",
-      "shape": "square"
+      "shape": "crossx"
     },
     {
       "color": "purple",
       "shape": "diamond"
     },
     {
-      "color": "blue",
-      "shape": "diamond"
+      "color": "purple",
+      "shape": "circle"
     },
     {
-      "color": "yellow",
-      "shape": "square"
+      "color": "red",
+      "shape": "crossx"
     }
   ]
 }
