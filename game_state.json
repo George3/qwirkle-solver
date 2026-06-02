@@ -417,14 +417,32 @@
           "y": -2,
           "color": "yellow",
           "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": -7,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": -6,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 4,
+          "y": -5,
+          "color": "red",
+          "shape": "square"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "yellow",
-      "shape": "square"
+      "color": "green",
+      "shape": "clover"
     },
     {
       "color": "green",
@@ -439,8 +457,8 @@
       "shape": "crossx"
     },
     {
-      "color": "red",
-      "shape": "square"
+      "color": "purple",
+      "shape": "clover"
     },
     {
       "color": "purple",
