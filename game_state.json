@@ -435,6 +435,24 @@
           "y": -5,
           "color": "red",
           "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": 3,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": 6,
+          "y": 0,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 7,
+          "y": 0,
+          "color": "green",
+          "shape": "crossx"
         }
       ]
     }
@@ -445,16 +463,16 @@
       "shape": "clover"
     },
     {
-      "color": "green",
-      "shape": "star"
+      "color": "blue",
+      "shape": "clover"
     },
     {
       "color": "purple",
       "shape": "diamond"
     },
     {
-      "color": "green",
-      "shape": "crossx"
+      "color": "orange",
+      "shape": "square"
     },
     {
       "color": "purple",

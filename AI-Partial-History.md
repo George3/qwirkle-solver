@@ -17,10 +17,10 @@ Initial load is ~10–20 MB (Pyodide runtime)
 Drag-and-drop browser events need a thin JavaScript shim (a few lines), since Python can't natively receive dragstart/drop events without talking to the browser DOM via Pyodide's js module
 Still actively maturing — complex DOM manipulation is verbose
 Alternatives
-Option	Server?	Python?	DnD Smoothness
-PyScript + Pyodide	No	Yes (Wasm)	Fair (needs JS shim)
-Flask + HTML/JS frontend	python app.py	Yes (server)	Excellent
-Pure HTML + JavaScript	No	No	Excellent
+Option Server? Python? DnD Smoothness
+PyScript + Pyodide No Yes (Wasm) Fair (needs JS shim)
+Flask + HTML/JS frontend python app.py Yes (server) Excellent
+Pure HTML + JavaScript No No Excellent
 My Recommendation
 Flask app is the most practical for this use case:
 

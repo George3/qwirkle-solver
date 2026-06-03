@@ -55,7 +55,7 @@ it stays aligned with direct runtime imports and startup dependencies.
 
 `game_state.json` is the single source of truth for the in-progress game. Everything else reads or writes it:
 
-```
+```ascii
                   ┌──── qwirkle_solver.py (reads → ranks legal moves)
 game_state.json ──┼──── sync_board.py     (reads → writes board.svg snapshot)
                   └──── app.py / static/  (reads + mutates via FastAPI + JS UI)
@@ -77,6 +77,7 @@ replay_score.py — standalone, uses its own hardcoded move_history list,
 ### Interactive editor (app.py + static/)
 
 FastAPI backend serves:
+
 - `GET /api/state` — returns raw `game_state.json`
 - `POST /api/board/place` `{x, y, color, shape}` — appends to the single `n=="setup"` move entry (creates if missing)
 - `POST /api/board/remove` `{x, y}` — removes the tile from whichever move contains it; prunes empty `setup` entry
