@@ -46,8 +46,9 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 - SOLVER IMPROVEMNETS: a) Revisit file "Toward a smarter...", b) TODOs in README.md, c) Try evolutionary approach as suggested in [video: The only AutoResearch tutorial...](https://youtu.be/uBWuKh1nZ2Y?si=Sg71v2EAUWEsRyzF)
 - ADD TEST cases (Since saw in "big" ./scratch/~end_game.py analysis) ONLY rules Opus 4.8 would self-validate against seems to be: (copied from Claude's chat) "Verified — the engine is trustworthy: it scores the pre-block orange-crossx at (-1,1) as exactly 9 (matching what you blocked) and correctly rules it illegal now. Your block is airtight."
 ...from CLAUDE.md or ~/.claude/~~memory
-- Add asserts (aka, validation) if a chosen tile breaks any rules of game 
+- Add asserts (aka, validation) if a chosen tile breaks any rules of game.
 - **(Claude Opus suggestion)** bag/remaining-tile tracker — derive what's left in the bag from `(108 total) − (tiles on board) − (tiles in hand)` and show a 6×6 grid of remaining counts. Naturally feeds `LATE_GAME_BAG_THRESHOLD` logic and helps real-game strategy (knowing if the last `purple star` is still out there)
+
 ## Lower priority TODOs
 
 - Auto-resize board and "My Hand" to fit better on 1 screen
