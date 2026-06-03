@@ -40,10 +40,18 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 
 ## TODO
 
-- resize board and "My Hand" to fit better on 1 screen
-- asserts (aka, validation) if a chosen tile breaks any rules of game
-- possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
-- a "Suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
-- a score button (might only be available if every move is assigned to a specific player)
+- Plan->Use ~session sets/dabler ext.: Convert from same game_state.json file saved for different games via different branches to a single branch that can easily load differently named game_state.json files (This way new features we add to the solver engine are immediately avail. to every game)
+- Move auto-backed up old game_state.json to a subdir.
+- (minor) Clean up (remove) obsolete files like Screenshot*png.
+- SOLVER IMPROVEMNETS: a) Revisit file "Toward a smarter...", b) TODOs in README.md, c) Try evolutionary approach as suggested in [video: The only AutoResearch tutorial...](https://youtu.be/uBWuKh1nZ2Y?si=Sg71v2EAUWEsRyzF)
+- ADD TEST cases (Since saw in "big" ./scratch/~end_game.py analysis) ONLY rules Opus 4.8 would self-validate against seems to be: (copied from Claude's chat) "Verified — the engine is trustworthy: it scores the pre-block orange-crossx at (-1,1) as exactly 9 (matching what you blocked) and correctly rules it illegal now. Your block is airtight."
+...from CLAUDE.md or ~/.claude/~~memory
+- Add asserts (aka, validation) if a chosen tile breaks any rules of game 
 - **(Claude Opus suggestion)** bag/remaining-tile tracker — derive what's left in the bag from `(108 total) − (tiles on board) − (tiles in hand)` and show a 6×6 grid of remaining counts. Naturally feeds `LATE_GAME_BAG_THRESHOLD` logic and helps real-game strategy (knowing if the last `purple star` is still out there)
+## Lower priority TODOs
+
+- Auto-resize board and "My Hand" to fit better on 1 screen
+- Possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
+- Add "suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
+- Add a score board area (not a button!?) - might only be available if every move is assigned to a specific player?
 - **(Claude Opus suggestion)** undo/redo using the existing `game_state.json.bak-*` snapshots — they're already written on every mutation, so a `POST /api/undo` that restores the most-recent backup is nearly free and rescues the "oops, wrong click" case
