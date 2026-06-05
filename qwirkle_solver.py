@@ -8,6 +8,12 @@ from typing import Iterable, Optional, TypedDict
 TOTAL_QWIRKLE_TILES = 108
 LATE_GAME_BAG_THRESHOLD = 30
 SAFE_ALTERNATIVE_SCORE_GAP = 2
+COPIES_PER_TILE = 3
+HAND_SIZE = 6
+ENDGAME_REPORT_LIMIT = 5
+ENDGAME_LOOKAHEAD_LIMIT = 5
+ALL_COLORS = ("red", "orange", "yellow", "green", "blue", "purple")
+ALL_SHAPES = ("circle", "square", "diamond", "clover", "crossx", "star")
 
 
 """
@@ -136,6 +142,19 @@ and a shape (e.g., circle, square, diamond, star, clover, crossX).
 class Tile:
     color: str
     shape: str
+
+
+@dataclass(frozen=True)
+class EndgameAnalysis:
+    my_score: int
+    my_placements: tuple[tuple[tuple[int, int], Tile], ...]
+    opponent_reply_score: int
+    opponent_reply: tuple[tuple[tuple[int, int], Tile], ...]
+    net_swing: int
+    blocked_points: int
+    follow_up_score: int = 0
+    follow_up: tuple[tuple[tuple[int, int], Tile], ...] = ()
+    two_ply_net: int = 0
 
 class QwirkleEngine:
     def __init__(self):
@@ -272,6 +291,79 @@ def get_line_on_board(
             curr_y += dy
 
     return line
+
+
+def build_full_tile_counter(copies_per_tile: int = COPIES_PER_TILE) -> Counter[Tile]:
+    return Counter(
+        Tile(color=color, shape=shape)
+        for color in ALL_COLORS
+        for shape in ALL_SHAPES
+        for _ in range(copies_per_tile)
+    )
+
+
+def count_tiles_on_board(board: dict[tuple[int, int], Tile]) -> Counter[Tile]:
+    return Counter(board.values())
+
+
+def remove_tiles(tiles: Counter[Tile], used_tiles: Counter[Tile]) -> Counter[Tile]:
+    remaining = tiles.copy()
+    for tile, count in used_tiles.items():
+        available = remaining.get(tile, 0)
+        if count > available:
+            raise ValueError(f"Not enough copies of {tile} to remove ({count} requested, {available} available)")
+
+        new_count = available - count
+        if new_count:
+            remaining[tile] = new_count
+        else:
+            remaining.pop(tile, None)
+    return remaining
+
+
+def placements_to_counter(
+    placements: Iterable[tuple[tuple[int, int], Tile]],
+) -> Counter[Tile]:
+    return Counter(tile for _, tile in placements)
+
+
+def remove_played_tiles(
+    tiles: Counter[Tile],
+    placements: Iterable[tuple[tuple[int, int], Tile]],
+) -> Counter[Tile]:
+    return remove_tiles(tiles, placements_to_counter(placements))
+
+
+def build_engine_from_board(board: dict[tuple[int, int], Tile]) -> QwirkleEngine:
+    engine = QwirkleEngine()
+    engine.load_board_state(board)
+    return engine
+
+
+def engine_after_move(
+    base_engine: QwirkleEngine,
+    placements: Iterable[tuple[tuple[int, int], Tile]],
+) -> QwirkleEngine:
+    board = base_engine.board.copy()
+    for move, tile in placements:
+        board[move] = tile
+    return build_engine_from_board(board)
+
+
+def count_unseen_tiles(
+    board_tile_count: int,
+    my_hand_count: int,
+    total_tiles: int = TOTAL_QWIRKLE_TILES,
+) -> int:
+    return max(total_tiles - board_tile_count - my_hand_count, 0)
+
+
+def is_bag_empty_for_two_player_game(
+    board_tile_count: int,
+    my_hand_count: int,
+    hand_size: int = HAND_SIZE,
+) -> bool:
+    return count_unseen_tiles(board_tile_count, my_hand_count) <= hand_size
 
 
 def get_adjacent_empty_cells(engine: QwirkleEngine) -> set[tuple[int, int]]:
@@ -468,6 +560,20 @@ def calculate_score_multi(
     return max(total_score, 1)
 
 
+def calculate_turn_score(
+    engine: QwirkleEngine,
+    placements: list[tuple[tuple[int, int], Tile]],
+    hand_tile_count: int,
+    bag_empty: bool = False,
+) -> Optional[int]:
+    score = calculate_score_multi(engine, placements)
+    if score is None:
+        return None
+    if bag_empty and len(placements) == hand_tile_count:
+        score += 6
+    return score
+
+
 def estimate_tiles_left_in_bag(
     board_tile_count: int,
     my_hand_count: int,
@@ -583,19 +689,275 @@ def apply_late_game_risk_filter(
 def generate_all_multi_moves(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
+    apply_risk_filter: bool = True,
+    bag_empty: bool = False,
 ) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
     segments = generate_connected_segments(engine)
     results: list[tuple[int, list[tuple[tuple[int, int], Tile]]]] = []
+    hand_tile_count = sum(tiles.values())
 
     for segment in segments:
         for sequence in iter_tile_sequences(tiles, len(segment)):
             placements = list(zip(segment, sequence))
-            score = calculate_score_multi(engine, placements)
+            score = calculate_turn_score(
+                engine,
+                placements,
+                hand_tile_count=hand_tile_count,
+                bag_empty=bag_empty,
+            )
             if score is not None:
                 results.append((score, placements))
 
     results.sort(key=lambda item: item[0], reverse=True)
-    return apply_late_game_risk_filter(engine, tiles, results)
+    if apply_risk_filter:
+        return apply_late_game_risk_filter(engine, tiles, results)
+    return results
+
+
+def infer_opponent_hand_when_bag_empty(
+    board: dict[tuple[int, int], Tile],
+    my_tiles: Counter[Tile],
+    hand_size: int = HAND_SIZE,
+) -> Counter[Tile]:
+    remaining = build_full_tile_counter()
+    visible_tiles = count_tiles_on_board(board)
+    for tile, count in my_tiles.items():
+        visible_tiles[tile] += count
+
+    opponent_tiles = remove_tiles(remaining, visible_tiles)
+    unseen_tile_count = sum(opponent_tiles.values())
+    if unseen_tile_count > hand_size:
+        raise ValueError(
+            f"Expected at most {hand_size} unseen tiles with an empty bag, found {unseen_tile_count}"
+        )
+    return opponent_tiles
+
+
+def format_tile(tile: Tile) -> str:
+    return f"{tile.color}-{tile.shape}"
+
+
+def format_tiles(tiles: Counter[Tile]) -> str:
+    expanded_tiles: list[Tile] = []
+    for tile in sorted(tiles, key=lambda t: (t.color, t.shape)):
+        expanded_tiles.extend([tile] * tiles[tile])
+    return ", ".join(format_tile(tile) for tile in expanded_tiles) or "(none)"
+
+
+def format_placements(placements: Iterable[tuple[tuple[int, int], Tile]]) -> str:
+    return ", ".join(f"{move}: {format_tile(tile)}" for move, tile in placements) or "(no move)"
+
+
+def extend_analysis_with_two_ply(
+    engine: QwirkleEngine,
+    my_tiles: Counter[Tile],
+    opponent_tiles: Counter[Tile],
+    analysis: EndgameAnalysis,
+) -> EndgameAnalysis:
+    my_remaining_tiles = remove_played_tiles(my_tiles, analysis.my_placements)
+    if not my_remaining_tiles:
+        return EndgameAnalysis(
+            my_score=analysis.my_score,
+            my_placements=analysis.my_placements,
+            opponent_reply_score=0,
+            opponent_reply=(),
+            net_swing=analysis.my_score,
+            blocked_points=analysis.blocked_points,
+            follow_up_score=0,
+            follow_up=(),
+            two_ply_net=analysis.my_score,
+        )
+
+    engine_after_my_move = engine_after_move(engine, analysis.my_placements)
+    opponent_moves = generate_all_multi_moves(
+        engine_after_my_move,
+        opponent_tiles,
+        apply_risk_filter=False,
+        bag_empty=True,
+    )
+    if not opponent_moves:
+        return EndgameAnalysis(
+            my_score=analysis.my_score,
+            my_placements=analysis.my_placements,
+            opponent_reply_score=0,
+            opponent_reply=(),
+            net_swing=analysis.my_score,
+            blocked_points=analysis.blocked_points,
+            follow_up_score=0,
+            follow_up=(),
+            two_ply_net=analysis.my_score,
+        )
+
+    worst_case: Optional[tuple[int, int, tuple[tuple[tuple[int, int], Tile], ...], int, tuple[tuple[tuple[int, int], Tile], ...]]] = None
+    for opponent_reply_score, opponent_reply in opponent_moves:
+        opponent_reply_tuple = tuple(opponent_reply)
+        opponent_remaining_tiles = remove_played_tiles(opponent_tiles, opponent_reply_tuple)
+
+        if not opponent_remaining_tiles:
+            follow_up_score = 0
+            follow_up: tuple[tuple[tuple[int, int], Tile], ...] = ()
+        else:
+            engine_after_reply = engine_after_move(engine_after_my_move, opponent_reply_tuple)
+            my_follow_ups = generate_all_multi_moves(
+                engine_after_reply,
+                my_remaining_tiles,
+                apply_risk_filter=False,
+                bag_empty=True,
+            )
+            if my_follow_ups:
+                follow_up_score, follow_up = my_follow_ups[0][0], tuple(my_follow_ups[0][1])
+            else:
+                follow_up_score, follow_up = 0, ()
+
+        two_ply_net = analysis.my_score - opponent_reply_score + follow_up_score
+        candidate = (
+            two_ply_net,
+            opponent_reply_score,
+            opponent_reply_tuple,
+            follow_up_score,
+            follow_up,
+        )
+        if worst_case is None or candidate[0] < worst_case[0] or (
+            candidate[0] == worst_case[0] and candidate[1] > worst_case[1]
+        ):
+            worst_case = candidate
+
+    assert worst_case is not None
+    two_ply_net, opponent_reply_score, opponent_reply, follow_up_score, follow_up = worst_case
+    return EndgameAnalysis(
+        my_score=analysis.my_score,
+        my_placements=analysis.my_placements,
+        opponent_reply_score=opponent_reply_score,
+        opponent_reply=opponent_reply,
+        net_swing=analysis.my_score - opponent_reply_score,
+        blocked_points=analysis.blocked_points,
+        follow_up_score=follow_up_score,
+        follow_up=follow_up,
+        two_ply_net=two_ply_net,
+    )
+
+
+def analyze_endgame_moves(
+    engine: QwirkleEngine,
+    my_tiles: Counter[Tile],
+    opponent_tiles: Counter[Tile],
+    report_limit: int = ENDGAME_REPORT_LIMIT,
+    lookahead_limit: int = ENDGAME_LOOKAHEAD_LIMIT,
+) -> tuple[tuple[int, tuple[tuple[tuple[int, int], Tile], ...]], list[EndgameAnalysis]]:
+    opponent_current_moves = generate_all_multi_moves(
+        engine,
+        opponent_tiles,
+        apply_risk_filter=False,
+        bag_empty=True,
+    )
+    opponent_best_now_score = opponent_current_moves[0][0] if opponent_current_moves else 0
+    opponent_best_now_move = tuple(opponent_current_moves[0][1]) if opponent_current_moves else ()
+
+    my_moves = generate_all_multi_moves(
+        engine,
+        my_tiles,
+        apply_risk_filter=False,
+        bag_empty=True,
+    )
+    analyses: list[EndgameAnalysis] = []
+    for my_score, my_placements in my_moves:
+        my_placements_tuple = tuple(my_placements)
+        my_remaining_tiles = remove_played_tiles(my_tiles, my_placements_tuple)
+        if not my_remaining_tiles:
+            opponent_reply_score = 0
+            opponent_reply: tuple[tuple[tuple[int, int], Tile], ...] = ()
+        else:
+            engine_after_my_move = engine_after_move(engine, my_placements_tuple)
+            opponent_moves = generate_all_multi_moves(
+                engine_after_my_move,
+                opponent_tiles,
+                apply_risk_filter=False,
+                bag_empty=True,
+            )
+            if opponent_moves:
+                opponent_reply_score = opponent_moves[0][0]
+                opponent_reply = tuple(opponent_moves[0][1])
+            else:
+                opponent_reply_score = 0
+                opponent_reply = ()
+
+        analyses.append(
+            EndgameAnalysis(
+                my_score=my_score,
+                my_placements=my_placements_tuple,
+                opponent_reply_score=opponent_reply_score,
+                opponent_reply=opponent_reply,
+                net_swing=my_score - opponent_reply_score,
+                blocked_points=max(opponent_best_now_score - opponent_reply_score, 0),
+                two_ply_net=my_score - opponent_reply_score,
+            )
+        )
+
+    analyses.sort(
+        key=lambda item: (item.net_swing, item.blocked_points, item.my_score),
+        reverse=True,
+    )
+    lookahead_count = min(len(analyses), lookahead_limit)
+    for index in range(lookahead_count):
+        analyses[index] = extend_analysis_with_two_ply(
+            engine,
+            my_tiles,
+            opponent_tiles,
+            analyses[index],
+        )
+
+    analyses.sort(
+        key=lambda item: (item.two_ply_net, item.net_swing, item.blocked_points, item.my_score),
+        reverse=True,
+    )
+    return (opponent_best_now_score, opponent_best_now_move), analyses[:report_limit]
+
+
+def print_endgame_report(
+    engine: QwirkleEngine,
+    my_tiles: Counter[Tile],
+    opponent_label: str = "Opponent",
+    report_limit: int = ENDGAME_REPORT_LIMIT,
+) -> None:
+    opponent_tiles = infer_opponent_hand_when_bag_empty(engine.board, my_tiles)
+    print()
+    print(
+        f"Endgame analysis (bag empty; {opponent_label} inferred hand has "
+        f"{sum(opponent_tiles.values())} tiles)"
+    )
+    print(f"{opponent_label} inferred hand: {format_tiles(opponent_tiles)}")
+
+    (opponent_best_now_score, opponent_best_now_move), analyses = analyze_endgame_moves(
+        engine,
+        my_tiles,
+        opponent_tiles,
+        report_limit=report_limit,
+    )
+    print(
+        f"{opponent_label} best move if she had the turn now: "
+        f"{opponent_best_now_score} points -> {format_placements(opponent_best_now_move)}"
+    )
+    print("Best endgame moves:")
+    for rank, analysis in enumerate(analyses, start=1):
+        print(
+            f"Rank {rank}: 2-ply net {analysis.two_ply_net:+} | "
+            f"me {analysis.my_score} | {opponent_label} {analysis.opponent_reply_score} | "
+            f"follow-up {analysis.follow_up_score} | blocks {analysis.blocked_points}"
+        )
+        print(f"  My move: {format_placements(analysis.my_placements)}")
+        if analysis.opponent_reply:
+            print(
+                f"  {opponent_label} best reply: {analysis.opponent_reply_score} points -> "
+                f"{format_placements(analysis.opponent_reply)}"
+            )
+        else:
+            print(f"  {opponent_label} best reply: (game ends before {opponent_label} can score)")
+        if analysis.follow_up:
+            print(
+                f"  My best follow-up: {analysis.follow_up_score} points -> "
+                f"{format_placements(analysis.follow_up)}"
+            )
+
 
 def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Tile]]:
     """Load board state and hand from a JSON file.
@@ -622,7 +984,8 @@ if __name__ == "__main__":
     game_state, my_tiles = load_game_state(Path(__file__).parent / "game_state.json")
     engine.load_board_state(game_state)
 
-    all_moves = generate_all_multi_moves(engine, my_tiles)
+    bag_empty = is_bag_empty_for_two_player_game(len(engine.board), sum(my_tiles.values()))
+    all_moves = generate_all_multi_moves(engine, my_tiles, bag_empty=bag_empty)
     print(f"Total legal multi-tile moves: {len(all_moves)}")
     
     top_n = 4
@@ -631,3 +994,6 @@ if __name__ == "__main__":
             f"{move}: {tile}" for move, tile in placements
         )
         print(f"Rank {rank}: {score} points -> ,{placement_str}")
+
+    if bag_empty:
+        print_endgame_report(engine, my_tiles, opponent_label="Jeanne")

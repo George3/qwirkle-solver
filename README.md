@@ -19,6 +19,7 @@ DRFT ~ FIXME = FINISH-ME:
 
 - To start server from: C:\src\fun\qwirkle-solver>
 - Run: `.venv\Scripts\python.exe -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+- Running `.venv\Scripts\python.exe qwirkle_solver.py` on a two-player empty-bag position now also infers the opponent's hidden hand and prints a reply-aware endgame report for the top candidate moves.
 
 - After prompted for 1st phase of creating an interactive GUI,
 Then ran "/init" to have CLAUDE.md created.
