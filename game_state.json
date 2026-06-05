@@ -609,6 +609,12 @@
           "y": -9,
           "color": "orange",
           "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": -6,
+          "color": "yellow",
+          "shape": "diamond"
         }
       ]
     }
@@ -621,10 +627,6 @@
     {
       "color": "blue",
       "shape": "star"
-    },
-    {
-      "color": "yellow",
-      "shape": "diamond"
     },
     {
       "color": "purple",
