@@ -381,30 +381,54 @@
           "y": -6,
           "color": "yellow",
           "shape": "circle"
+        },
+        {
+          "x": -6,
+          "y": 1,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -6,
+          "y": 2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": 3,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": -6,
+          "y": 4,
+          "color": "purple",
+          "shape": "circle"
         }
       ]
     }
   ],
   "hand": [
     {
+      "color": "yellow",
+      "shape": "crossx"
+    },
+    {
+      "color": "green",
+      "shape": "diamond"
+    },
+    {
+      "color": "green",
+      "shape": "star"
+    },
+    {
       "color": "purple",
       "shape": "diamond"
     },
     {
-      "color": "purple",
-      "shape": "square"
-    },
-    {
-      "color": "purple",
-      "shape": "clover"
-    },
-    {
-      "color": "purple",
-      "shape": "diamond"
-    },
-    {
-      "color": "purple",
-      "shape": "circle"
+      "color": "red",
+      "shape": "crossx"
     },
     {
       "color": "blue",
