@@ -405,13 +405,55 @@
           "y": 4,
           "color": "purple",
           "shape": "circle"
+        },
+        {
+          "x": -6,
+          "y": 5,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": -6,
+          "y": 6,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": 6,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": 5,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": -5,
+          "y": 4,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": 3,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 6,
+          "color": "yellow",
+          "shape": "crossx"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "yellow",
+      "color": "blue",
       "shape": "crossx"
     },
     {
@@ -427,8 +469,8 @@
       "shape": "diamond"
     },
     {
-      "color": "red",
-      "shape": "crossx"
+      "color": "blue",
+      "shape": "circle"
     },
     {
       "color": "blue",
