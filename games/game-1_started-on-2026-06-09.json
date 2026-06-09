@@ -1,0 +1,44 @@
+{
+  "moves": [
+    {
+      "n": "setup",
+      "player": "setup",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "green",
+          "shape": "clover"
+        }
+      ]
+    }
+  ],
+  "hand": [
+    {
+      "color": "red",
+      "shape": "diamond"
+    },
+    {
+      "color": "green",
+      "shape": "star"
+    },
+    {
+      "color": "green",
+      "shape": "diamond"
+    },
+    {
+      "color": "red",
+      "shape": "crossx"
+    },
+    {
+      "color": "blue",
+      "shape": "circle"
+    },
+    {
+      "color": "blue",
+      "shape": "star"
+    }
+  ],
+  "name": "Game 1",
+  "started": "2026-06-09"
+}
