@@ -350,15 +350,62 @@ async function refresh() {
   state = await res.json();
   renderBoard();
   renderHand();
+  await loadGames();
   const total = flattenBoardTiles().length;
   setStatus(`${total} tiles on board · ${(state.hand || []).length}/6 in hand`);
 }
 
+// ─── Games ────────────────────────────────────────────────────────────
+
+let games = [];      // [{id, name, started}]
+let activeGameId = null;
+
+async function loadGames() {
+  const res = await fetch("/api/games");
+  const data = await res.json();
+  games = data.games;
+  activeGameId = data.active;
+  const sel = document.getElementById("game-select");
+  sel.innerHTML = "";
+  for (const g of games) {
+    const opt = document.createElement("option");
+    opt.value = g.id;
+    opt.textContent = g.started ? `${g.name} (${g.started})` : g.name;
+    if (g.id === activeGameId) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function activeGame() {
+  return games.find(g => g.id === activeGameId);
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────
 
+document.getElementById("game-select").addEventListener("change", async (e) => {
+  await api("/api/games/switch", { id: e.target.value });
+  await refresh();
+});
+
 document.getElementById("new-game-btn").addEventListener("click", async () => {
-  if (!confirm("Start a new game? This will clear the board and deal 6 random tiles.")) return;
-  await api("/api/new_game", {});
+  const name = prompt("Name for the new game (e.g. 'vs Jeanne'):");
+  if (!name) return;
+  await api("/api/games/new", { name });
+  await refresh();
+});
+
+document.getElementById("rename-game-btn").addEventListener("click", async () => {
+  const g = activeGame();
+  const name = prompt("Rename game:", g ? g.name : "");
+  if (!name) return;
+  await api("/api/games/rename", { id: activeGameId, name });
+  await refresh();
+});
+
+document.getElementById("delete-game-btn").addEventListener("click", async () => {
+  const g = activeGame();
+  if (!confirm(`Delete game "${g ? g.name : activeGameId}"? This cannot be undone.`)) return;
+  await api("/api/games/delete", { id: activeGameId });
   await refresh();
 });
 
