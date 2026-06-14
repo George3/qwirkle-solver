@@ -1,0 +1,636 @@
+{
+  "moves": [
+    {
+      "n": "setup",
+      "player": "setup",
+      "tiles": [
+        {
+          "x": 1,
+          "y": 0,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": 0,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": -1,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": -2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": -3,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": -1,
+          "y": -1,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": -1,
+          "y": -2,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": -1,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -5,
+          "y": -1,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": -5,
+          "y": 0,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": -2,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": -2,
+          "y": -3,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -2,
+          "y": -4,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": -3,
+          "y": -4,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": -2,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 3,
+          "y": -2,
+          "color": "yellow",
+          "shape": "diamond"
+        },
+        {
+          "x": 3,
+          "y": -1,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 4,
+          "y": -1,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 5,
+          "y": -1,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": 1,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": 1,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": -4,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 3,
+          "y": -4,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 4,
+          "y": -4,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 5,
+          "y": -4,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 3,
+          "y": -5,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": -6,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": -7,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": 4,
+          "y": -7,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 5,
+          "y": -7,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": 1,
+          "y": -3,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": 4,
+          "y": 2,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": 3,
+          "y": 2,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 5,
+          "y": 2,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": 6,
+          "y": 2,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": 6,
+          "y": 3,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": 5,
+          "y": 3,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": 7,
+          "y": 3,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 8,
+          "y": 3,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": 3,
+          "y": 3,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": 3,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": 1,
+          "y": 4,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": -1,
+          "y": 4,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": 4,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": 5,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 5,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 4,
+          "y": 4,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 4,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 5,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": 6,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": 6,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": 7,
+          "color": "yellow",
+          "shape": "diamond"
+        },
+        {
+          "x": 3,
+          "y": 5,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": 5,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 5,
+          "y": 5,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": 7,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 5,
+          "y": 7,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 6,
+          "y": 7,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": -1,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -6,
+          "y": -2,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": -6,
+          "y": -3,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -7,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": -2,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -7,
+          "y": -2,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": 7,
+          "y": 2,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": 8,
+          "y": 2,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -7,
+          "y": -4,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -8,
+          "y": -4,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": -9,
+          "y": -4,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 5,
+          "y": 6,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 6,
+          "y": 6,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": 1,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 1,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": 6,
+          "y": 8,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": -5,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": -6,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 7,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": 8,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": 3,
+          "y": -8,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": 4,
+          "y": -8,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": -8,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": -7,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": -6,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": -9,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": -9,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": -6,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
+    }
+  ],
+  "hand": [
+    {
+      "color": "orange",
+      "shape": "star"
+    },
+    {
+      "color": "blue",
+      "shape": "star"
+    },
+    {
+      "color": "purple",
+      "shape": "star"
+    }
+  ]
+}
