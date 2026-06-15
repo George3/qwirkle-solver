@@ -602,6 +602,11 @@ def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Ti
 
     JSON shape: {"moves": [{"n", "player", "tiles": [{"x","y","color","shape"}...]}, ...],
                  "hand":  [{"color","shape"}, ...]}
+
+    `n` and `player` are per-move metadata (move number / who played) and are
+    ignored here -- this loader only flattens every move's `tiles` into the board.
+    The string "setup" is a sentinel: the interactive editor (app.py, SETUP_KEY)
+    dumps all hand-placed tiles into the single move whose `n == "setup"`.
     """
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
