@@ -580,6 +580,49 @@ def apply_late_game_risk_filter(
     return safe_moves if safe_moves else ranked_moves
 
 
+def followup_score_profile(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> tuple[int, ...]:
+    """Descending score profile of legal follow-up moves after `placements`.
+
+    Plays `placements` onto a copy of the board, removes those tiles from the
+    hand, then returns every legal next-move score reachable with the tiles
+    still in hand, sorted highest-first. Bag draws are unknown, so only the
+    leftover hand is considered. Used purely as a tie-breaker: between
+    equal-scoring moves, prefer the one with the stronger overall next-turn
+    menu, not just the single best follow-up.
+    """
+    remaining = tiles - Counter(tile for _, tile in placements)
+    if not remaining:
+        return ()
+
+    next_board = engine.board.copy()
+    for move, tile in placements:
+        next_board[move] = tile
+    next_engine = QwirkleEngine()
+    next_engine.load_board_state(next_board)
+
+    scores: list[int] = []
+    for segment in generate_connected_segments(next_engine):
+        for sequence in iter_tile_sequences(remaining, len(segment)):
+            score = calculate_score_multi(next_engine, list(zip(segment, sequence)))
+            if score is not None:
+                scores.append(score)
+    scores.sort(reverse=True)
+    return tuple(scores)
+
+
+def best_followup_score(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> int:
+    profile = followup_score_profile(engine, tiles, placements)
+    return profile[0] if profile else 0
+
+
 def generate_all_multi_moves(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
@@ -594,7 +637,12 @@ def generate_all_multi_moves(
             if score is not None:
                 results.append((score, placements))
 
-    results.sort(key=lambda item: item[0], reverse=True)
+    # Primary key: this move's score. Tie-breaker: the full profile of
+    # follow-up scores it enables with the remaining hand, descending.
+    results.sort(
+        key=lambda item: (item[0], followup_score_profile(engine, tiles, item[1])),
+        reverse=True,
+    )
     return apply_late_game_risk_filter(engine, tiles, results)
 
 def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Tile]]:
@@ -635,4 +683,5 @@ if __name__ == "__main__":
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
         )
-        print(f"Rank {rank}: {score} points -> ,{placement_str}")
+        followup = best_followup_score(engine, my_tiles, placements)
+        print(f"Rank {rank}: {score} points (best follow-up: {followup}) -> ,{placement_str}")
