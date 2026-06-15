@@ -477,6 +477,24 @@
           "y": 0,
           "color": "red",
           "shape": "clover"
+        },
+        {
+          "x": -3,
+          "y": 4,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": -2,
+          "y": 4,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -1,
+          "y": 4,
+          "color": "green",
+          "shape": "diamond"
         }
       ]
     }
@@ -487,20 +505,20 @@
       "shape": "square"
     },
     {
-      "color": "green",
+      "color": "orange",
       "shape": "diamond"
     },
     {
-      "color": "green",
-      "shape": "star"
+      "color": "red",
+      "shape": "diamond"
     },
     {
       "color": "purple",
       "shape": "diamond"
     },
     {
-      "color": "green",
-      "shape": "square"
+      "color": "yellow",
+      "shape": "diamond"
     },
     {
       "color": "green",
