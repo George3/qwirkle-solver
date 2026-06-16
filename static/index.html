@@ -25,6 +25,21 @@
         <button id="delete-game-btn" title="Delete game">🗑</button>
         <h2>My Hand</h2>
       </div>
+      <div id="move-controls">
+        <label>Mode
+          <select id="interaction-mode">
+            <option value="record">Record move</option>
+            <option value="setup">Edit setup</option>
+          </select>
+        </label>
+        <button id="edit-players-btn">Players</button>
+        <label>Current player
+          <select id="active-player-select"></select>
+        </label>
+        <button id="commit-move-btn">Commit Move</button>
+        <button id="cancel-move-btn">Clear Draft</button>
+        <span id="move-summary"></span>
+      </div>
       <svg id="hand" xmlns="http://www.w3.org/2000/svg"></svg>
     </section>
   </main>

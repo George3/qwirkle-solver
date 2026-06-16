@@ -39,6 +39,12 @@ crossX capitalization quirk in older JSON entries.
 The narrative comment block at the top of qwirkle_solver.py is intentional history, not cruft.
 .bak-* files accumulate on every editor mutation — flagged for cleanup/gitignore.
 
+## Game JSON notes
+
+- Legacy board snapshots still use the synthetic move `{"n": "setup", "player": "setup", "tiles": [...]}` for freeform editor changes.
+- Newly recorded turns can now be stored as real move entries with a numbered `n`, a real `player`, and that move's `tiles`.
+- Top-level `players` is optional on older files and is added when you start using player-attributed move recording for a game.
+
 ## TODO
 
 - resize board and "My Hand" to fit better on 1 screen

@@ -17,10 +17,13 @@ const TILE_SIZE = 110;
 const BOARD_OFFSET_X = 50;
 const BOARD_OFFSET_Y = 60;
 const HAND_TILE_SIZE = 90;
+const DEFAULT_PLAYERS = ["Player 1", "Player 2"];
 
 let state = null;
 let bounds = null; // {minX, maxX, minY, maxY, gridMinX, gridMaxX, gridMinY, gridMaxY}
-let placedCoords = new Set(); // "x,y"
+let occupiedCoords = new Set(); // committed board tiles plus local draft
+let draftMoveTiles = [];
+let activePlayer = null;
 
 // ─── Rendering helpers (port of sync_board.py) ─────────────────────────
 
@@ -107,7 +110,14 @@ function getPx(x, y) {
 function flattenBoardTiles() {
   const out = [];
   for (const move of state.moves || []) {
-    for (const t of move.tiles || []) out.push(t);
+    for (const t of move.tiles || []) {
+      out.push({
+        ...t,
+        moveN: move.n,
+        movePlayer: move.player || "",
+        isSetupMove: move.n === "setup",
+      });
+    }
   }
   return out;
 }
@@ -117,8 +127,10 @@ function renderBoard() {
   while (svg.firstChild) svg.removeChild(svg.firstChild);
 
   const boardTiles = flattenBoardTiles();
-  bounds = computeBounds(boardTiles);
-  placedCoords = new Set(boardTiles.map(t => `${t.x},${t.y}`));
+  bounds = computeBounds(boardTiles.concat(draftMoveTiles));
+  const committedCoords = new Set(boardTiles.map(t => `${t.x},${t.y}`));
+  const draftCoords = new Set(draftMoveTiles.map(t => `${t.x},${t.y}`));
+  occupiedCoords = new Set([...committedCoords, ...draftCoords]);
 
   const cols = bounds.gridMaxX - bounds.gridMinX + 1;
   const rows = bounds.gridMaxY - bounds.gridMinY + 1;
@@ -151,7 +163,7 @@ function renderBoard() {
   // empty cells (clickable)
   for (let x = bounds.gridMinX; x <= bounds.gridMaxX; x++) {
     for (let y = bounds.gridMinY; y <= bounds.gridMaxY; y++) {
-      if (placedCoords.has(`${x},${y}`)) continue;
+      if (occupiedCoords.has(`${x},${y}`)) continue;
       const { px, py } = getPx(x, y);
       const adjacent = isAdjacent(x, y);
       const rect = el("rect", {
@@ -159,9 +171,12 @@ function renderBoard() {
         width: TILE_SIZE - 4, height: TILE_SIZE - 4,
         rx: 8,
       });
-      rect.setAttribute("class", "cell-empty" + (adjacent || placedCoords.size === 0 ? " adjacent" : ""));
+      rect.setAttribute(
+        "class",
+        "cell-empty" + (adjacent || occupiedCoords.size === 0 ? " adjacent" : "")
+      );
       rect.addEventListener("click", () => {
-        if (adjacent || placedCoords.size === 0) openBoardPicker(x, y);
+        if (adjacent || occupiedCoords.size === 0) openBoardPicker(x, y);
       });
       svg.appendChild(rect);
     }
@@ -171,7 +186,19 @@ function renderBoard() {
   for (const t of boardTiles) {
     const { px, py, cx, cy } = getPx(t.x, t.y);
     const g = el("g", { class: "tile-group" });
-    g.addEventListener("click", () => openTilePopover(t));
+    g.addEventListener("click", () => {
+      if (t.isSetupMove) openTilePopover(t);
+      else describeRecordedTile(t);
+    });
+    g.appendChild(el("rect", { x: px, y: py, width: 110, height: 110, rx: 8, fill: "#222" }));
+    drawShape(g, t.shape, t.color, cx, cy, px, py, 1);
+    svg.appendChild(g);
+  }
+
+  for (const t of draftMoveTiles) {
+    const { px, py, cx, cy } = getPx(t.x, t.y);
+    const g = el("g", { class: "tile-group tile-group-draft" });
+    g.addEventListener("click", () => openDraftTilePopover(t));
     g.appendChild(el("rect", { x: px, y: py, width: 110, height: 110, rx: 8, fill: "#222" }));
     drawShape(g, t.shape, t.color, cx, cy, px, py, 1);
     svg.appendChild(g);
@@ -180,7 +207,7 @@ function renderBoard() {
 
 function isAdjacent(x, y) {
   for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-    if (placedCoords.has(`${x + dx},${y + dy}`)) return true;
+    if (occupiedCoords.has(`${x + dx},${y + dy}`)) return true;
   }
   return false;
 }
@@ -232,13 +259,23 @@ function renderHand() {
 let pickerContext = null; // {kind: 'board'|'hand', ...args}
 
 function openBoardPicker(x, y) {
-  pickerContext = { kind: "board", x, y };
-  showPicker(`Place tile at (${x}, ${y})`, false);
+  if (interactionMode() === "setup") {
+    pickerContext = { kind: "board", x, y };
+    showPicker(`Add setup tile at (${x}, ${y})`, false);
+    return;
+  }
+  pickerContext = { kind: "draft-add", x, y };
+  showPicker(`Queue move tile at (${x}, ${y}) for ${activePlayerLabel()}`, false);
 }
 
 function openTilePopover(tile) {
   pickerContext = { kind: "board-edit", x: tile.x, y: tile.y };
-  showPicker(`Edit tile at (${tile.x}, ${tile.y})`, true);
+  showPicker(`Edit setup tile at (${tile.x}, ${tile.y})`, true);
+}
+
+function openDraftTilePopover(tile) {
+  pickerContext = { kind: "draft-edit", x: tile.x, y: tile.y };
+  showPicker(`Edit queued move tile at (${tile.x}, ${tile.y})`, true);
 }
 
 function openHandPicker(slotIndex, existingTile) {
@@ -291,6 +328,18 @@ async function onPickerChoice(color, shape) {
     hidePicker();
     await api("/api/board/place", { x, y, color, shape });
     await refresh();
+  } else if (pickerContext.kind === "draft-add") {
+    const { x, y } = pickerContext;
+    hidePicker();
+    upsertDraftTile({ x, y, color, shape });
+    renderBoard();
+    updateMoveSummary();
+  } else if (pickerContext.kind === "draft-edit") {
+    const { x, y } = pickerContext;
+    hidePicker();
+    upsertDraftTile({ x, y, color, shape });
+    renderBoard();
+    updateMoveSummary();
   } else if (pickerContext.kind === "board-edit") {
     const { x, y } = pickerContext;
     hidePicker();
@@ -314,6 +363,12 @@ async function onPickerRemove() {
     hidePicker();
     await api("/api/board/remove", { x, y });
     await refresh();
+  } else if (pickerContext.kind === "draft-edit") {
+    const { x, y } = pickerContext;
+    hidePicker();
+    removeDraftTile(x, y);
+    renderBoard();
+    updateMoveSummary();
   } else if (pickerContext.kind === "hand") {
     const { slotIndex } = pickerContext;
     const hand = (state.hand || []).slice();
@@ -345,11 +400,92 @@ function setStatus(msg) {
   setTimeout(() => { document.getElementById("status").textContent = ""; }, 4000);
 }
 
+function interactionMode() {
+  return document.getElementById("interaction-mode").value;
+}
+
+function gamePlayers() {
+  const players = Array.isArray(state?.players) ? state.players.filter(Boolean) : [];
+  return players.length ? players : DEFAULT_PLAYERS.slice();
+}
+
+function activePlayerLabel() {
+  const players = gamePlayers();
+  if (!players.includes(activePlayer)) activePlayer = players[0] || null;
+  return activePlayer || "Unknown player";
+}
+
+function syncPlayerControls() {
+  const sel = document.getElementById("active-player-select");
+  const players = gamePlayers();
+  if (!players.includes(activePlayer)) activePlayer = players[0] || null;
+  sel.innerHTML = "";
+  for (const player of players) {
+    const opt = document.createElement("option");
+    opt.value = player;
+    opt.textContent = player;
+    if (player === activePlayer) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function updateMoveSummary() {
+  const summary = document.getElementById("move-summary");
+  const commitBtn = document.getElementById("commit-move-btn");
+  const cancelBtn = document.getElementById("cancel-move-btn");
+  if (draftMoveTiles.length === 0) {
+    summary.textContent = `No queued move · ${interactionMode() === "record" ? "click board cells to queue a move" : "editing setup directly"}`;
+    commitBtn.disabled = true;
+    cancelBtn.disabled = true;
+    return;
+  }
+  summary.textContent = `${draftMoveTiles.length} queued tile${draftMoveTiles.length === 1 ? "" : "s"} for ${activePlayerLabel()}`;
+  commitBtn.disabled = false;
+  cancelBtn.disabled = false;
+}
+
+function upsertDraftTile(tile) {
+  const idx = draftMoveTiles.findIndex(t => t.x === tile.x && t.y === tile.y);
+  if (idx >= 0) draftMoveTiles[idx] = tile;
+  else draftMoveTiles.push(tile);
+}
+
+function removeDraftTile(x, y) {
+  draftMoveTiles = draftMoveTiles.filter(t => !(t.x === x && t.y === y));
+}
+
+function clearDraftMove(quiet = false) {
+  if (draftMoveTiles.length === 0) return;
+  draftMoveTiles = [];
+  renderBoard();
+  updateMoveSummary();
+  if (!quiet) setStatus("Draft move cleared.");
+}
+
+function describeRecordedTile(tile) {
+  setStatus(`Recorded move ${tile.moveN} by ${tile.movePlayer || "unknown player"} is read-only.`);
+}
+
+async function commitDraftMove() {
+  if (draftMoveTiles.length === 0) {
+    setStatus("No queued move to commit.");
+    return;
+  }
+  const player = activePlayerLabel();
+  const tileCount = draftMoveTiles.length;
+  await api("/api/moves/commit", { player, tiles: draftMoveTiles });
+  draftMoveTiles = [];
+  await refresh();
+  setStatus(`Committed ${tileCount} tile${tileCount === 1 ? "" : "s"} for ${player}.`);
+}
+
 async function refresh() {
   const res = await fetch("/api/state");
   state = await res.json();
+  syncPlayerControls();
   renderBoard();
   renderHand();
+  updateMoveSummary();
   await loadGames();
   const total = flattenBoardTiles().length;
   setStatus(`${total} tiles on board · ${(state.hand || []).length}/6 in hand`);
@@ -383,6 +519,7 @@ function activeGame() {
 // ─── Init ─────────────────────────────────────────────────────────────
 
 document.getElementById("game-select").addEventListener("change", async (e) => {
+  clearDraftMove(true);
   await api("/api/games/switch", { id: e.target.value });
   await refresh();
 });
@@ -390,6 +527,7 @@ document.getElementById("game-select").addEventListener("change", async (e) => {
 document.getElementById("new-game-btn").addEventListener("click", async () => {
   const name = prompt("Name for the new game (e.g. 'vs Jeanne'):");
   if (!name) return;
+  clearDraftMove(true);
   await api("/api/games/new", { name });
   await refresh();
 });
@@ -405,9 +543,38 @@ document.getElementById("rename-game-btn").addEventListener("click", async () =>
 document.getElementById("delete-game-btn").addEventListener("click", async () => {
   const g = activeGame();
   if (!confirm(`Delete game "${g ? g.name : activeGameId}"? This cannot be undone.`)) return;
+  clearDraftMove(true);
   await api("/api/games/delete", { id: activeGameId });
   await refresh();
 });
+
+document.getElementById("edit-players-btn").addEventListener("click", async () => {
+  const raw = prompt("Players for this game (comma-separated):", gamePlayers().join(", "));
+  if (raw === null) return;
+  const players = raw.split(",").map(s => s.trim()).filter(Boolean);
+  if (players.length === 0) {
+    setStatus("Need at least one player name.");
+    return;
+  }
+  await api("/api/players", { players });
+  if (!players.includes(activePlayer)) activePlayer = players[0];
+  await refresh();
+});
+
+document.getElementById("active-player-select").addEventListener("change", (e) => {
+  activePlayer = e.target.value;
+  updateMoveSummary();
+});
+
+document.getElementById("interaction-mode").addEventListener("change", () => {
+  updateMoveSummary();
+});
+
+document.getElementById("commit-move-btn").addEventListener("click", () => {
+  commitDraftMove().catch(err => setStatus(`Failed to commit move: ${err.message}`));
+});
+
+document.getElementById("cancel-move-btn").addEventListener("click", () => clearDraftMove());
 
 document.getElementById("picker-cancel").addEventListener("click", hidePicker);
 document.getElementById("picker-remove").addEventListener("click", onPickerRemove);

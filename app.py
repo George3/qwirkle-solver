@@ -3,6 +3,7 @@
 Run:
     python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000
 """
+import copy
 import json
 import os
 import random
@@ -24,6 +25,7 @@ GAMES_DIR = ROOT / "games"
 INDEX_PATH = GAMES_DIR / "index.json"
 STATIC_DIR = ROOT / "static"
 SETUP_KEY = "setup"
+DEFAULT_PLAYERS = ["Player 1", "Player 2"]
 
 app = FastAPI(title="Qwirkle Interactive Editor")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -48,6 +50,10 @@ class HandPayload(BaseModel):
     tiles: list[TilePayload]
 
 
+class PlayersPayload(BaseModel):
+    players: list[str]
+
+
 class NewGamePayload(BaseModel):
     name: str
 
@@ -61,9 +67,63 @@ class RenamePayload(BaseModel):
     name: str
 
 
+class CommitMovePayload(BaseModel):
+    player: str
+    tiles: list[PlacePayload]
+
+
 def _read_state() -> dict:
     with open(JSON_PATH, encoding="utf-8") as f:
         return json.load(f)
+
+
+def _clean_players(players: list[str] | None) -> list[str]:
+    normalized = []
+    for raw in players or []:
+        player = str(raw).strip()
+        if player and player not in normalized:
+            normalized.append(player)
+    return normalized
+
+
+def _normalize_players(players: list[str] | None, *, fallback_moves: list[dict] | None = None) -> list[str]:
+    normalized = _clean_players(players)
+    if normalized:
+        return normalized
+    for move in fallback_moves or []:
+        player = str(move.get("player", "")).strip()
+        if player and player != SETUP_KEY and player not in normalized:
+            normalized.append(player)
+    return normalized or DEFAULT_PLAYERS.copy()
+
+
+def _state_for_response(data: dict) -> dict:
+    response = copy.deepcopy(data)
+    response["players"] = _normalize_players(
+        response.get("players"), fallback_moves=response.get("moves", [])
+    )
+    return response
+
+
+def _find_tile_owner(data: dict, x: int, y: int) -> tuple[dict, dict] | tuple[None, None]:
+    for move in data.get("moves", []):
+        for tile in move.get("tiles", []):
+            if tile["x"] == x and tile["y"] == y:
+                return move, tile
+    return None, None
+
+
+def _next_move_number(data: dict) -> int:
+    next_n = 1
+    for move in data.get("moves", []):
+        n = move.get("n")
+        if n == SETUP_KEY:
+            continue
+        try:
+            next_n = max(next_n, int(n) + 1)
+        except (TypeError, ValueError):
+            continue
+    return next_n
 
 
 def _atomic_write(data: dict) -> None:
@@ -81,9 +141,10 @@ def _atomic_write(data: dict) -> None:
 
 # ─── Multi-game storage ────────────────────────────────────────────────
 # Every game is its own file games/<id>_started-on-<yyyy-mm-dd>.json holding the
-# usual {moves, hand} plus top-level "name"/"started". game_state.json is kept as a
-# live mirror of the active game so the CLI tools (qwirkle_solver.py, sync_board.py)
-# keep reading it unchanged. games/index.json = {"active": "<id>"}.
+# usual {moves, hand} plus top-level "name"/"started"/optional "players".
+# game_state.json is kept as a live mirror of the active game so the CLI tools
+# (qwirkle_solver.py, sync_board.py) keep reading it unchanged.
+# games/index.json = {"active": "<id>"}.
 
 
 def _slugify(name: str) -> str:
@@ -177,7 +238,7 @@ def index() -> FileResponse:
 
 @app.get("/api/state")
 def get_state() -> dict:
-    return _read_state()
+    return _state_for_response(_read_state())
 
 
 @app.post("/api/board/place")
@@ -190,41 +251,43 @@ def place_tile(payload: PlacePayload) -> dict:
         {"x": payload.x, "y": payload.y, "color": payload.color, "shape": payload.shape}
     )
     _atomic_write(data)
-    return data
+    return _state_for_response(data)
 
 
 @app.post("/api/board/replace")
 def replace_tile(payload: PlacePayload) -> dict:
     data = _read_state()
-    found = False
-    for move in data.get("moves", []):
-        for t in move.get("tiles", []):
-            if t["x"] == payload.x and t["y"] == payload.y:
-                t["color"] = payload.color
-                t["shape"] = payload.shape
-                found = True
-    if not found:
+    move, tile = _find_tile_owner(data, payload.x, payload.y)
+    if tile is None:
         raise HTTPException(status_code=404, detail=f"No tile at ({payload.x},{payload.y})")
+    if move.get("n") != SETUP_KEY:
+        raise HTTPException(
+            status_code=409,
+            detail="Recorded move tiles are read-only. Edit only setup tiles or record a new move.",
+        )
+    tile["color"] = payload.color
+    tile["shape"] = payload.shape
     _atomic_write(data)
-    return data
+    return _state_for_response(data)
 
 
 @app.post("/api/board/remove")
 def remove_tile(payload: RemovePayload) -> dict:
     data = _read_state()
-    removed = False
-    for move in data.get("moves", []):
-        before = len(move.get("tiles", []))
-        move["tiles"] = [
-            t for t in move.get("tiles", []) if not (t["x"] == payload.x and t["y"] == payload.y)
-        ]
-        if len(move["tiles"]) != before:
-            removed = True
-    if not removed:
+    move, tile = _find_tile_owner(data, payload.x, payload.y)
+    if tile is None:
         raise HTTPException(status_code=404, detail=f"No tile at ({payload.x},{payload.y})")
+    if move.get("n") != SETUP_KEY:
+        raise HTTPException(
+            status_code=409,
+            detail="Recorded move tiles are read-only. Remove only setup tiles or record a new move.",
+        )
+    move["tiles"] = [
+        t for t in move.get("tiles", []) if not (t["x"] == payload.x and t["y"] == payload.y)
+    ]
     data["moves"] = [m for m in data["moves"] if m.get("tiles") or m.get("n") != SETUP_KEY]
     _atomic_write(data)
-    return data
+    return _state_for_response(data)
 
 
 @app.post("/api/hand")
@@ -232,7 +295,54 @@ def set_hand(payload: HandPayload) -> dict:
     data = _read_state()
     data["hand"] = [{"color": t.color, "shape": t.shape} for t in payload.tiles]
     _atomic_write(data)
-    return data
+    return _state_for_response(data)
+
+
+@app.post("/api/players")
+def set_players(payload: PlayersPayload) -> dict:
+    players = _clean_players(payload.players)
+    if not players:
+        raise HTTPException(status_code=400, detail="Need at least one player name.")
+    data = _read_state()
+    data["players"] = players
+    _atomic_write(data)
+    return _state_for_response(data)
+
+
+@app.post("/api/moves/commit")
+def commit_move(payload: CommitMovePayload) -> dict:
+    data = _read_state()
+    player = payload.player.strip()
+    if not player:
+        raise HTTPException(status_code=400, detail="Move player cannot be blank.")
+    players = _normalize_players(data.get("players"), fallback_moves=data.get("moves", []))
+    if player not in players:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Unknown player '{player}'. Update this game's player list first.",
+        )
+    if not payload.tiles:
+        raise HTTPException(status_code=400, detail="Need at least one tile to record a move.")
+
+    seen_coords = set()
+    tiles = []
+    for tile in payload.tiles:
+        coord = (tile.x, tile.y)
+        if coord in seen_coords:
+            raise HTTPException(status_code=409, detail=f"Duplicate tile coordinate {coord}.")
+        if _coord_exists(data, tile.x, tile.y):
+            raise HTTPException(
+                status_code=409, detail=f"Tile already exists at ({tile.x},{tile.y})."
+            )
+        seen_coords.add(coord)
+        tiles.append({"x": tile.x, "y": tile.y, "color": tile.color, "shape": tile.shape})
+
+    data.setdefault("players", players)
+    data.setdefault("moves", []).append(
+        {"n": _next_move_number(data), "player": player, "tiles": tiles}
+    )
+    _atomic_write(data)
+    return _state_for_response(data)
 
 
 _ALL_COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
@@ -246,6 +356,7 @@ def _deal_new_game(name: str) -> dict:
     return {
         "name": name,
         "started": datetime.now().strftime("%Y-%m-%d"),
+        "players": DEFAULT_PLAYERS.copy(),
         "moves": [{"n": SETUP_KEY, "player": SETUP_KEY, "tiles": [{"x": 0, "y": 0, **center}]}],
         "hand": hand_tiles,
     }
@@ -256,7 +367,7 @@ def _activate(game_id: str) -> dict:
     data = json.loads(_game_path(game_id).read_text(encoding="utf-8"))
     _set_active(game_id)
     _atomic_write(data)  # writes game_state.json + re-mirrors to the (now active) file
-    return data
+    return _state_for_response(data)
 
 
 @app.get("/api/games")
