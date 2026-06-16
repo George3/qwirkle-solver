@@ -585,20 +585,18 @@ def followup_score_profile(
     tiles: Counter[Tile],
     placements: list[tuple[tuple[int, int], Tile]],
 ) -> tuple[int, ...]:
-    """Descending score profile of single-tile follow-up placements.
+    """Descending score profile of legal multi-tile follow-up moves.
 
     Plays `placements` onto a copy of the board, removes those tiles from the
-    hand, then returns the score of every legal *single-tile* placement still
-    available for the leftover hand, sorted highest-first. Bag draws are
-    unknown, so only the leftover hand is considered.
+    hand, then enumerates every legal *next turn* -- which may lay down several
+    of the leftover tiles at once, just like a real Qwirkle turn -- and returns
+    their scores, highest-first. Bag draws are unknown, so only the leftover
+    hand is considered.
 
-    Used purely as a tie-breaker between equal-scoring moves. Compared as a
-    tuple it favours, in order: a higher best follow-up score, then a stronger
-    second-best, ..., then simply *more* open placements -- i.e. the move that
-    keeps the hand most playable next turn (e.g. keeps the purple diamond
-    legal in more spots). Single-tile only by design: a full multi-tile
-    look-ahead is ~90x slower here and the placement count is what the
-    flexibility tie-break actually turns on.
+    Used as a tie-breaker between equal-scoring moves: compared as a tuple it
+    prefers a higher best next-turn score, then a richer menu of follow-ups.
+    This re-generates a whole turn and is expensive, so callers apply it only
+    to the small set of top tied moves -- see generate_all_multi_moves.
     """
     remaining = tiles - Counter(tile for _, tile in placements)
     if not remaining:
@@ -610,17 +608,10 @@ def followup_score_profile(
     next_engine = QwirkleEngine()
     next_engine.load_board_state(next_board)
 
-    empty_neighbors = {
-        (x + dx, y + dy)
-        for (x, y) in next_board
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
-        if (x + dx, y + dy) not in next_board
-    }
-
     scores: list[int] = []
-    for tile in set(remaining):
-        for cell in empty_neighbors:
-            score = calculate_score_multi(next_engine, [(cell, tile)])
+    for segment in generate_connected_segments(next_engine):
+        for sequence in iter_tile_sequences(remaining, len(segment)):
+            score = calculate_score_multi(next_engine, list(zip(segment, sequence)))
             if score is not None:
                 scores.append(score)
     scores.sort(reverse=True)
@@ -641,14 +632,22 @@ def generate_all_multi_moves(
             if score is not None:
                 results.append((score, placements))
 
-    # Primary key: this move's score. Tie-breaker: the profile of single-tile
-    # follow-up placements it leaves open with the remaining hand, descending
-    # (see followup_score_profile -- higher best follow-up first, then more
-    # open placements / flexibility).
-    results.sort(
-        key=lambda item: (item[0], followup_score_profile(engine, tiles, item[1])),
-        reverse=True,
-    )
+    results.sort(key=lambda item: item[0], reverse=True)
+
+    # Tie-break only the moves tied at the best score -- the one you'll actually
+    # play. A full multi-tile next-turn look-ahead (followup_score_profile) is
+    # expensive, so we run it on just this top group, not on every move. The
+    # group is contiguous at the front because results is sorted by score.
+    if results:
+        best_score = results[0][0]
+        top = [item for item in results if item[0] == best_score]
+        if len(top) > 1:
+            top.sort(
+                key=lambda item: followup_score_profile(engine, tiles, item[1]),
+                reverse=True,
+            )
+            results = top + results[len(top):]
+
     return apply_late_game_risk_filter(engine, tiles, results)
 
 def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Tile]]:
@@ -685,14 +684,17 @@ if __name__ == "__main__":
     print(f"Total legal multi-tile moves: {len(all_moves)}")
     
     top_n = 4
+    best_score = all_moves[0][0] if all_moves else 0
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
         )
-        profile = followup_score_profile(engine, my_tiles, placements)
-        followup = profile[0] if profile else 0
-        print(
-            f"Rank {rank}: {score} points "
-            f"(best follow-up: {followup}, open spots: {len(profile)}) "
-            f"-> ,{placement_str}"
-        )
+        # The look-ahead tie-break only ran on moves tied at the best score, so
+        # only annotate those (computing it for the rest would be wasted work).
+        if score == best_score:
+            profile = followup_score_profile(engine, my_tiles, placements)
+            followup = profile[0] if profile else 0
+            annotation = f" (best follow-up: {followup}, next moves: {len(profile)})"
+        else:
+            annotation = ""
+        print(f"Rank {rank}: {score} pts{annotation} -> ,{placement_str}")
