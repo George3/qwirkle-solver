@@ -173,6 +173,48 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 10,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 1,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "color": "yellow",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -1,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "color": "yellow",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -181,20 +223,20 @@
       "shape": "circle"
     },
     {
-      "color": "blue",
-      "shape": "square"
+      "color": "yellow",
+      "shape": "star"
     },
     {
-      "color": "yellow",
-      "shape": "square"
+      "color": "red",
+      "shape": "diamond"
     },
     {
       "color": "yellow",
       "shape": "crossx"
     },
     {
-      "color": "orange",
-      "shape": "square"
+      "color": "green",
+      "shape": "crossx"
     },
     {
       "color": "purple",
@@ -204,7 +246,7 @@
   "name": "Game 1",
   "started": "2026-06-09",
   "players": [
-    "Player 1",
-    "Player 2"
+    "Me",
+    "Jeanne"
   ]
 }
