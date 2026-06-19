@@ -497,6 +497,36 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 1,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 5,
+          "color": "green",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -5,
+          "y": 2,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": -4,
+          "y": 2,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
     }
   ],
   "hand": [
@@ -509,15 +539,15 @@
       "shape": "diamond"
     },
     {
-      "color": "red",
-      "shape": "diamond"
+      "color": "purple",
+      "shape": "clover"
     },
     {
       "color": "purple",
       "shape": "diamond"
     },
     {
-      "color": "yellow",
+      "color": "red",
       "shape": "diamond"
     },
     {
@@ -526,5 +556,9 @@
     }
   ],
   "name": "TinyB Game",
-  "started": "2026-03-14"
+  "started": "2026-03-14",
+  "players": [
+    "Me",
+    "tinyb"
+  ]
 }
