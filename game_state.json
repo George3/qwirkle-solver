@@ -215,6 +215,42 @@
           "shape": "square"
         }
       ]
+    },
+    {
+      "n": 12,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "purple",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": 2,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "color": "purple",
+          "shape": "diamond"
+        }
+      ]
     }
   ],
   "hand": [
@@ -227,8 +263,8 @@
       "shape": "star"
     },
     {
-      "color": "red",
-      "shape": "diamond"
+      "color": "blue",
+      "shape": "star"
     },
     {
       "color": "yellow",
@@ -240,7 +276,7 @@
     },
     {
       "color": "purple",
-      "shape": "diamond"
+      "shape": "clover"
     }
   ],
   "name": "Game 1",
