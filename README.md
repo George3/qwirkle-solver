@@ -48,11 +48,14 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 ## TODO
 
 - ⚠️ **Check if "My Hand" is being recorded when [Commit Move] after each turn** — need to ensure player's hand state is captured with move history
+- **[STRATEGY]** "Bank" 1 or 2 Q's in hand vs. being blind to that?
+- [🙎-friendly] Button to [Preview] top move. 
 - resize board and "My Hand" to fit better on 1 screen
 - asserts (aka, validation) if a chosen tile breaks any rules of game
 - possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
 - a "Suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
 - a score button (might only be available if every move is assigned to a specific player)
+- **[STRATEGY] - Longerterm** Learn pattern/stragtegy of opponents based on past games of course - and current game.
 - **(Claude Opus suggestion)** bag/remaining-tile tracker — derive what's left in the bag from `(108 total) − (tiles on board) − (tiles in hand)` and show a 6×6 grid of remaining counts. Naturally feeds `LATE_GAME_BAG_THRESHOLD` logic and helps real-game strategy (knowing if the last `purple star` is still out there)
 - **(Claude Opus suggestion)** undo/redo using the existing `game_state.json.bak-*` snapshots — they're already written on every mutation, so a `POST /api/undo` that restores the most-recent backup is nearly free and rescues the "oops, wrong click" case
 - run many fully automated game simulations (solver vs. solver) to empirically find the optimal value for `LATE_GAME_BAG_THRESHOLD` in `qwirkle_solver.py` — currently hardcoded to 30, but the right number should be determined by win-rate data across many games

@@ -251,6 +251,36 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 14,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 2,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -2,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": -2,
+          "color": "yellow",
+          "shape": "star"
+        }
+      ]
     }
   ],
   "hand": [
@@ -260,11 +290,11 @@
     },
     {
       "color": "yellow",
-      "shape": "star"
+      "shape": "diamond"
     },
     {
-      "color": "blue",
-      "shape": "star"
+      "color": "orange",
+      "shape": "crossx"
     },
     {
       "color": "yellow",
