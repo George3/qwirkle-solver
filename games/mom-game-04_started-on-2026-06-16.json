@@ -107,32 +107,68 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 6,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 2,
+          "y": -1,
+          "color": "green",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "player": "George",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 2,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": 3,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": 4,
+          "color": "red",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "red",
-      "shape": "square"
+      "color": "purple",
+      "shape": "crossx"
     },
     {
       "color": "red",
       "shape": "diamond"
     },
     {
-      "color": "blue",
-      "shape": "square"
+      "color": "red",
+      "shape": "clover"
     },
     {
       "color": "green",
       "shape": "star"
     },
     {
-      "color": "yellow",
-      "shape": "square"
-    },
-    {
       "color": "green",
       "shape": "clover"
+    },
+    {
+      "color": "red",
+      "shape": "crossx"
     }
   ]
 }
