@@ -59,6 +59,19 @@ button:disabled {
 #board { display: block; max-width: 100%; }
 #hand { display: block; }
 
+#hand-wrap {
+  font-size: 26px;
+}
+
+#hand-wrap h2 {
+  font-size: inherit;
+}
+
+#hand-wrap button,
+#hand-wrap select {
+  font-size: inherit;
+}
+
 .cell-empty {
   fill: transparent;
   stroke: #bbb;

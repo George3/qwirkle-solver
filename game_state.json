@@ -265,50 +265,20 @@
       ]
     },
     {
-      "n": 3,
-      "player": "tinyb",
-      "tiles": [
-        {
-          "x": -4,
-          "y": 7,
-          "color": "yellow",
-          "shape": "circle"
-        },
-        {
-          "x": -4,
-          "y": 8,
-          "color": "yellow",
-          "shape": "square"
-        },
-        {
-          "x": -4,
-          "y": 5,
-          "color": "yellow",
-          "shape": "star"
-        }
-      ]
-    },
-    {
-      "n": 4,
+      "n": 15,
       "player": "Me",
       "tiles": [
         {
-          "x": 1,
-          "y": 6,
-          "color": "red",
-          "shape": "diamond"
+          "x": -1,
+          "y": -2,
+          "color": "blue",
+          "shape": "star"
         },
         {
-          "x": 0,
-          "y": 6,
-          "color": "orange",
-          "shape": "diamond"
-        },
-        {
-          "x": 2,
-          "y": 6,
-          "color": "purple",
-          "shape": "diamond"
+          "x": 3,
+          "y": -2,
+          "color": "yellow",
+          "shape": "star"
         }
       ]
     }
@@ -319,8 +289,8 @@
       "shape": "circle"
     },
     {
-      "color": "green",
-      "shape": "circle"
+      "color": "yellow",
+      "shape": "diamond"
     },
     {
       "color": "orange",
@@ -328,11 +298,11 @@
     },
     {
       "color": "yellow",
-      "shape": "square"
+      "shape": "crossx"
     },
     {
-      "color": "blue",
-      "shape": "diamond"
+      "color": "green",
+      "shape": "crossx"
     },
     {
       "color": "purple",
