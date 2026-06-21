@@ -119,6 +119,14 @@ button:disabled {
   padding: 0;
 }
 .swatch:hover { border-color: gold; }
+.swatch:disabled,
+.swatch.swatch-disabled {
+  opacity: 0.28;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+.swatch:disabled:hover,
+.swatch.swatch-disabled:hover { border-color: transparent; }
 #picker-actions {
   margin-top: 12px;
   display: flex; gap: 8px; justify-content: flex-end;

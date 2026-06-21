@@ -286,11 +286,37 @@ function openHandPicker(slotIndex, existingTile) {
   showPicker(title, !!existingTile);
 }
 
+// When recording your own move, only tiles still available in your hand are
+// legal. Returns a Set of allowed "color_shape" keys, or null when there is no
+// restriction (setup edits, hand editing, or recording the opponent's move).
+function enabledTileKeys() {
+  if (!pickerContext) return null;
+  const { kind } = pickerContext;
+  if (kind !== "draft-add" && kind !== "draft-edit") return null;
+  if (activePlayer !== "Me") return null;
+
+  const counts = {};
+  for (const t of state.hand || []) {
+    const k = `${t.color}_${t.shape}`;
+    counts[k] = (counts[k] || 0) + 1;
+  }
+  for (const t of draftMoveTiles) {
+    // Editing a draft tile frees it, so don't count it against the budget.
+    if (kind === "draft-edit" && t.x === pickerContext.x && t.y === pickerContext.y) continue;
+    const k = `${t.color}_${t.shape}`;
+    counts[k] = (counts[k] || 0) - 1;
+  }
+  const allowed = new Set();
+  for (const [k, c] of Object.entries(counts)) if (c > 0) allowed.add(k);
+  return allowed;
+}
+
 function showPicker(title, showRemove) {
   document.getElementById("picker-title").textContent = title;
   const grid = document.getElementById("picker-grid");
   grid.innerHTML = "";
 
+  const allowed = enabledTileKeys();
   for (const color of COLORS) {
     for (const shape of SHAPES) {
       const btn = document.createElement("button");
@@ -304,7 +330,12 @@ function showPicker(title, showRemove) {
       drawShape(svg, shape, color, 28, 28, 0, 0, 0.5);
       btn.appendChild(svg);
 
-      btn.addEventListener("click", () => onPickerChoice(color, shape));
+      if (allowed && !allowed.has(`${color}_${shape}`)) {
+        btn.disabled = true;
+        btn.classList.add("swatch-disabled");
+      } else {
+        btn.addEventListener("click", () => onPickerChoice(color, shape));
+      }
       grid.appendChild(btn);
     }
   }
