@@ -179,6 +179,36 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 10,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 7,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -1,
+          "y": 7,
+          "color": "red",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 3,
+          "y": 4,
+          "color": "red",
+          "shape": "circle"
+        }
+      ]
     }
   ],
   "hand": [
@@ -203,7 +233,7 @@
       "shape": "clover"
     },
     {
-      "color": "red",
+      "color": "green",
       "shape": "circle"
     }
   ]
