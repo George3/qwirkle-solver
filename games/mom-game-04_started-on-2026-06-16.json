@@ -2,7 +2,7 @@
   "name": "Mom Game 04",
   "started": "2026-06-16",
   "players": [
-    "George",
+    "Me",
     "Mom"
   ],
   "moves": [
@@ -143,6 +143,42 @@
           "shape": "square"
         }
       ]
+    },
+    {
+      "n": 8,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 3,
+          "y": 3,
+          "color": "yellow",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 5,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": 6,
+          "color": "red",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
@@ -151,12 +187,12 @@
       "shape": "crossx"
     },
     {
-      "color": "red",
-      "shape": "diamond"
+      "color": "yellow",
+      "shape": "clover"
     },
     {
-      "color": "red",
-      "shape": "clover"
+      "color": "orange",
+      "shape": "diamond"
     },
     {
       "color": "green",
@@ -168,7 +204,7 @@
     },
     {
       "color": "red",
-      "shape": "crossx"
+      "shape": "circle"
     }
   ]
 }
