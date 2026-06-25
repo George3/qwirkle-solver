@@ -575,6 +575,42 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 5,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": 5,
+          "y": 5,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "color": "purple",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -7,
+          "y": 4,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -7,
+          "y": 3,
+          "color": "green",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -583,8 +619,8 @@
       "shape": "square"
     },
     {
-      "color": "green",
-      "shape": "circle"
+      "color": "blue",
+      "shape": "star"
     },
     {
       "color": "purple",
@@ -599,8 +635,8 @@
       "shape": "diamond"
     },
     {
-      "color": "green",
-      "shape": "square"
+      "color": "purple",
+      "shape": "circle"
     }
   ],
   "name": "TinyB Game",

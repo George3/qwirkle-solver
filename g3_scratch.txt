@@ -1,0 +1,39 @@
+
+== Q.Solve ==
+
+## 2026-06-23
+
+### TODO - ASAP: Merge to main (after a few moves w/Jeanne,Mom,Robot)
+				+ Ensure pasted below ~retained in ~todo's 
+		   ASAP 2: Setup dmc's Ext. --> and MAYBE playwrite too?
+		   THEN: website host it >> run simulations.
+
+What I'll build:
+
+Generalize the open-5-line avoidance to the whole game as a soft score penalty (−12, the Qwirkle value), so risky moves still rank and can win if worth far more.
+Make "risky" precise with tile counting + the blocked check you asked for: a 5-line only counts as a gift if (a) ≥1 copy of the one completing tile is unaccounted-for, and (b) the open-end cell is actually a legal placement for it (reusing is_legal_move — the poison-the-cell rule in reverse).
+Show the bag estimate and a ⚠ opens a Qwirkle annotation in the output so you see why a higher-raw move ranked lower.
+Remove the superseded late-game functions/constants and update the two CLAUDE.md references.
+I deliberately left out the "save the 5th tile to Qwirkle myself next turn" idea from your old notes — it's unsafe because the opponent moves in between and can take it. Flagged that in the plan.
+
+Claude’s Plan C:\Users\Georg\.claude\plans\review-the-tile-playing-strategy-sleepy-steele.md
+
+...then:
+	FUTURE *must* (Simulations):  "We chose **Bounded** over **Aggressive** hold-back *because we can't measure it yet*..."
+		-- temp saved to Claude’s Plan C:\Users\Georg\.claude\plans\review-the-tile-playing-strategy-sleepy-steele.md  <-- I approved on 9:41am. Tues. 6/23.
+		
+Update Todos
+
+	Add constants + small helpers (ALL_SHAPES/COLORS, penalties, completing_tile_for_line, open_endpoints, completer_copies_available, largest_partial_qwirkle)
+
+	Implement gifts_opponent_qwirkle (defense) replacing creates_risky_open_five_line
+
+	Implement build_bonus + apply_strategy_adjustments re-ranker
+
+	Rewire generate_all_multi_moves and update __main__ output/annotations
+
+	Remove orphaned functions/constants (creates_risky_open_five_line, has_open_endpoint, apply_late_game_risk_filter, thresholds)
+
+	Update CLAUDE.md references + create SIMULATION_NOTES.md
+
+	Verify: run solver + inline defense/offense/regression scratch checks		

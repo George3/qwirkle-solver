@@ -149,7 +149,10 @@ replay_score.py — standalone, uses its own hardcoded move_history list,
 
 - `QwirkleEngine` holds the board as `dict[(x,y), Tile]` with single-tile placement validation.
 - Top-level functions `generate_connected_segments` → `iter_tile_sequences` → `calculate_score_multi` build and score every legal multi-tile placement.
-- `apply_late_game_risk_filter` ([qwirkle_solver.py:536](qwirkle_solver.py#L536)) suppresses moves that leave an open 5-line for the opponent, but only when the bag is low (`LATE_GAME_BAG_THRESHOLD = 30`) and a comparable safer alternative exists (within `SAFE_ALTERNATIVE_SCORE_GAP = 2`).
+- `apply_strategy_adjustments` re-ranks moves with two **whole-game** strategy terms (it also runs the `followup_score_profile` look-ahead tie-break on the top group):
+  - **Defense:** `gifts_opponent_qwirkle` subtracts `QWIRKLE_GIFT_PENALTY` (12) from any move that leaves an *open 5-line the opponent could actually complete* — i.e. a copy of the one completing tile is unaccounted-for (`completer_copies_available > 0`) **and** the open-end cell is a legal placement for it (perpendicular neighbors don't poison it, checked via `is_legal_move`).
+  - **Offense:** `build_bonus` adds up to `QWIRKLE_BUILD_BAND` (3) for keeping a strong partial-Qwirkle set in hand (`largest_partial_qwirkle >= MIN_BUILD_SET`), so the solver will sometimes hold back the "5th tile" to build its own Qwirkle. The band is the tunable knob; see [SIMULATION_NOTES.md](SIMULATION_NOTES.md).
+  - The gift penalty (−12) dwarfs the build band (≤3), so a real gift can never be rescued by build value. Displayed scores stay raw; `strategy_note` annotates *why* a move moved in the ranking.
 
 ### Interactive editor (app.py + static/)
 
@@ -183,7 +186,7 @@ Tiles left in bag = `108 − board_tiles − my_hand − opponent_hands`
 
 In a 2-player game: `108 − board_tiles − 6 (my hand) − 6 (opponent's hand)`. Never forget the opponent's hand — it is not visible but must be subtracted. The solver's `estimate_tiles_left_in_bag` ([qwirkle_solver.py:471](qwirkle_solver.py#L471)) does this correctly; always use it or replicate its logic rather than computing ad-hoc.
 
-The late-game risk filter activates when the bag estimate drops to ≤ `LATE_GAME_BAG_THRESHOLD` (default 30).
+The Qwirkle-gift penalty and build bonus (`apply_strategy_adjustments`) run **every turn**, at any bag level — there is no longer a late-game-only gate. `completer_copies_available` reuses this same tile-counting logic (a tile not on the board or in my hand could be in the bag or the opponent's hand).
 
 ## Move legality (two-axis rule)
 

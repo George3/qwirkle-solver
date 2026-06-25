@@ -6,8 +6,15 @@ from typing import Iterable, Optional, TypedDict
 
 
 TOTAL_QWIRKLE_TILES = 108
-LATE_GAME_BAG_THRESHOLD = 30
-SAFE_ALTERNATIVE_SCORE_GAP = 2
+COPIES_PER_TILE = 3  # each (color, shape) appears 3 times in a standard set
+
+# Strategy knobs (sweep these in future simulations -- see SIMULATION_NOTES.md):
+QWIRKLE_GIFT_PENALTY = 12  # a Qwirkle = 6 (line) + 6 bonus; what an open 5-line hands away
+QWIRKLE_BUILD_BAND = 3     # max points a hold-back move may give up vs the raw best (tunable)
+MIN_BUILD_SET = 4          # smallest partial-Qwirkle set in hand that counts as "building"
+
+ALL_COLORS = {"red", "orange", "yellow", "green", "blue", "purple"}
+ALL_SHAPES = {"circle", "square", "diamond", "clover", "crossx", "star"}
 
 
 """
@@ -500,84 +507,194 @@ def get_line_positions_on_board(
     return positions
 
 
-def has_open_endpoint(
+def open_endpoints(
     board: dict[tuple[int, int], Tile],
     line_positions: list[tuple[int, int]],
     axis: str,
-) -> bool:
+) -> list[tuple[int, int]]:
+    """The empty cell(s) just past either end of a line."""
     if axis == "horizontal":
         y = line_positions[0][1]
         min_x = min(pos[0] for pos in line_positions)
         max_x = max(pos[0] for pos in line_positions)
-        return (min_x - 1, y) not in board or (max_x + 1, y) not in board
+        candidates = [(min_x - 1, y), (max_x + 1, y)]
+    else:
+        x = line_positions[0][0]
+        min_y = min(pos[1] for pos in line_positions)
+        max_y = max(pos[1] for pos in line_positions)
+        candidates = [(x, min_y - 1), (x, max_y + 1)]
+    return [cell for cell in candidates if cell not in board]
 
-    x = line_positions[0][0]
-    min_y = min(pos[1] for pos in line_positions)
-    max_y = max(pos[1] for pos in line_positions)
-    return (x, min_y - 1) not in board or (x, max_y + 1) not in board
+
+def completing_tile_for_line(line_tiles: list[Tile]) -> Optional[Tile]:
+    """The single tile that would extend a valid line to a Qwirkle (length 6), or None.
+
+    A valid line is a color-run (one color, distinct shapes) or a shape-run (one shape,
+    distinct colors); the completer is the one missing attribute value.
+    """
+    colors = {t.color.lower() for t in line_tiles}
+    shapes = {t.shape.lower() for t in line_tiles}
+    if len(colors) == 1 and len(shapes) == len(line_tiles):
+        missing = ALL_SHAPES - shapes
+        if len(missing) == 1:
+            return Tile(color=next(iter(colors)), shape=next(iter(missing)))
+    elif len(shapes) == 1 and len(colors) == len(line_tiles):
+        missing = ALL_COLORS - colors
+        if len(missing) == 1:
+            return Tile(color=next(iter(missing)), shape=next(iter(shapes)))
+    return None
 
 
-def creates_risky_open_five_line(
+def completer_copies_available(
+    board: dict[tuple[int, int], Tile],
+    hand: Counter[Tile],
+    completer: Tile,
+) -> int:
+    """Copies of `completer` NOT visible to me (i.e. board + my hand).
+
+    A standard set has COPIES_PER_TILE of each tile; whatever isn't on the board or in
+    my hand is in the bag or the opponent's hand -- so it could complete the Qwirkle.
+    """
+    seen = 0
+    for tile in board.values():
+        if tile.color.lower() == completer.color and tile.shape.lower() == completer.shape:
+            seen += 1
+    for tile, count in hand.items():
+        if tile.color.lower() == completer.color and tile.shape.lower() == completer.shape:
+            seen += count
+    return COPIES_PER_TILE - seen
+
+
+def gifts_opponent_qwirkle(
     engine: QwirkleEngine,
+    tiles: Counter[Tile],
     placements: list[tuple[tuple[int, int], Tile]],
-) -> bool:
+) -> Optional[Tile]:
+    """The tile the opponent could drop to Qwirkle an open 5-line this move leaves, else None.
+
+    A 5-line is only a real gift when BOTH (a) at least one copy of the completing tile
+    is unaccounted-for (not on the board, not in my hand), AND (b) the open-end cell is a
+    *legal* placement for it -- the perpendicular neighbours don't poison it. A single
+    QwirkleEngine.is_legal_move call enforces (b) plus the extends-to-6 rule.
+    """
     temp_board = engine.board.copy()
     for move, tile in placements:
         temp_board[move] = tile
 
+    remaining_hand = tiles - Counter(tile for _, tile in placements)
+    temp_engine = QwirkleEngine()
+    temp_engine.load_board_state(temp_board)
+
+    checked: set[frozenset[tuple[int, int]]] = set()
     for (x, y), _ in placements:
-        for axis in ["horizontal", "vertical"]:
+        for axis in ("horizontal", "vertical"):
             line_positions = get_line_positions_on_board(temp_board, x, y, axis)
             if len(line_positions) != 5:
                 continue
+            key = frozenset(line_positions)
+            if key in checked:
+                continue
+            checked.add(key)
 
             line_tiles = [temp_board[pos] for pos in line_positions]
-            if validate_full_line(line_tiles) and has_open_endpoint(temp_board, line_positions, axis):
-                return True
+            if not validate_full_line(line_tiles):
+                continue
+            completer = completing_tile_for_line(line_tiles)
+            if completer is None:
+                continue
+            if completer_copies_available(temp_board, remaining_hand, completer) <= 0:
+                continue
+            for end in open_endpoints(temp_board, line_positions, axis):
+                if temp_engine.is_legal_move(end, completer):
+                    return completer
+    return None
 
-    return False
+
+def largest_partial_qwirkle(hand: Counter[Tile]) -> int:
+    """Size of the biggest in-hand set toward a Qwirkle: distinct shapes of one color,
+    or distinct colors of one shape (capped at 6). Drives the hold-back build bonus."""
+    by_color: dict[str, set[str]] = {}
+    by_shape: dict[str, set[str]] = {}
+    for tile in hand:  # distinct tiles only; duplicates can't extend the same line
+        by_color.setdefault(tile.color.lower(), set()).add(tile.shape.lower())
+        by_shape.setdefault(tile.shape.lower(), set()).add(tile.color.lower())
+    best = 0
+    for shapes in by_color.values():
+        best = max(best, len(shapes))
+    for colors in by_shape.values():
+        best = max(best, len(colors))
+    return min(best, 6)
 
 
-def apply_late_game_risk_filter(
+def build_bonus(remaining_hand: Counter[Tile]) -> int:
+    """Bounded reward for keeping a strong partial-Qwirkle set in hand after a move.
+
+    set of 4 -> 1, 5 -> 2, 6 -> 3, all within QWIRKLE_BUILD_BAND so a hold-back move can
+    outrank the raw best by at most a few points -- it can never override big scores.
+
+    Limitation (first planned refinement): looks only at the hand, not whether a board
+    line will exist to play the set on, and weights every unfinished set equally
+    regardless of how many completing tiles remain unseen (note b's "probability to
+    complete the Q").
+    """
+    partial = largest_partial_qwirkle(remaining_hand)
+    return min(max(0, partial - (MIN_BUILD_SET - 1)), QWIRKLE_BUILD_BAND)
+
+
+def apply_strategy_adjustments(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
     ranked_moves: list[tuple[int, list[tuple[tuple[int, int], Tile]]]],
-    bag_threshold: int = LATE_GAME_BAG_THRESHOLD,
-    score_gap: int = SAFE_ALTERNATIVE_SCORE_GAP,
 ) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
-    if len(ranked_moves) < 2:
+    """Re-rank by strategy: subtract a Qwirkle-gift penalty, add a bounded build bonus,
+    then break ties among the top group by next-turn look-ahead. Moves keep their raw
+    display score; only the ordering changes. The gift penalty (-12) dwarfs the build
+    band (<=3), so a real gift can never be rescued by build value.
+    """
+    if not ranked_moves:
         return ranked_moves
 
-    tiles_left_in_bag = estimate_tiles_left_in_bag(
-        board_tile_count=len(engine.board),
-        my_hand_count=sum(tiles.values()),
-    )
-    if tiles_left_in_bag > bag_threshold:
-        return ranked_moves
+    scored: list[tuple[int, int, list[tuple[tuple[int, int], Tile]]]] = []
+    for raw, placements in ranked_moves:
+        rank_score = raw
+        if gifts_opponent_qwirkle(engine, tiles, placements) is not None:
+            rank_score -= QWIRKLE_GIFT_PENALTY
+        remaining_hand = tiles - Counter(tile for _, tile in placements)
+        rank_score += build_bonus(remaining_hand)
+        scored.append((rank_score, raw, placements))
 
-    ranked_with_risk = [
-        (score, placements, creates_risky_open_five_line(engine, placements))
-        for score, placements in ranked_moves
-    ]
+    scored.sort(key=lambda item: item[0], reverse=True)
 
-    best_score = ranked_with_risk[0][0]
-    best_safe_score = next(
-        (score for score, _, is_risky in ranked_with_risk if not is_risky),
-        None,
-    )
+    # Tie-break only the moves tied at the best rank_score -- the one you'll actually
+    # play. The multi-tile next-turn look-ahead (followup_score_profile) is expensive,
+    # so run it on just this top group, not on every move.
+    best_rank = scored[0][0]
+    top = [item for item in scored if item[0] == best_rank]
+    if len(top) > 1:
+        top.sort(
+            key=lambda item: followup_score_profile(engine, tiles, item[2]),
+            reverse=True,
+        )
+        scored = top + scored[len(top):]
 
-    if best_safe_score is None:
-        return ranked_moves
+    return [(raw, placements) for _rank, raw, placements in scored]
 
-    if best_safe_score < best_score - score_gap:
-        return ranked_moves
 
-    safe_moves = [
-        (score, placements)
-        for score, placements, is_risky in ranked_with_risk
-        if not is_risky
-    ]
-    return safe_moves if safe_moves else ranked_moves
+def strategy_note(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> str:
+    """Human-readable reason a move was up- or down-ranked, for the printed output."""
+    notes: list[str] = []
+    completer = gifts_opponent_qwirkle(engine, tiles, placements)
+    if completer is not None:
+        notes.append(f"⚠ opens a Qwirkle for opponent ({completer.color}-{completer.shape})")
+    remaining_hand = tiles - Counter(tile for _, tile in placements)
+    partial = largest_partial_qwirkle(remaining_hand)
+    if partial >= MIN_BUILD_SET:
+        notes.append(f"holds {partial}/6 set")
+    return " [" + "; ".join(notes) + "]" if notes else ""
 
 
 def followup_score_profile(
@@ -632,23 +749,9 @@ def generate_all_multi_moves(
             if score is not None:
                 results.append((score, placements))
 
-    results.sort(key=lambda item: item[0], reverse=True)
-
-    # Tie-break only the moves tied at the best score -- the one you'll actually
-    # play. A full multi-tile next-turn look-ahead (followup_score_profile) is
-    # expensive, so we run it on just this top group, not on every move. The
-    # group is contiguous at the front because results is sorted by score.
-    if results:
-        best_score = results[0][0]
-        top = [item for item in results if item[0] == best_score]
-        if len(top) > 1:
-            top.sort(
-                key=lambda item: followup_score_profile(engine, tiles, item[1]),
-                reverse=True,
-            )
-            results = top + results[len(top):]
-
-    return apply_late_game_risk_filter(engine, tiles, results)
+    # Strategy ranking (gift penalty + build bonus) and the top-group look-ahead
+    # tie-break both live in apply_strategy_adjustments now.
+    return apply_strategy_adjustments(engine, tiles, results)
 
 def load_game_state(path: Path) -> tuple[dict[tuple[int, int], Tile], Counter[Tile]]:
     """Load board state and hand from a JSON file.
@@ -681,20 +784,23 @@ if __name__ == "__main__":
     engine.load_board_state(game_state)
 
     all_moves = generate_all_multi_moves(engine, my_tiles)
+    bag = estimate_tiles_left_in_bag(
+        board_tile_count=len(engine.board),
+        my_hand_count=sum(my_tiles.values()),
+    )
+    print(f"Tiles left in bag (est.): {bag}")
     print(f"Total legal multi-tile moves: {len(all_moves)}")
-    
+
     top_n = 4
-    best_score = all_moves[0][0] if all_moves else 0
     for rank, (score, placements) in enumerate(all_moves[:top_n], start=1):
         placement_str = ", ".join(
             f"{move}: {tile}" for move, tile in placements
         )
-        # The look-ahead tie-break only ran on moves tied at the best score, so
-        # only annotate those (computing it for the rest would be wasted work).
-        if score == best_score:
+        note = strategy_note(engine, my_tiles, placements)
+        # Only the rank-1 move is the one you'll play; its next-turn look-ahead is
+        # the expensive part, so annotate just that one.
+        if rank == 1:
             profile = followup_score_profile(engine, my_tiles, placements)
             followup = profile[0] if profile else 0
-            annotation = f" (best follow-up: {followup}, next moves: {len(profile)})"
-        else:
-            annotation = ""
-        print(f"Rank {rank}: {score} pts{annotation} -> ,{placement_str}")
+            note = f" (best follow-up: {followup}, next moves: {len(profile)}){note}"
+        print(f"Rank {rank}: {score} pts{note} -> {placement_str}")
