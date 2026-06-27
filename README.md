@@ -1,6 +1,6 @@
 # Another Qwirkle™ Solver
 
-- ...but the first I've _written_[*]
+- ...but the first I've _created_[*]
 
 > ⚠️ **Caution:** Pre-release quality. Mostly AI/LLM-generated. **Use at your own risk!**
 
@@ -50,3 +50,5 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 - **(Claude Opus suggestion)** undo/redo using the existing `game_state.json.bak-*` snapshots — they're already written on every mutation, so a `POST /api/undo` that restores the most-recent backup is nearly free and rescues the "oops, wrong click" case
 - run many fully automated game simulations (solver vs. solver) to empirically find the optimal value for `LATE_GAME_BAG_THRESHOLD` in `qwirkle_solver.py` — currently hardcoded to 30, but the right number should be determined by win-rate data across many games
 - **strategy:** should any weight be assigned to a move that leaves more similar tiles in My Hand? (e.g., prefer moves that preserve hand tiles sharing a color or shape, since they enable bigger future plays / Qwirkles)
+
+[*] AI-assisted or not.
