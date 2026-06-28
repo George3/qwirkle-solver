@@ -1,10 +1,4 @@
 {
-  "name": "Expert Robot (iPad)",
-  "started": "2026-06-21",
-  "players": [
-    "Me",
-    "Robot"
-  ],
   "moves": [
     {
       "n": "setup",
@@ -13,216 +7,516 @@
         {
           "x": 0,
           "y": 0,
-          "color": "blue",
-          "shape": "star"
-        },
-        {
-          "x": -1,
-          "y": 0,
-          "color": "blue",
-          "shape": "diamond"
-        },
-        {
-          "x": 1,
-          "y": 0,
-          "color": "blue",
-          "shape": "square"
-        },
-        {
-          "x": 2,
-          "y": 0,
-          "color": "blue",
-          "shape": "circle"
-        },
-        {
-          "x": 2,
-          "y": 1,
-          "color": "yellow",
-          "shape": "circle"
-        },
-        {
-          "x": 3,
-          "y": 1,
-          "color": "yellow",
-          "shape": "square"
-        },
-        {
-          "x": 2,
-          "y": -1,
-          "color": "red",
-          "shape": "circle"
-        },
-        {
-          "x": 2,
-          "y": -2,
           "color": "purple",
-          "shape": "circle"
-        },
-        {
-          "x": 2,
-          "y": -3,
-          "color": "orange",
-          "shape": "circle"
-        },
-        {
-          "x": 1,
-          "y": -1,
-          "color": "red",
-          "shape": "square"
-        },
-        {
-          "x": 1,
-          "y": -2,
-          "color": "purple",
-          "shape": "square"
-        },
-        {
-          "x": 1,
-          "y": -3,
-          "color": "orange",
-          "shape": "square"
-        },
-        {
-          "x": 1,
-          "y": -4,
-          "color": "yellow",
-          "shape": "square"
-        },
-        {
-          "x": 1,
-          "y": -5,
-          "color": "green",
-          "shape": "square"
-        },
-        {
-          "x": 0,
-          "y": -3,
-          "color": "orange",
-          "shape": "star"
-        },
-        {
-          "x": 3,
-          "y": -3,
-          "color": "orange",
-          "shape": "diamond"
-        },
-        {
-          "x": 4,
-          "y": -3,
-          "color": "orange",
           "shape": "clover"
-        },
-        {
-          "x": 4,
-          "y": -4,
-          "color": "green",
-          "shape": "clover"
-        },
-        {
-          "x": 3,
-          "y": -4,
-          "color": "green",
-          "shape": "diamond"
-        },
-        {
-          "x": 5,
-          "y": -4,
-          "color": "green",
-          "shape": "circle"
-        },
-        {
-          "x": 6,
-          "y": -4,
-          "color": "green",
-          "shape": "square"
-        },
-        {
-          "x": 5,
-          "y": -5,
-          "color": "green",
-          "shape": "diamond"
-        },
-        {
-          "x": 5,
-          "y": -6,
-          "color": "green",
-          "shape": "crossx"
-        },
-        {
-          "x": 6,
-          "y": -3,
-          "color": "red",
-          "shape": "square"
-        },
-        {
-          "x": 6,
-          "y": -2,
-          "color": "purple",
-          "shape": "square"
-        },
-        {
-          "x": 6,
-          "y": -1,
-          "color": "orange",
-          "shape": "square"
-        },
-        {
-          "x": 3,
-          "y": -1,
-          "color": "red",
-          "shape": "diamond"
-        },
-        {
-          "x": 4,
-          "y": -1,
-          "color": "red",
-          "shape": "star"
-        },
-        {
-          "x": 3,
-          "y": -2,
-          "color": "purple",
-          "shape": "diamond"
         }
       ]
     },
     {
       "n": 1,
+      "player": "Player 1",
+      "tiles": [
+        {
+          "x": -1,
+          "y": 0,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "orange",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "player": "Player 2",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 0,
+          "color": "red",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "player": "Player 1",
+      "tiles": [
+        {
+          "x": -1,
+          "y": 1,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": 1,
+          "color": "green",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "player": "Player 2",
+      "tiles": [
+        {
+          "x": 0,
+          "y": -1,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "color": "purple",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "player": "Player 1",
+      "tiles": [
+        {
+          "x": 0,
+          "y": -3,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 1,
+          "y": -3,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": 2,
+          "y": -3,
+          "color": "red",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "player": "Player 2",
+      "tiles": [
+        {
+          "x": -3,
+          "y": 1,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": -3,
+          "y": 2,
+          "color": "orange",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "player": "Player 1",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 2,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "color": "blue",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "player": "Player 2",
+      "tiles": [
+        {
+          "x": 1,
+          "y": -2,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": -2,
+          "color": "red",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "player": "Player 1",
+      "tiles": [
+        {
+          "x": 1,
+          "y": -4,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": -4,
+          "color": "red",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 1,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "color": "yellow",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 11,
       "player": "Me",
       "tiles": [
         {
           "x": -1,
           "y": -1,
           "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "color": "yellow",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "purple",
           "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": 2,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "color": "purple",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 14,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 2,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -2,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": -2,
+          "color": "yellow",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 16,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -3,
+          "color": "blue",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 17,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": -5,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 0,
+          "y": -5,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": -1,
+          "y": -5,
+          "color": "orange",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 18,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -2,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -5,
+          "y": 1,
+          "color": "red",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 20,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": -6,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": -7,
+          "color": "green",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 21,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 22,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -6,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": -6,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -5,
+          "y": 0,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -6,
+          "y": 0,
+          "color": "green",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 24,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 3,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 4,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 5,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 25,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 2,
+          "y": -5,
+          "color": "red",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 26,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 3,
+          "y": 0,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 3,
+          "y": -1,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 3,
+          "y": 1,
+          "color": "yellow",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 27,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 3,
+          "y": 3,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": 3,
+          "y": 4,
+          "color": "blue",
+          "shape": "clover"
         }
       ]
     }
   ],
   "hand": [
     {
-      "color": "purple",
-      "shape": "star"
-    },
-    {
-      "color": "red",
+      "color": "orange",
       "shape": "circle"
     },
     {
       "color": "purple",
-      "shape": "diamond"
-    },
-    {
-      "color": "blue",
       "shape": "crossx"
     },
     {
-      "color": "yellow",
-      "shape": "clover"
+      "color": "purple",
+      "shape": "crossx"
+    },
+    {
+      "color": "purple",
+      "shape": "circle"
+    },
+    {
+      "color": "purple",
+      "shape": "square"
     },
     {
       "color": "yellow",
-      "shape": "circle"
+      "shape": "star"
     }
+  ],
+  "name": "Jeanne Game 03",
+  "started": "2026-06-05",
+  "players": [
+    "Me",
+    "Jeanne"
   ]
 }
