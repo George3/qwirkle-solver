@@ -245,6 +245,42 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 14,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 5,
+          "y": 6,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": 4,
+          "y": 6,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 4,
+          "y": 7,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 5,
+          "y": 7,
+          "color": "yellow",
+          "shape": "clover"
+        }
+      ]
     }
   ],
   "hand": [
@@ -254,7 +290,7 @@
     },
     {
       "color": "yellow",
-      "shape": "clover"
+      "shape": "circle"
     },
     {
       "color": "orange",
@@ -265,8 +301,8 @@
       "shape": "circle"
     },
     {
-      "color": "yellow",
-      "shape": "star"
+      "color": "blue",
+      "shape": "clover"
     },
     {
       "color": "blue",
