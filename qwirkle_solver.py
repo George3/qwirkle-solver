@@ -678,9 +678,11 @@ def largest_partial_qwirkle(hand: Counter[Tile]) -> int:
 
 def partial_qwirkle_missing_tiles(hand: Counter[Tile]) -> Optional[tuple[int, list[Tile]]]:
     """(size, missing tiles) for the biggest in-hand partial-Qwirkle set, or None if
-    nothing qualifies as "building" (below MIN_BUILD_SET)."""
+    nothing qualifies as "building" (below MIN_BUILD_SET). `missing` is empty when size
+    == 6 -- a complete, unplayed Qwirkle sitting in hand -- which is a valid result, not
+    a "nothing to build" case."""
     size, missing = _best_partial_qwirkle_group(hand)
-    if size < MIN_BUILD_SET or not missing:
+    if size < MIN_BUILD_SET:
         return None
     return size, missing
 
@@ -699,6 +701,8 @@ def build_bonus(engine: QwirkleEngine, remaining_hand: Counter[Tile]) -> float:
         return 0.0
     size, missing = detail
     band = min(max(0, size - (MIN_BUILD_SET - 1)), QWIRKLE_BUILD_BAND)
+    if not missing:
+        return band  # size == 6: a complete set is already in hand, full confidence
     availability = [
         completer_copies_available(engine.board, remaining_hand, tile) / COPIES_PER_TILE
         for tile in missing
@@ -740,9 +744,12 @@ def apply_strategy_adjustments(
 
     # Tie-break only the moves tied at the best rank_score -- the one you'll actually
     # play. The multi-tile next-turn look-ahead (followup_score_profile) is expensive,
-    # so run it on just this top group, not on every move.
+    # so run it on just this top group, not on every move. rank_score is now a float
+    # (probability-weighted), so use a tolerance instead of exact equality -- otherwise
+    # floating-point rounding could split genuinely-tied moves apart.
     best_rank = scored[0][0]
-    top = [item for item in scored if item[0] == best_rank]
+    RANK_TIE_EPSILON = 1e-9
+    top = [item for item in scored if abs(item[0] - best_rank) < RANK_TIE_EPSILON]
     if len(top) > 1:
         top.sort(
             key=lambda item: followup_score_profile(engine, tiles, item[2]),
