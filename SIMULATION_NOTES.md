@@ -17,30 +17,45 @@ The old defense (`apply_late_game_risk_filter`) only fired at bag ≤ 30; the ga
 
 ## What we implemented (the safe/known-good half)
 
-Both terms now run **every turn** in `apply_strategy_adjustments`:
+Both terms now run **every turn** in `apply_strategy_adjustments`, and both are now
+**probability-weighted** rather than flat (see H3 below — implemented, not yet
+simulation-validated):
 
-- **Defense — `gifts_opponent_qwirkle`**: penalize moves that leave an open 5-line the
-  opponent could *actually* complete (a completing-tile copy is unaccounted-for AND the
-  open-end cell is a legal placement for it — perpendicular neighbors don't poison it).
-- **Offense — `build_bonus`**: bounded reward for keeping a strong partial-Qwirkle set
-  in hand, so the solver sometimes holds back the "5th tile" to build its own Qwirkle —
-  completed later in a single multi-tile move the opponent can't intercept.
+- **Defense — `gift_risk`**: finds any open 5-line the opponent could *actually*
+  complete (a completing-tile copy is unaccounted-for AND the open-end cell is a legal
+  placement for it — perpendicular neighbors don't poison it), then scales
+  `QWIRKLE_GIFT_PENALTY` by `probability_in_opponent_hand` — the exact hypergeometric
+  odds that at least one unseen copy is in the opponent's hand rather than still in the
+  bag, given the current unseen-tile pool. 1 unseen copy now costs less than 2; a big bag
+  costs less than a nearly-empty one. `gifts_opponent_qwirkle` remains as a boolean
+  wrapper for callers that only need the tile.
+- **Offense — `build_bonus`**: reward for keeping a strong partial-Qwirkle set in hand,
+  so the solver sometimes holds back the "5th tile" to build its own Qwirkle — completed
+  later in a single multi-tile move the opponent can't intercept. The flat, capped band
+  is now multiplied by a confidence factor (average `completer_copies_available /
+  COPIES_PER_TILE` across the set's missing tiles), so a set that's realistically
+  completable keeps close to the full band and one whose missing tiles are already gone
+  earns close to nothing.
 
 ## The decision we deferred: Bounded vs Aggressive hold-back
 
-We chose **Bounded** (capped, flat band) over **Aggressive** (band scales with set
-closeness + weighted by unseen completer copies) **only because we can't measure it
-yet**. This is the #1 thing to settle by simulation. Aggressive is closer to how Jeanne
-actually plays; the risk is hoarding tiles and underplaying when the board never offers
-a spot to cash the set.
+We originally chose **Bounded** (capped, flat band) over **Aggressive** (band scales
+with set closeness + weighted by unseen completer copies) only because we couldn't
+measure it. **H3 (completer-availability weighting) is now implemented** — `build_bonus`
+scales the flat band by availability, moving from pure-Bounded toward Aggressive without
+uncapping `QWIRKLE_BUILD_BAND` itself. This is still **not simulation-validated** — the
+harness below doesn't exist yet, so we can't confirm it beats the old flat-band version
+by win rate. The risk flagged originally still applies: hoarding tiles and underplaying
+if the board never offers a spot to cash the set (that's H4, still open).
 
 ## Tunable knobs (sweep these)
 
 | Constant | Default | Meaning |
 |---|---|---|
-| `QWIRKLE_GIFT_PENALTY` | 12 | How hard to avoid gifting an open 5-line. |
-| `QWIRKLE_BUILD_BAND` | 3 | Points the solver will give up *now* to keep building a Qwirkle. **Raising this ≈ moving from Bounded toward Aggressive.** |
+| `QWIRKLE_GIFT_PENALTY` | 12 | Max penalty (at 100% risk) for gifting an open 5-line. |
+| `QWIRKLE_BUILD_BAND` | 3 | Max points (at 100% confidence) the solver will give up *now* to keep building a Qwirkle. **Raising this ≈ moving from Bounded toward Aggressive.** |
 | `MIN_BUILD_SET` | 4 | Hand-set size that counts as "building." |
+| `OPPONENT_HAND_SIZE` | 6 | Assumed opponent hand size used by `probability_in_opponent_hand`'s hypergeometric calculation. |
 
 ## Hypotheses to test
 
@@ -49,11 +64,15 @@ a spot to cash the set.
   that peaks win-rate (sweep 0–6+).
 - **H3** — Adding **completer-availability weighting** to `build_bonus` (note b's
   "highest probability to complete the Q": weight a held set by how many of its missing
-  tiles are still unseen) beats the flat bonus. This is the first planned refinement and
-  the documented limitation in `build_bonus`.
+  tiles are still unseen) beats the flat bonus. **Implemented** (see above); still needs
+  simulation to confirm it actually beats the old flat-band version by win rate.
 - **H4** — `build_bonus` should also require a plausible **board location** to play the
   set (it currently scores the hand only). Test whether adding board-feasibility helps
-  or just adds cost.
+  or just adds cost. Still open — see README TODO.
+- **H5** — Scaling `QWIRKLE_GIFT_PENALTY` by `probability_in_opponent_hand` (hypergeometric
+  odds, not a flat any-unseen-copy trigger) beats the old flat penalty, especially in the
+  late game where a small unseen pool makes a linear approximation over-confident.
+  **Implemented**; not yet simulation-validated.
 
 ## Harness prerequisites (not built yet)
 

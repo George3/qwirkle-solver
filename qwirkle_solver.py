@@ -1,6 +1,7 @@
 import json
 from collections import Counter
 from dataclasses import dataclass
+from math import comb
 from pathlib import Path
 from typing import Iterable, Optional, TypedDict
 
@@ -12,6 +13,7 @@ COPIES_PER_TILE = 3  # each (color, shape) appears 3 times in a standard set
 QWIRKLE_GIFT_PENALTY = 12  # a Qwirkle = 6 (line) + 6 bonus; what an open 5-line hands away
 QWIRKLE_BUILD_BAND = 3     # max points a hold-back move may give up vs the raw best (tunable)
 MIN_BUILD_SET = 4          # smallest partial-Qwirkle set in hand that counts as "building"
+OPPONENT_HAND_SIZE = 6     # assumed opponent hand size for gift-risk probability estimates
 
 ALL_COLORS = {"red", "orange", "yellow", "green", "blue", "purple"}
 ALL_SHAPES = {"circle", "square", "diamond", "clover", "crossx", "star"}
@@ -565,12 +567,36 @@ def completer_copies_available(
     return COPIES_PER_TILE - seen
 
 
-def gifts_opponent_qwirkle(
+def probability_in_opponent_hand(
+    copies_available: int,
+    unseen_pool: int,
+    opponent_hand_size: int = OPPONENT_HAND_SIZE,
+) -> float:
+    """P(at least one of `copies_available` unseen copies of a tile is in the opponent's
+    hand), given `unseen_pool` total unseen tiles (bag + opponent hand combined).
+
+    Exact hypergeometric: 1 - P(opponent's hand is drawn entirely from the *other*
+    unseen tiles). A linear approximation (copies * hand / pool) over-estimates risk once
+    the bag gets small relative to hand size -- exactly the late-game case this solver
+    needs to get right (see SIMULATION_NOTES.md's Jeanne-03 loss).
+    """
+    if unseen_pool <= 0 or copies_available <= 0:
+        return 0.0
+    if copies_available >= unseen_pool:
+        return 1.0
+    hand = min(opponent_hand_size, unseen_pool)
+    if hand <= 0:
+        return 0.0
+    return 1.0 - comb(unseen_pool - copies_available, hand) / comb(unseen_pool, hand)
+
+
+def gift_risk(
     engine: QwirkleEngine,
     tiles: Counter[Tile],
     placements: list[tuple[tuple[int, int], Tile]],
-) -> Optional[Tile]:
-    """The tile the opponent could drop to Qwirkle an open 5-line this move leaves, else None.
+) -> Optional[tuple[Tile, int]]:
+    """The (completer tile, unseen copies) an open 5-line this move leaves would let the
+    opponent Qwirkle with, else None.
 
     A 5-line is only a real gift when BOTH (a) at least one copy of the completing tile
     is unaccounted-for (not on the board, not in my hand), AND (b) the open-end cell is a
@@ -602,43 +628,83 @@ def gifts_opponent_qwirkle(
             completer = completing_tile_for_line(line_tiles)
             if completer is None:
                 continue
-            if completer_copies_available(temp_board, remaining_hand, completer) <= 0:
+            copies_available = completer_copies_available(temp_board, remaining_hand, completer)
+            if copies_available <= 0:
                 continue
             for end in open_endpoints(temp_board, line_positions, axis):
                 if temp_engine.is_legal_move(end, completer):
-                    return completer
+                    return completer, copies_available
     return None
 
 
-def largest_partial_qwirkle(hand: Counter[Tile]) -> int:
-    """Size of the biggest in-hand set toward a Qwirkle: distinct shapes of one color,
-    or distinct colors of one shape (capped at 6). Drives the hold-back build bonus."""
+def gifts_opponent_qwirkle(
+    engine: QwirkleEngine,
+    tiles: Counter[Tile],
+    placements: list[tuple[tuple[int, int], Tile]],
+) -> Optional[Tile]:
+    """The tile the opponent could drop to Qwirkle an open 5-line this move leaves, else
+    None. Thin wrapper around `gift_risk` for callers that only need the tile."""
+    risk = gift_risk(engine, tiles, placements)
+    return risk[0] if risk is not None else None
+
+
+def _best_partial_qwirkle_group(hand: Counter[Tile]) -> tuple[int, list[Tile]]:
+    """The biggest in-hand set toward a Qwirkle -- distinct shapes of one color, or
+    distinct colors of one shape -- as (size, missing tiles needed to reach 6)."""
     by_color: dict[str, set[str]] = {}
     by_shape: dict[str, set[str]] = {}
     for tile in hand:  # distinct tiles only; duplicates can't extend the same line
         by_color.setdefault(tile.color.lower(), set()).add(tile.shape.lower())
         by_shape.setdefault(tile.shape.lower(), set()).add(tile.color.lower())
-    best = 0
-    for shapes in by_color.values():
-        best = max(best, len(shapes))
-    for colors in by_shape.values():
-        best = max(best, len(colors))
-    return min(best, 6)
+
+    best_size = 0
+    best_missing: list[Tile] = []
+    for color, shapes in by_color.items():
+        if len(shapes) > best_size:
+            best_size = len(shapes)
+            best_missing = [Tile(color=color, shape=s) for s in ALL_SHAPES - shapes]
+    for shape, colors in by_shape.items():
+        if len(colors) > best_size:
+            best_size = len(colors)
+            best_missing = [Tile(color=c, shape=shape) for c in ALL_COLORS - colors]
+    return min(best_size, 6), best_missing
 
 
-def build_bonus(remaining_hand: Counter[Tile]) -> int:
+def largest_partial_qwirkle(hand: Counter[Tile]) -> int:
+    """Size of the biggest in-hand set toward a Qwirkle (capped at 6). Drives the
+    hold-back build bonus."""
+    return _best_partial_qwirkle_group(hand)[0]
+
+
+def partial_qwirkle_missing_tiles(hand: Counter[Tile]) -> Optional[tuple[int, list[Tile]]]:
+    """(size, missing tiles) for the biggest in-hand partial-Qwirkle set, or None if
+    nothing qualifies as "building" (below MIN_BUILD_SET)."""
+    size, missing = _best_partial_qwirkle_group(hand)
+    if size < MIN_BUILD_SET or not missing:
+        return None
+    return size, missing
+
+
+def build_bonus(engine: QwirkleEngine, remaining_hand: Counter[Tile]) -> float:
     """Bounded reward for keeping a strong partial-Qwirkle set in hand after a move.
 
-    set of 4 -> 1, 5 -> 2, 6 -> 3, all within QWIRKLE_BUILD_BAND so a hold-back move can
-    outrank the raw best by at most a few points -- it can never override big scores.
-
-    Limitation (first planned refinement): looks only at the hand, not whether a board
-    line will exist to play the set on, and weights every unfinished set equally
-    regardless of how many completing tiles remain unseen (note b's "probability to
-    complete the Q").
+    set of 4 -> 1, 5 -> 2, 6 -> 3 (within QWIRKLE_BUILD_BAND so a hold-back move can
+    outrank the raw best by at most a few points), scaled down by how many copies of the
+    still-missing tiles are unaccounted-for -- a set that's realistically completable
+    keeps close to the full band; a set whose missing tiles are already all visible
+    elsewhere earns close to nothing.
     """
-    partial = largest_partial_qwirkle(remaining_hand)
-    return min(max(0, partial - (MIN_BUILD_SET - 1)), QWIRKLE_BUILD_BAND)
+    detail = partial_qwirkle_missing_tiles(remaining_hand)
+    if detail is None:
+        return 0.0
+    size, missing = detail
+    band = min(max(0, size - (MIN_BUILD_SET - 1)), QWIRKLE_BUILD_BAND)
+    availability = [
+        completer_copies_available(engine.board, remaining_hand, tile) / COPIES_PER_TILE
+        for tile in missing
+    ]
+    confidence = max(0.0, min(1.0, sum(availability) / len(availability)))
+    return band * confidence
 
 
 def apply_strategy_adjustments(
@@ -646,21 +712,28 @@ def apply_strategy_adjustments(
     tiles: Counter[Tile],
     ranked_moves: list[tuple[int, list[tuple[tuple[int, int], Tile]]]],
 ) -> list[tuple[int, list[tuple[tuple[int, int], Tile]]]]:
-    """Re-rank by strategy: subtract a Qwirkle-gift penalty, add a bounded build bonus,
-    then break ties among the top group by next-turn look-ahead. Moves keep their raw
-    display score; only the ordering changes. The gift penalty (-12) dwarfs the build
-    band (<=3), so a real gift can never be rescued by build value.
+    """Re-rank by strategy: subtract a Qwirkle-gift penalty scaled by the probability the
+    opponent actually holds the completer, add a build bonus scaled by how completable the
+    held set still is, then break ties among the top group by next-turn look-ahead. Moves
+    keep their raw display score; only the ordering changes. Both adjustments are bounded
+    at the flat QWIRKLE_GIFT_PENALTY (-12) / QWIRKLE_BUILD_BAND (<=3) knobs, so a real gift
+    can never be rescued by build value.
     """
     if not ranked_moves:
         return ranked_moves
 
-    scored: list[tuple[int, int, list[tuple[tuple[int, int], Tile]]]] = []
+    scored: list[tuple[float, int, list[tuple[tuple[int, int], Tile]]]] = []
     for raw, placements in ranked_moves:
-        rank_score = raw
-        if gifts_opponent_qwirkle(engine, tiles, placements) is not None:
-            rank_score -= QWIRKLE_GIFT_PENALTY
+        rank_score: float = raw
         remaining_hand = tiles - Counter(tile for _, tile in placements)
-        rank_score += build_bonus(remaining_hand)
+        risk = gift_risk(engine, tiles, placements)
+        if risk is not None:
+            _completer, copies_available = risk
+            board_count = len(engine.board) + len(placements)
+            unseen_pool = TOTAL_QWIRKLE_TILES - board_count - sum(remaining_hand.values())
+            probability = probability_in_opponent_hand(copies_available, unseen_pool)
+            rank_score -= QWIRKLE_GIFT_PENALTY * probability
+        rank_score += build_bonus(engine, remaining_hand)
         scored.append((rank_score, raw, placements))
 
     scored.sort(key=lambda item: item[0], reverse=True)
@@ -687,10 +760,17 @@ def strategy_note(
 ) -> str:
     """Human-readable reason a move was up- or down-ranked, for the printed output."""
     notes: list[str] = []
-    completer = gifts_opponent_qwirkle(engine, tiles, placements)
-    if completer is not None:
-        notes.append(f"⚠ opens a Qwirkle for opponent ({completer.color}-{completer.shape})")
     remaining_hand = tiles - Counter(tile for _, tile in placements)
+    risk = gift_risk(engine, tiles, placements)
+    if risk is not None:
+        completer, copies_available = risk
+        board_count = len(engine.board) + len(placements)
+        unseen_pool = TOTAL_QWIRKLE_TILES - board_count - sum(remaining_hand.values())
+        probability = probability_in_opponent_hand(copies_available, unseen_pool)
+        notes.append(
+            f"⚠ opens a Qwirkle for opponent ({completer.color}-{completer.shape}, "
+            f"~{probability:.0%} risk)"
+        )
     partial = largest_partial_qwirkle(remaining_hand)
     if partial >= MIN_BUILD_SET:
         notes.append(f"holds {partial}/6 set")
