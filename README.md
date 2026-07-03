@@ -49,18 +49,37 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 
 - ⚠️ **Check if "My Hand" is being recorded when [Commit Move] after each turn** — need to ensure player's hand state is captured with move history
 - **[STRATEGY]** "Bank" 1 or 2 Q's in hand vs. being blind to that?
-- [🙎-friendly] Button to [Preview] top move. 
+- [🙎-friendly] Button to [Preview] top move.
 - resize board and "My Hand" to fit better on 1 screen
 - asserts (aka, validation) if a chosen tile breaks any rules of game
 - possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
 - a "Suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
 - a score button (might only be available if every move is assigned to a specific player)
+- Got this error while trying to install Library Skills ( ) per fastapi's security pg.
+
+```text
+ status 
+ Target             Skill    Status  Path                    Source                                                 
+ claude-compatible  fastapi  new     .claude\skills\fastapi  .venv\Lib\site-packages\fastapi\.agents\skills\fastapi 
+
+ install 
+Select skills to install (press Space to select, Enter to confirm): fastapi (fastapi)
+Select installation targets (press Space to select, Enter to confirm): Agents (.agents/skills)
+
+ Skipped:  fastapi: Could not create symlink: [WinError 1314] A required privilege is not held by the client: 
+'..\\..\\.venv\\Lib\\site-packages\\fastapi\\.agents\\skills\\fastapi' -> 'F:\\gmr3\\src\\qwirkle-solver\\.agents\\skills\\fastapi'. Use --copy if your 
+system does not support symlinks.
+
+No changes needed.
+Copy the Library Skills tool skill into the project so agents know how to update, repair, and check managed skills?
+```
+
 - **[STRATEGY] - Longerterm** Learn pattern/stragtegy of opponents based on past games of course - and current game.
 - **(Claude Opus suggestion)** bag/remaining-tile tracker — derive what's left in the bag from `(108 total) − (tiles on board) − (tiles in hand)` and show a 6×6 grid of remaining counts. Feeds the `completer_copies_available` tile-counting and helps real-game strategy (knowing if the last `purple star` is still out there)
 - **(Claude Opus suggestion)** undo/redo using the existing `game_state.json.bak-*` snapshots — they're already written on every mutation, so a `POST /api/undo` that restores the most-recent backup is nearly free and rescues the "oops, wrong click" case
 - run many fully automated game simulations (solver vs. solver) to empirically tune the strategy knobs in `qwirkle_solver.py` (`QWIRKLE_GIFT_PENALTY`, `QWIRKLE_BUILD_BAND`, `MIN_BUILD_SET`) by win-rate data — see [SIMULATION_NOTES.md](SIMULATION_NOTES.md) for the hypotheses and the Bounded-vs-Aggressive question still to settle
 - **strategy:** should any weight be assigned to a move that leaves more similar tiles in My Hand? (e.g., prefer moves that preserve hand tiles sharing a color or shape, since they enable bigger future plays / Qwirkles)
-- **[STRATEGY]** board-wide Qwirkle-threat scan — `gifts_opponent_qwirkle` only checks lines touched by the *candidate move itself*; it doesn't scan the rest of the board for pre-existing open-5 lines the move leaves untouched, so moves get no credit for proactively blocking a threat elsewhere. `analyze_threats.py` already does a standalone board-wide threat scan but isn't wired into `apply_strategy_adjustments` / the ranked-move output.
+- **[STRATEGY]** board-wide Qwirkle-threat scan — `gifts_opponent_qwirkle` only checks lines touched by the _*candidate move itself*_; it doesn't scan the rest of the board for pre-existing open-5 lines the move leaves untouched, so moves get no credit for proactively blocking a threat elsewhere. `analyze_threats.py` already does a standalone board-wide threat scan but isn't wired into `apply_strategy_adjustments` / the ranked-move output.
 - **[STRATEGY]** `build_bonus` board-feasibility gate — currently rewards holding a partial Qwirkle set in hand based on set size alone, with no check that a matching line/anchor actually exists (or is likely to exist) on the board to eventually play it on; see the "first planned refinement" note in `build_bonus`'s docstring and `SIMULATION_NOTES.md`'s H4.
 
 [*] AI-assisted or not.
