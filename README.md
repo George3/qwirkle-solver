@@ -55,7 +55,7 @@ The narrative comment block at the top of qwirkle_solver.py is intentional histo
 - possibly mode features: **edit** vs. **play** modes — edit allows setting/removing any tiles including "my hand"; play mode would "use" tiles from "my hand" when they are added to the board
 - a "Suggest moves" button (call `qwirkle_solver` in-process, render the top-N ranked placements as ghost overlays on the board)
 - a score button (might only be available if every move is assigned to a specific player)
-- Got this error while trying to install Library Skills ( ) per fastapi's security pg.
+- Got this error while trying to install "Library Skills" per fastapi's security pg. that says to run `uvx library-skills`.
 
 ```text
  status 
