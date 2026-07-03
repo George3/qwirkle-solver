@@ -1,10 +1,4 @@
 {
-  "name": "Mom Game 04",
-  "started": "2026-06-16",
-  "players": [
-    "Me",
-    "Mom"
-  ],
   "moves": [
     {
       "n": "setup",
@@ -14,307 +8,679 @@
           "x": 0,
           "y": 0,
           "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": -1,
+          "y": 0,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": -2,
+          "y": 0,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": -3,
+          "y": 0,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": -3,
+          "y": 1,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": -3,
+          "y": -2,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -3,
+          "y": -3,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": -3,
+          "y": -4,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": -3,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -4,
+          "y": -2,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": -4,
+          "y": 1,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": -5,
+          "y": 1,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": 1,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": 2,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": -2,
+          "y": 3,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -3,
+          "y": 3,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": -1,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": -1,
+          "y": -2,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": -2,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": -2,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": -1,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 1,
+          "y": -1,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": 2,
+          "y": -1,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": 2,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": 2,
+          "y": 1,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": 1,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": 2,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 4,
+          "y": 2,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": 4,
+          "y": 3,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": 3,
+          "y": 3,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 2,
+          "y": 3,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 4,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": 3,
+          "y": 4,
+          "color": "yellow",
+          "shape": "diamond"
+        },
+        {
+          "x": 5,
+          "y": 2,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": 0,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": 5,
+          "y": 0,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 6,
+          "y": 0,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 5,
+          "y": -1,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 5,
+          "y": 3,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 5,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 3,
+          "y": 5,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": 4,
+          "y": 4,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": 5,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": 4,
+          "y": 6,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 3,
+          "y": -2,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 4,
+          "y": -2,
+          "color": "yellow",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": -4,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": -5,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": -5,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 0,
+          "y": -4,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": 0,
+          "y": -5,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 0,
+          "y": -6,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -6,
+          "y": 1,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -6,
+          "y": 2,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": 3,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": -6,
+          "y": 4,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": -6,
+          "y": 5,
+          "color": "purple",
+          "shape": "star"
+        },
+        {
+          "x": -6,
+          "y": 6,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": 6,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": 5,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": -5,
+          "y": 4,
+          "color": "red",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": 3,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 6,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": -5,
+          "y": -3,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": -5,
+          "y": -4,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": -2,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": -7,
+          "y": 1,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": -7,
+          "y": 0,
+          "color": "red",
+          "shape": "clover"
+        },
+        {
+          "x": -3,
+          "y": 4,
+          "color": "green",
+          "shape": "star"
+        },
+        {
+          "x": -2,
+          "y": 4,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -1,
+          "y": 4,
+          "color": "green",
           "shape": "diamond"
         }
       ]
     },
     {
       "n": 1,
-      "player": "George",
+      "player": "tinyb",
       "tiles": [
         {
-          "x": 0,
-          "y": 1,
-          "color": "red",
-          "shape": "diamond"
-        },
-        {
-          "x": 0,
-          "y": 2,
-          "color": "blue",
-          "shape": "diamond"
+          "x": -2,
+          "y": 5,
+          "color": "green",
+          "shape": "crossx"
         }
       ]
     },
     {
       "n": 2,
-      "player": "Mom",
+      "player": "Me",
       "tiles": [
         {
-          "x": 1,
-          "y": 0,
-          "color": "purple",
-          "shape": "square"
+          "x": -5,
+          "y": 2,
+          "color": "red",
+          "shape": "diamond"
         },
         {
-          "x": 2,
-          "y": 0,
-          "color": "purple",
-          "shape": "star"
+          "x": -4,
+          "y": 2,
+          "color": "yellow",
+          "shape": "diamond"
         }
       ]
     },
     {
       "n": 3,
-      "player": "George",
+      "player": "tinyb",
       "tiles": [
         {
-          "x": 3,
-          "y": 0,
-          "color": "purple",
-          "shape": "crossx"
+          "x": -4,
+          "y": 7,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -4,
+          "y": 8,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": -4,
+          "y": 5,
+          "color": "yellow",
+          "shape": "star"
         }
       ]
     },
     {
       "n": 4,
-      "player": "Mom",
+      "player": "Me",
       "tiles": [
         {
-          "x": -1,
-          "y": 2,
-          "color": "blue",
-          "shape": "crossx"
+          "x": 1,
+          "y": 6,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": 6,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": 2,
+          "y": 6,
+          "color": "purple",
+          "shape": "diamond"
         }
       ]
     },
     {
       "n": 5,
-      "player": "George",
+      "player": "tinyb",
       "tiles": [
         {
-          "x": 1,
-          "y": 2,
-          "color": "blue",
-          "shape": "clover"
-        },
-        {
-          "x": 1,
-          "y": 3,
-          "color": "yellow",
-          "shape": "clover"
-        },
-        {
-          "x": 1,
-          "y": 4,
-          "color": "red",
-          "shape": "clover"
-        },
-        {
-          "x": 1,
+          "x": 5,
           "y": 5,
-          "color": "green",
-          "shape": "clover"
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "color": "purple",
+          "shape": "square"
         }
       ]
     },
     {
       "n": 6,
-      "player": "Mom",
+      "player": "Me",
       "tiles": [
         {
-          "x": 2,
-          "y": -1,
+          "x": -7,
+          "y": 4,
           "color": "green",
-          "shape": "star"
+          "shape": "circle"
+        },
+        {
+          "x": -7,
+          "y": 3,
+          "color": "green",
+          "shape": "square"
         }
       ]
     },
     {
       "n": 7,
-      "player": "George",
+      "player": "tinyb",
       "tiles": [
         {
-          "x": 2,
-          "y": 2,
-          "color": "blue",
-          "shape": "square"
+          "x": -7,
+          "y": 6,
+          "color": "green",
+          "shape": "crossx"
         },
         {
-          "x": 2,
-          "y": 3,
-          "color": "yellow",
-          "shape": "square"
-        },
-        {
-          "x": 2,
-          "y": 4,
-          "color": "red",
-          "shape": "square"
+          "x": -8,
+          "y": 6,
+          "color": "orange",
+          "shape": "crossx"
         }
       ]
     },
     {
       "n": 8,
-      "player": "Mom",
+      "player": "Me",
       "tiles": [
         {
-          "x": 3,
-          "y": 3,
-          "color": "yellow",
-          "shape": "circle"
+          "x": -6,
+          "y": -3,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": -2,
+          "color": "blue",
+          "shape": "star"
         }
       ]
     },
     {
       "n": 9,
-      "player": "Me",
+      "player": "tinyb",
       "tiles": [
         {
-          "x": 0,
-          "y": 5,
-          "color": "red",
-          "shape": "clover"
+          "x": 7,
+          "y": 0,
+          "color": "orange",
+          "shape": "star"
         },
         {
-          "x": 0,
-          "y": 4,
-          "color": "red",
-          "shape": "diamond"
-        },
-        {
-          "x": 0,
-          "y": 6,
-          "color": "red",
-          "shape": "crossx"
+          "x": 7,
+          "y": 1,
+          "color": "orange",
+          "shape": "circle"
         }
       ]
     },
     {
       "n": 10,
-      "player": "Mom",
+      "player": "Me",
       "tiles": [
         {
-          "x": 0,
-          "y": 7,
-          "color": "red",
+          "x": -8,
+          "y": 3,
+          "color": "yellow",
           "shape": "square"
         },
         {
-          "x": -1,
-          "y": 7,
-          "color": "red",
-          "shape": "clover"
-        }
-      ]
-    },
-    {
-      "n": 11,
-      "player": "Me",
-      "tiles": [
-        {
-          "x": 3,
-          "y": 4,
-          "color": "red",
-          "shape": "circle"
-        }
-      ]
-    },
-    {
-      "n": 12,
-      "player": "Mom",
-      "tiles": [
-        {
-          "x": 4,
-          "y": 3,
-          "color": "yellow",
-          "shape": "diamond"
-        }
-      ]
-    },
-    {
-      "n": 13,
-      "player": "Me",
-      "tiles": [
-        {
-          "x": 3,
-          "y": 5,
-          "color": "green",
-          "shape": "circle"
-        },
-        {
-          "x": 4,
-          "y": 5,
-          "color": "green",
-          "shape": "star"
-        },
-        {
-          "x": 5,
-          "y": 5,
-          "color": "green",
-          "shape": "clover"
-        }
-      ]
-    },
-    {
-      "n": 14,
-      "player": "Mom",
-      "tiles": [
-        {
-          "x": 5,
-          "y": 6,
+          "x": -8,
+          "y": 2,
           "color": "orange",
-          "shape": "clover"
-        },
-        {
-          "x": 4,
-          "y": 6,
-          "color": "orange",
-          "shape": "star"
-        }
-      ]
-    },
-    {
-      "n": 15,
-      "player": "Me",
-      "tiles": [
-        {
-          "x": 4,
-          "y": 7,
-          "color": "yellow",
-          "shape": "star"
-        },
-        {
-          "x": 5,
-          "y": 7,
-          "color": "yellow",
-          "shape": "clover"
-        }
-      ]
-    },
-    {
-      "n": 16,
-      "player": "Mom",
-      "tiles": [
-        {
-          "x": 0,
-          "y": 8,
-          "color": "red",
-          "shape": "star"
-        },
-        {
-          "x": -1,
-          "y": 8,
-          "color": "red",
-          "shape": "crossx"
-        }
-      ]
-    },
-    {
-      "n": 17,
-      "player": "Me",
-      "tiles": [
-        {
-          "x": 0,
-          "y": 9,
-          "color": "red",
-          "shape": "circle"
-        },
-        {
-          "x": 1,
-          "y": 9,
-          "color": "yellow",
-          "shape": "circle"
+          "shape": "square"
         }
       ]
     }
@@ -322,27 +688,17 @@
   "hand": [
     {
       "color": "purple",
-      "shape": "crossx"
-    },
-    {
-      "color": "orange",
-      "shape": "crossx"
-    },
-    {
-      "color": "orange",
-      "shape": "diamond"
-    },
-    {
-      "color": "green",
-      "shape": "diamond"
-    },
-    {
-      "color": "blue",
       "shape": "clover"
     },
     {
-      "color": "blue",
-      "shape": "crossx"
+      "color": "purple",
+      "shape": "circle"
     }
+  ],
+  "name": "TinyB Game",
+  "started": "2026-03-14",
+  "players": [
+    "Me",
+    "tinyb"
   ]
 }

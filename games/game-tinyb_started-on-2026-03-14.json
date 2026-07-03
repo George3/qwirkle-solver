@@ -647,20 +647,48 @@
           "shape": "star"
         }
       ]
+    },
+    {
+      "n": 9,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": 7,
+          "y": 0,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": 7,
+          "y": 1,
+          "color": "orange",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -8,
+          "y": 3,
+          "color": "yellow",
+          "shape": "square"
+        },
+        {
+          "x": -8,
+          "y": 2,
+          "color": "orange",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "orange",
-      "shape": "square"
-    },
-    {
       "color": "purple",
       "shape": "clover"
-    },
-    {
-      "color": "yellow",
-      "shape": "square"
     },
     {
       "color": "purple",
