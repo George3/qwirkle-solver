@@ -596,24 +596,6 @@
     },
     {
       "n": 34,
-      "player": "Jeanne",
-      "tiles": [
-        {
-          "x": 6,
-          "y": 2,
-          "color": "purple",
-          "shape": "clover"
-        },
-        {
-          "x": 7,
-          "y": 2,
-          "color": "purple",
-          "shape": "star"
-        }
-      ]
-    },
-    {
-      "n": 35,
       "player": "Me",
       "tiles": [
         {
@@ -629,28 +611,94 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 35,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 6,
+          "y": 2,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": 6,
+          "y": 1,
+          "color": "purple",
+          "shape": "diamond"
+        },
+        {
+          "x": 7,
+          "y": 1,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 7,
+          "y": 2,
+          "color": "purple",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 36,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 4,
+          "y": 5,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": 2,
+          "color": "red",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 37,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 5,
+          "y": 5,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "color": "orange",
+          "shape": "diamond"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "orange",
-      "shape": "circle"
+      "color": "blue",
+      "shape": "diamond"
     },
     {
       "color": "purple",
       "shape": "crossx"
     },
     {
-      "color": "yellow",
-      "shape": "circle"
+      "color": "red",
+      "shape": "diamond"
     },
     {
       "color": "red",
       "shape": "circle"
     },
     {
-      "color": "orange",
-      "shape": "diamond"
+      "color": "blue",
+      "shape": "crossx"
     },
     {
       "color": "yellow",
