@@ -213,4 +213,5 @@ board.svg*.bak
 game_state.json.bak-*
 
 # Per-game saved states (local, single-user; mirrored into game_state.json)
-# games/
+game_state.json
+games/index.json
