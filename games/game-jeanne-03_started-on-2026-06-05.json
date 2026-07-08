@@ -713,6 +713,36 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 40,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 3,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": 4,
+          "color": "green",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 41,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -3,
+          "y": -5,
+          "color": "purple",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
@@ -721,8 +751,8 @@
       "shape": "clover"
     },
     {
-      "color": "purple",
-      "shape": "crossx"
+      "color": "red",
+      "shape": "circle"
     },
     {
       "color": "red",
