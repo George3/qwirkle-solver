@@ -212,6 +212,6 @@ board.svg*.bak
 # Don't save game state backups
 game_state.json.bak-*
 
-# Per-game saved states (local, single-user; mirrored into game_state.json)
+# Per game saved states
 game_state.json
 games/index.json

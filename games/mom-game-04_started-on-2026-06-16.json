@@ -371,32 +371,80 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 22,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 9,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 2,
+          "y": 10,
+          "color": "purple",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 11,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 11,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 0,
+          "y": 11,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": -1,
+          "y": 11,
+          "color": "blue",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "purple",
-      "shape": "crossx"
+      "color": "green",
+      "shape": "diamond"
     },
     {
-      "color": "orange",
-      "shape": "crossx"
+      "color": "blue",
+      "shape": "square"
     },
     {
       "color": "green",
       "shape": "square"
     },
     {
-      "color": "red",
-      "shape": "crossx"
+      "color": "purple",
+      "shape": "square"
     },
     {
       "color": "blue",
       "shape": "clover"
     },
     {
-      "color": "blue",
-      "shape": "crossx"
+      "color": "orange",
+      "shape": "circle"
     }
   ]
 }

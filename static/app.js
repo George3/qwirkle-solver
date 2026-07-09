@@ -506,6 +506,9 @@ async function commitDraftMove() {
   const tileCount = draftMoveTiles.length;
   await api("/api/moves/commit", { player, tiles: draftMoveTiles });
   draftMoveTiles = [];
+  const players = gamePlayers();
+  const nextIdx = (players.indexOf(player) + 1) % players.length;
+  activePlayer = players[nextIdx] || player;
   await refresh();
   setStatus(`Committed ${tileCount} tile${tileCount === 1 ? "" : "s"} for ${player}.`);
 }
