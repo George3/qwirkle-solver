@@ -743,6 +743,36 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 42,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 4,
+          "color": "yellow",
+          "shape": "circle"
+        },
+        {
+          "x": -5,
+          "y": 4,
+          "color": "yellow",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 43,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 5,
+          "color": "yellow",
+          "shape": "star"
+        }
+      ]
     }
   ],
   "hand": [
@@ -768,7 +798,7 @@
     },
     {
       "color": "yellow",
-      "shape": "star"
+      "shape": "diamond"
     }
   ],
   "name": "Jeanne Game 03",
