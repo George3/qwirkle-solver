@@ -19,7 +19,9 @@ DRFT ~ FIXME = FINISH-ME:
 
 - To start server from: C:\src\fun\qwirkle-solver>
 - One-time setup for repo hooks: `git config core.hooksPath .githooks`
-- Run: `.venv\Scripts\python.exe -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+- Run: 
+Windows/Powershell: `.venv\Scripts\python.exe -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+Bash/Linux: `.venv/Scripts/python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
 
 - After prompted for 1st phase of creating an interactive GUI,
 Then ran "/init" to have CLAUDE.md created.

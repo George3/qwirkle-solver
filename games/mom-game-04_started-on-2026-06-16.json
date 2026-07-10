@@ -419,6 +419,42 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 24,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 7,
+          "y": 5,
+          "color": "green",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 25,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 8,
+          "y": 5,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": 8,
+          "y": 6,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 8,
+          "y": 7,
+          "color": "blue",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -427,16 +463,16 @@
       "shape": "diamond"
     },
     {
-      "color": "blue",
+      "color": "orange",
+      "shape": "crossx"
+    },
+    {
+      "color": "orange",
       "shape": "square"
     },
     {
-      "color": "green",
-      "shape": "square"
-    },
-    {
-      "color": "purple",
-      "shape": "square"
+      "color": "orange",
+      "shape": "diamond"
     },
     {
       "color": "blue",
