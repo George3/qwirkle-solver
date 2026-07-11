@@ -803,6 +803,42 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 46,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -8,
+          "y": -3,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": -7,
+          "y": -3,
+          "color": "orange",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 47,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 3,
+          "y": 6,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": 3,
+          "y": 7,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
     }
   ],
   "hand": [
@@ -815,7 +851,7 @@
       "shape": "circle"
     },
     {
-      "color": "green",
+      "color": "blue",
       "shape": "diamond"
     },
     {
@@ -827,8 +863,8 @@
       "shape": "square"
     },
     {
-      "color": "yellow",
-      "shape": "diamond"
+      "color": "blue",
+      "shape": "square"
     }
   ],
   "name": "Jeanne Game 03",
