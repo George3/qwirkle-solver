@@ -839,6 +839,42 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 48,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": 2,
+          "y": 7,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": 8,
+          "color": "red",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 49,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": 4,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "color": "blue",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -852,7 +888,7 @@
     },
     {
       "color": "blue",
-      "shape": "diamond"
+      "shape": "square"
     },
     {
       "color": "red",
@@ -860,10 +896,6 @@
     },
     {
       "color": "orange",
-      "shape": "square"
-    },
-    {
-      "color": "blue",
       "shape": "square"
     }
   ],
