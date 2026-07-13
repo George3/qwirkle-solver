@@ -1,0 +1,84 @@
+{
+  "name": "TinyB 04",
+  "started": "2026-07-12",
+  "players": [
+    "Me",
+    "tinyb"
+  ],
+  "moves": [
+    {
+      "n": 1,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": 0,
+          "color": "purple",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": -1,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "color": "orange",
+          "shape": "crossx"
+        }
+      ]
+    }
+  ],
+  "hand": [
+    {
+      "color": "green",
+      "shape": "crossx"
+    },
+    {
+      "color": "blue",
+      "shape": "square"
+    },
+    {
+      "color": "blue",
+      "shape": "circle"
+    },
+    {
+      "color": "purple",
+      "shape": "square"
+    },
+    {
+      "color": "red",
+      "shape": "square"
+    },
+    {
+      "color": "orange",
+      "shape": "square"
+    }
+  ]
+}
