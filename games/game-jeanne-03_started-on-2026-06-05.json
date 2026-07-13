@@ -917,13 +917,39 @@
           "shape": "square"
         }
       ]
+    },
+    {
+      "n": 53,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -1,
+          "y": 6,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": -1,
+          "y": 7,
+          "color": "green",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 54,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -6,
+          "y": 3,
+          "color": "blue",
+          "shape": "clover"
+        }
+      ]
     }
   ],
   "hand": [
-    {
-      "color": "blue",
-      "shape": "clover"
-    },
     {
       "color": "purple",
       "shape": "circle"
