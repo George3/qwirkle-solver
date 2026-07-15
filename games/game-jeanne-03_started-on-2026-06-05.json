@@ -947,18 +947,45 @@
           "shape": "clover"
         }
       ]
-    }
-  ],
-  "hand": [
-    {
-      "color": "purple",
-      "shape": "circle"
     },
     {
-      "color": "red",
-      "shape": "circle"
+      "n": 55,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -8,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -3,
+          "y": -8,
+          "color": "yellow",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 56,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 8,
+          "y": 2,
+          "color": "purple",
+          "shape": "circle"
+        },
+        {
+          "x": 8,
+          "y": 3,
+          "color": "red",
+          "shape": "circle"
+        }
+      ]
     }
   ],
+  "hand": [],
   "name": "Jeanne Game 03",
   "started": "2026-06-05",
   "players": [

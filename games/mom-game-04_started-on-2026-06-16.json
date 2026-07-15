@@ -497,6 +497,42 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 28,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 7,
+          "y": 3,
+          "color": "purple",
+          "shape": "crossx"
+        },
+        {
+          "x": 7,
+          "y": 2,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 7,
+          "y": 1,
+          "color": "yellow",
+          "shape": "crossx"
+        },
+        {
+          "x": 3,
+          "y": 2,
+          "color": "blue",
+          "shape": "circle"
+        },
+        {
+          "x": -2,
+          "y": 2,
+          "color": "blue",
+          "shape": "star"
+        }
+      ]
     }
   ],
   "hand": [
@@ -505,16 +541,16 @@
       "shape": "diamond"
     },
     {
-      "color": "blue",
-      "shape": "circle"
+      "color": "yellow",
+      "shape": "square"
     },
     {
       "color": "yellow",
       "shape": "star"
     },
     {
-      "color": "blue",
-      "shape": "star"
+      "color": "yellow",
+      "shape": "diamond"
     },
     {
       "color": "blue",
