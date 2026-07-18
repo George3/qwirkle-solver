@@ -53,6 +53,54 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 3,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -2,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": -3,
+          "color": "green",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -1,
+          "y": 1,
+          "color": "purple",
+          "shape": "square"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "blue",
+          "shape": "square"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "red",
+          "shape": "square"
+        },
+        {
+          "x": -2,
+          "y": 1,
+          "color": "orange",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -62,23 +110,23 @@
     },
     {
       "color": "blue",
-      "shape": "square"
+      "shape": "crossx"
     },
     {
       "color": "blue",
       "shape": "circle"
     },
     {
-      "color": "purple",
-      "shape": "square"
-    },
-    {
       "color": "red",
-      "shape": "square"
+      "shape": "circle"
     },
     {
-      "color": "orange",
-      "shape": "square"
+      "color": "purple",
+      "shape": "circle"
+    },
+    {
+      "color": "blue",
+      "shape": "crossx"
     }
   ]
 }
