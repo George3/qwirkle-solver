@@ -605,32 +605,134 @@
           "shape": "diamond"
         }
       ]
+    },
+    {
+      "n": 33,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 4,
+          "y": 9,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 5,
+          "y": 9,
+          "color": "blue",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 34,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 12,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": 12,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": 12,
+          "color": "green",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 35,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 2,
+          "y": -4,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 2,
+          "y": -5,
+          "color": "blue",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 36,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 3,
+          "y": -1,
+          "color": "green",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 37,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": 3,
+          "y": -2,
+          "color": "yellow",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 38,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 0,
+          "y": -3,
+          "color": "orange",
+          "shape": "diamond"
+        },
+        {
+          "x": -1,
+          "y": -3,
+          "color": "orange",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "green",
-      "shape": "crossx"
+      "color": "purple",
+      "shape": "clover"
     },
     {
       "color": "red",
       "shape": "circle"
     },
     {
-      "color": "green",
-      "shape": "clover"
+      "color": "blue",
+      "shape": "circle"
     },
     {
       "color": "yellow",
       "shape": "star"
     },
     {
-      "color": "blue",
+      "color": "purple",
       "shape": "clover"
     },
     {
-      "color": "orange",
-      "shape": "clover"
+      "color": "yellow",
+      "shape": "circle"
     }
   ]
 }
