@@ -707,16 +707,46 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 39,
+      "player": "Mom",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 11,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": -3,
+          "y": 11,
+          "color": "yellow",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 40,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 4,
+          "y": 0,
+          "color": "purple",
+          "shape": "clover"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "purple",
-      "shape": "clover"
-    },
-    {
       "color": "red",
       "shape": "circle"
+    },
+    {
+      "color": "purple",
+      "shape": "diamond"
     },
     {
       "color": "blue",
