@@ -15,13 +15,60 @@ DRFT ~ FIXME = FINISH-ME:
 - Using ~CoPilot Pro (Trial) $10/mo. (Upgraded from CoPilot free becase allows to use premium models like laude Opus 4.6 -- TODO check usage if "Free" would still cover it?! 💸💳)
 - Most code gen'd w/Claude Haiku #.#?, Sonnet #.#?, GPT-5.3-Codex. ...Occasionally, cutting edge Claude Opus 4.6, ...Gemini -see branch on refactor.
 
-## AI History / How-To
+## Prerequisites
+
+1. Install [git](https://git-scm.com/install/) (to clone this repo)
+1. Install [Python 3](https://www.python.org/downloads/) and ensure it is available on your PATH
+1. A local virtual environment at `.venv`
+1. Install FastAPI editor dependencies.  See command below (Needed for the browser UI):
+
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Uvicorn](https://www.uvicorn.org/)
+- [Pydantic](https://docs.pydantic.dev/latest/)
+
+1. (Optional) IDE: [VS Code](https://code.visualstudio.com/)
+
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Linux / macOS / Git Bash:
+
+```bash
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Optional (recommended): enable the pre-commit hook that checks requirements drift.
+
+```bash
+git config core.hooksPath .githooks
+```
+
+## How-To Run
+
+1. git clone _this repo_
+1. Windows/Powershell: `.venv\Scripts\python.exe -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+Or Linux/Bash: `.venv/Scripts/python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+1. Open `http://127.0.0.1:8000/` in a browser
+1. Either click on [New Game] button or choose an existing game from the dropdown
+1. Set the tiles...
+1. Click [Commit Move]
+1. From command prompt where AI/LLMs will be called**, run:
+On Windows: `python ./qwirkle_solver.py`
+On Linux or Git Bash on Windows: `time python ./qwirkle_solver.py`
+1. Make next move in browser based on suggestion (no AI/LLMs called)
+
+## AI Development History
 
 - To start server from: C:\src\fun\qwirkle-solver>
 - One-time setup for repo hooks: `git config core.hooksPath .githooks`
-- Run: 
+- Run:
 Windows/Powershell: `.venv\Scripts\python.exe -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
-Bash/Linux: `.venv/Scripts/python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
+Or Linux/Bash: `.venv/Scripts/python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000`
 
 - After prompted for 1st phase of creating an interactive GUI,
 Then ran "/init" to have CLAUDE.md created.
@@ -85,3 +132,4 @@ Copy the Library Skills tool skill into the project so agents know how to update
 - **[STRATEGY]** `build_bonus` board-feasibility gate — currently rewards holding a partial Qwirkle set in hand based on set size alone, with no check that a matching line/anchor actually exists (or is likely to exist) on the board to eventually play it on; see the "first planned refinement" note in `build_bonus`'s docstring and `SIMULATION_NOTES.md`'s H4.
 
 [*] AI-assisted or not.
+[**] Code, such as qwirkle_solver.py is AI-developed but it does not use AI when run.
