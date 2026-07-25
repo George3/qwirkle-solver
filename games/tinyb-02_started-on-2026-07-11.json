@@ -27,6 +27,12 @@
           "y": 0,
           "color": "green",
           "shape": "circle"
+        },
+        {
+          "x": -3,
+          "y": -3,
+          "color": "blue",
+          "shape": "clover"
         }
       ]
     },
@@ -89,6 +95,84 @@
           "shape": "circle"
         }
       ]
+    },
+    {
+      "n": 4,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -3,
+          "y": -4,
+          "color": "blue",
+          "shape": "diamond"
+        },
+        {
+          "x": -4,
+          "y": -4,
+          "color": "yellow",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -5,
+          "y": -4,
+          "color": "green",
+          "shape": "diamond"
+        },
+        {
+          "x": -2,
+          "y": -4,
+          "color": "red",
+          "shape": "diamond"
+        },
+        {
+          "x": -6,
+          "y": -4,
+          "color": "orange",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -5,
+          "y": -5,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -4,
+          "y": -5,
+          "color": "yellow",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -4,
+          "y": -3,
+          "color": "yellow",
+          "shape": "clover"
+        },
+        {
+          "x": -5,
+          "y": -3,
+          "color": "green",
+          "shape": "clover"
+        }
+      ]
     }
   ],
   "hand": [
@@ -102,19 +186,19 @@
     },
     {
       "color": "green",
+      "shape": "square"
+    },
+    {
+      "color": "green",
       "shape": "star"
     },
     {
-      "color": "blue",
-      "shape": "diamond"
+      "color": "green",
+      "shape": "star"
     },
     {
       "color": "yellow",
       "shape": "diamond"
-    },
-    {
-      "color": "yellow",
-      "shape": "clover"
     }
   ]
 }
