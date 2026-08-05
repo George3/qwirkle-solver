@@ -63,6 +63,48 @@
           "y": -2,
           "color": "purple",
           "shape": "star"
+        },
+        {
+          "x": -4,
+          "y": 1,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "color": "blue",
+          "shape": "clover"
+        },
+        {
+          "x": -1,
+          "y": 3,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": -1,
+          "y": 4,
+          "color": "blue",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "color": "red",
+          "shape": "crossx"
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "color": "red",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": 5,
+          "color": "red",
+          "shape": "circle"
         }
       ]
     },
@@ -191,6 +233,72 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 7,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 2,
+          "color": "orange",
+          "shape": "clover"
+        },
+        {
+          "x": -2,
+          "y": 3,
+          "color": "orange",
+          "shape": "crossx"
+        },
+        {
+          "x": -2,
+          "y": 4,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -3,
+          "y": 2,
+          "color": "purple",
+          "shape": "clover"
+        },
+        {
+          "x": -3,
+          "y": 1,
+          "color": "blue",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 2,
+          "y": -4,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": 1,
+          "y": -4,
+          "color": "orange",
+          "shape": "star"
+        },
+        {
+          "x": 0,
+          "y": -4,
+          "color": "orange",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
@@ -199,15 +307,11 @@
       "shape": "square"
     },
     {
-      "color": "orange",
-      "shape": "crossx"
-    },
-    {
-      "color": "blue",
+      "color": "green",
       "shape": "clover"
     },
     {
-      "color": "purple",
+      "color": "yellow",
       "shape": "clover"
     },
     {
@@ -215,8 +319,12 @@
       "shape": "circle"
     },
     {
+      "color": "green",
+      "shape": "circle"
+    },
+    {
       "color": "blue",
-      "shape": "star"
+      "shape": "circle"
     }
   ]
 }
