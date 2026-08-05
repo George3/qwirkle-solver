@@ -197,12 +197,72 @@
           "shape": "square"
         }
       ]
+    },
+    {
+      "n": 10,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": 0,
+          "y": -3,
+          "color": "blue",
+          "shape": "clover"
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 3,
+          "y": -1,
+          "color": "green",
+          "shape": "crossx"
+        },
+        {
+          "x": 4,
+          "y": -1,
+          "color": "blue",
+          "shape": "crossx"
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 2,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -3,
+          "y": 2,
+          "color": "yellow",
+          "shape": "star"
+        },
+        {
+          "x": -3,
+          "y": 3,
+          "color": "yellow",
+          "shape": "circle"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "green",
-      "shape": "crossx"
+      "color": "blue",
+      "shape": "clover"
     },
     {
       "color": "purple",
@@ -217,12 +277,12 @@
       "shape": "diamond"
     },
     {
-      "color": "yellow",
-      "shape": "star"
+      "color": "green",
+      "shape": "square"
     },
     {
-      "color": "blue",
-      "shape": "crossx"
+      "color": "red",
+      "shape": "circle"
     }
   ]
 }

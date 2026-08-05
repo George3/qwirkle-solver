@@ -299,6 +299,42 @@
           "shape": "crossx"
         }
       ]
+    },
+    {
+      "n": 10,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -2,
+          "y": 5,
+          "color": "orange",
+          "shape": "square"
+        },
+        {
+          "x": -3,
+          "y": 5,
+          "color": "orange",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -4,
+          "y": -1,
+          "color": "green",
+          "shape": "clover"
+        },
+        {
+          "x": -4,
+          "y": 2,
+          "color": "yellow",
+          "shape": "clover"
+        }
+      ]
     }
   ],
   "hand": [
@@ -307,8 +343,8 @@
       "shape": "square"
     },
     {
-      "color": "green",
-      "shape": "clover"
+      "color": "blue",
+      "shape": "circle"
     },
     {
       "color": "yellow",
