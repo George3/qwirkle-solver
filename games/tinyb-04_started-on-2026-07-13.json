@@ -257,6 +257,42 @@
           "shape": "circle"
         }
       ]
+    },
+    {
+      "n": 14,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -4,
+          "y": 3,
+          "color": "green",
+          "shape": "circle"
+        },
+        {
+          "x": -4,
+          "y": 2,
+          "color": "green",
+          "shape": "star"
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -4,
+          "color": "green",
+          "shape": "square"
+        },
+        {
+          "x": -3,
+          "y": -4,
+          "color": "orange",
+          "shape": "square"
+        }
+      ]
     }
   ],
   "hand": [
@@ -265,20 +301,20 @@
       "shape": "clover"
     },
     {
+      "color": "red",
+      "shape": "crossx"
+    },
+    {
       "color": "purple",
       "shape": "diamond"
     },
     {
       "color": "orange",
-      "shape": "square"
-    },
-    {
-      "color": "orange",
       "shape": "diamond"
     },
     {
-      "color": "green",
-      "shape": "square"
+      "color": "yellow",
+      "shape": "clover"
     },
     {
       "color": "red",
