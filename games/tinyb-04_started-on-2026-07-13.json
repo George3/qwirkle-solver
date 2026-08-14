@@ -293,6 +293,30 @@
           "shape": "square"
         }
       ]
+    },
+    {
+      "n": 16,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -5,
+          "color": "green",
+          "shape": "diamond"
+        }
+      ]
+    },
+    {
+      "n": 17,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 1,
+          "y": -1,
+          "color": "red",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
@@ -302,7 +326,7 @@
     },
     {
       "color": "red",
-      "shape": "crossx"
+      "shape": "star"
     },
     {
       "color": "purple",
