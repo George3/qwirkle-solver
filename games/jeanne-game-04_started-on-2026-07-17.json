@@ -593,6 +593,36 @@
           "shape": "star"
         }
       ]
+    },
+    {
+      "n": 26,
+      "player": "Jeanne",
+      "tiles": [
+        {
+          "x": -7,
+          "y": -1,
+          "color": "orange",
+          "shape": "circle"
+        },
+        {
+          "x": -7,
+          "y": -3,
+          "color": "purple",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 27,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": 8,
+          "y": -2,
+          "color": "yellow",
+          "shape": "circle"
+        }
+      ]
     }
   ],
   "hand": [

@@ -389,12 +389,36 @@
           "shape": "clover"
         }
       ]
+    },
+    {
+      "n": 22,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": -3,
+          "y": 1,
+          "color": "yellow",
+          "shape": "square"
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -2,
+          "y": -6,
+          "color": "green",
+          "shape": "star"
+        }
+      ]
     }
   ],
   "hand": [
     {
-      "color": "green",
-      "shape": "star"
+      "color": "orange",
+      "shape": "circle"
     },
     {
       "color": "blue",
