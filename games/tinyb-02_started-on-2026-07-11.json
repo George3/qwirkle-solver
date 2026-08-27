@@ -335,6 +335,36 @@
           "shape": "star"
         }
       ]
+    },
+    {
+      "n": 18,
+      "player": "tinyb",
+      "tiles": [
+        {
+          "x": 0,
+          "y": 3,
+          "color": "blue",
+          "shape": "crossx"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "color": "blue",
+          "shape": "circle"
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "player": "Me",
+      "tiles": [
+        {
+          "x": -6,
+          "y": 0,
+          "color": "orange",
+          "shape": "crossx"
+        }
+      ]
     }
   ],
   "hand": [
@@ -344,7 +374,7 @@
     },
     {
       "color": "orange",
-      "shape": "crossx"
+      "shape": "circle"
     },
     {
       "color": "blue",
